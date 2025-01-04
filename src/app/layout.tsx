@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Gerencie Controle - Seu sistema gerenciamento.",
-  description: "Gerenciar seus clientes e atemdo,emtps de forma fácil!",
+  description: "Gerenciar seus clientes e atende de forma fácil!",
 };
 
 
