@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Dev Controle - Seu sistema gerenciamento.",
+  title: "Gerencie Controle - Seu sistema gerenciamento.",
   description: "Gerenciar seus clientes e atemdo,emtps de forma fácil!",
 };
 
