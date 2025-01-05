@@ -16,7 +16,7 @@ export function CardCliente({ cliente }: { cliente: ClienteProps }) {
                 });
                 const result = await response.json();
                 if(result?.pack?.status === "Aberto") {
-                    alert(result.pack.message);
+                    alert(result?.pack?.error);
                 }
                 router.refresh();
             }

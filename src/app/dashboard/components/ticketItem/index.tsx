@@ -22,6 +22,10 @@ export function TicketItem({ cliente, ticket}: TicketItemProps) {
             method: "PATCH",
             body: JSON.stringify({id: ticket.id})
          })
+         const result = await response.json();
+         if(result?.pack?.status === "Aberto") {
+          alert(result.pack.message);
+         }
          router.refresh();
         }
       } catch(error) {

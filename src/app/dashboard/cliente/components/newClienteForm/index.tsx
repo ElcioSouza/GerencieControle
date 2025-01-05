@@ -11,6 +11,7 @@ export function NewClienteForm({ UserId } : {UserId: string}) {
         handleSubmit,
         register,
         control,
+        setError,
         formState: { errors },
     } = useForm<FormClientSchemaData>({
         resolver: zodResolver(FormClientSchema),
@@ -35,7 +36,10 @@ export function NewClienteForm({ UserId } : {UserId: string}) {
             }
         }); 
         const result = await response.json();
-        console.log(result);
+        if(result.error) {
+            setError("email", {type:"text", message: result.error})
+            return;
+        }
         router.replace("/dashboard/cliente");
         router.refresh();
     }

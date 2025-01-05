@@ -61,7 +61,6 @@ export const authOptions: AuthOptions = {
             try {
                 // Attempt to decode the token with the secret
                 const payload = await decode({ token, secret });
-                console.log("Decoded token:", payload);
                 return payload;
             } catch (error) {
                 // Handle any errors that occur during decoding
@@ -81,13 +80,12 @@ export const authOptions: AuthOptions = {
          * @returns {Object} O token JWT atualizado.
          */
         async jwt({ token, user }) {
-            console.log("INICIO JWT USER--------------------------------------", user, "------------------------FIM JWT USER");
+            
             if (user) {
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
             }
-            console.log("Token atualizado:", token);
             return token;
         },
 
@@ -102,14 +100,12 @@ export const authOptions: AuthOptions = {
          */
         async session({ session, token }) {
             if (token) {
-                console.log("INICIO TOKEN--------------------------------------", token, "------------------------FIM TOKEN");
                 // Atualiza a sessão com os dados do usuário.
                 session.user = {
                     id: token.id as string,
                     name: token.name as string,
                     email: token.email as string,
                 };
-                console.log("INICIO SESSION--------------------------------------", session, "------------------------FIM SESSION");
             }
             return session;
         }
