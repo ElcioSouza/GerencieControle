@@ -18,7 +18,7 @@ export async function middleware(req: Request) {
     return NextResponse.next();
 }
 
-// Define as rotas que utilizarão este middleware
+//Define as rotas que utilizarão este middleware
 export const config = {
     matcher: '/api/cliente/:patch',
   }
