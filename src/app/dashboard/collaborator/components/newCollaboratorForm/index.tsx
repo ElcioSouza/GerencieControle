@@ -4,48 +4,47 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
 import { useRouter } from "next/navigation";
-import { FormClientSchema, FormClientSchemaData } from "@/app/dashboard/cliente/schemas/formClientSchema";
+import { FormCollaboratorSchema, FormCollaboratorSchemaData } from "@/app/dashboard/collaborator/schemas/formCollaboratorSchema";
 
-export function NewClienteForm({ UserId } : {UserId: string}) {
+export function NewCollaboratorForm({ UserId }: { UserId: string }) {
     const {
         handleSubmit,
         register,
         control,
         setError,
         formState: { errors },
-    } = useForm<FormClientSchemaData>({
-        resolver: zodResolver(FormClientSchema),
+    } = useForm<FormCollaboratorSchemaData>({
+        resolver: zodResolver(FormCollaboratorSchema),
         defaultValues: {
             phone: "",
-          },
+        },
     });
     const router = useRouter();
-
-    async function handleRegisterCliente(data: FormClientSchemaData) {
-        const response = await fetch("/api/cliente", {
+    async function handleRegisterCollaborator(data: FormCollaboratorSchemaData) {
+        const response = await fetch("/api/collaborator", {
             method: "POST",
             body: JSON.stringify({
                 name: data.name,
                 email: data.email,
                 phone: data.phone,
                 address: data.address ? data.address : "",
+                status: "Ativo",
                 UserId: UserId
             }),
             headers: {
                 "Content-Type": "application/json"
             }
-        }); 
+        });
         const result = await response.json();
-        if(result.error) {
-            setError("email", {type:"text", message: result.error})
+        if (result.error) {
+            setError("email", { type: "text", message: result.error })
             return;
         }
-        router.replace("/dashboard/cliente");
-        router.refresh();
+        router.push("/dashboard/collaborator"); 
     }
 
     return (
-        <form className="flex flex-col mt-6" onSubmit={handleSubmit(handleRegisterCliente)}>
+        <form className="flex flex-col mt-6" onSubmit={handleSubmit(handleRegisterCollaborator)}>
 
             <div>
                 <label className="mb-1 text-lg font-medium">Nome completo</label>
@@ -96,25 +95,29 @@ export function NewClienteForm({ UserId } : {UserId: string}) {
                 </div>
             </div>
             <div>
-                <label className="mb-1 text-lg font-medium">Endereço completo</label>
-                <Input
-                    type="text"
-                    name="address"
-                    register={register}
-                    control={control}
-                    error={errors.address?.message}
-                    placeholder="Digite o endereço do cliente"
-                />
-                {errors.address && (
-                    <p className="text-red-500">{errors.address?.message}</p>
-                )}
+                <div>
+                    <div>
+                        <label className="mb-1 text-lg font-medium">Endereço completo</label>
+                        <Input
+                            type="text"
+                            name="address"
+                            register={register}
+                            control={control}
+                            error={errors.address?.message}
+                            placeholder="Digite o endereço do colaborador"
+                        />
+                        {errors.address && (
+                            <p className="text-red-500">{errors.address?.message}</p>
+                        )}
+                    </div>
+                </div>
             </div>
             <div>
-                <button 
-                type="submit"
-                className="w-full bg-blue-500 my-4 px-2 h-11 rounded text-white font-bold "
+                <button
+                    type="submit"
+                    className="w-full bg-blue-500 my-4 px-2 h-11 rounded text-white font-bold transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 >
-                    Cadastrar
+                    Cadastrar Colaborador
                 </button>
             </div>
         </form>

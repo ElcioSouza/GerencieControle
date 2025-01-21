@@ -1,7 +1,7 @@
 "use client";
 import {createContext, ReactNode, useState} from  'react';
 import { TicketProps } from '@/utils/ticket.type';
-import { ClienteProps } from '@/utils/cliente.type';
+import { CollaboratorProps } from '@/utils/collaborator.type';
 import {ModalTicket} from '../components/modal';
 
 interface ModalContextDataProps {
@@ -12,7 +12,7 @@ interface ModalContextDataProps {
 }
 interface TicketInfo {
     ticket: TicketProps;
-    cliente: ClienteProps | null;
+    collaborator: CollaboratorProps | null;
 }
 
 export const ModalContext = createContext({} as ModalContextDataProps)
@@ -26,7 +26,6 @@ export const ModalProvider = ({children}:{children: ReactNode}) => {
     }
 
     function setDetailTicket(detail: TicketInfo){
-        console.log(detail);
         setTicket(detail)
       }
 

@@ -3,26 +3,25 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
-import { useRouter } from "next/navigation";
 import { FormSchemaTicket, FormSchemaTicketData } from "@/app/openticket/schema/formTicketSchema";
-import { ClienteDataInfo } from "@/app/openticket/type";
+import { CollaboratorDataInfo } from "@/app/openticket/type";
 
-export interface clienteDataInfoProps {
-    cliente: ClienteDataInfo | null
+export interface collaboratorDataInfoProps {
+    collaborator: CollaboratorDataInfo | null
 }
 
-export function FormTicket({cliente}: clienteDataInfoProps) {
+export function FormTicket({collaborator}: collaboratorDataInfoProps) {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormSchemaTicketData>({
         resolver: zodResolver(FormSchemaTicket)
     })
 
     async function handleRegisterTicket(data: FormSchemaTicketData) {
-        const response = await fetch("/api/clienteopentIcket", {
+        const response = await fetch("/api/collaboratoropenticket", {
             method: "POST",
             body: JSON.stringify({
                 name: data.name,
                 description: data.description,
-                clienteId: cliente?.id
+                CollaboratorId: collaborator?.id
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -61,7 +60,7 @@ export function FormTicket({cliente}: clienteDataInfoProps) {
                 )}
             </div>
             <div className="my-4">
-                <button type="submit" className="bg-blue-500 roudeed-md w-full h-11 px-2 text-white font-bold">
+                <button type="submit" className="bg-blue-500 roudeed-md w-full h-11 px-2 text-white font-bold transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
                     Cadastrar
                 </button>
             </div>

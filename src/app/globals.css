@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.register input:focus ~ label,
+.register input:valid ~ label {
+    top: -20px;
+    font-size: 12px;
+    color: #4a90e2;
+}

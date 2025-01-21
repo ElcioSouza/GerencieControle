@@ -8,7 +8,8 @@ export default function Header() {
 
     async function handleLogin() {
         try {
-            await signIn("google",{email: "elcio.monico@gmail.com"});
+            await signIn("google");
+
         } catch (error) {
             {
                 console.error("Erro ao fazer login:", error);
@@ -32,19 +33,19 @@ export default function Header() {
                         </h1>
                     </Link>
 
-                    {status === "loading" && (
+                    {status === "loading"  &&  (
                         <button className="animate-spin">
                             <FiLoader size={26} color="#4b5563" />
                         </button>
                     )}
 
-                    {status === "unauthenticated" && (
+                    {status === "unauthenticated" && !data && (
                         <button onClick={handleLogin}>
                             <FiLock size={26} color="#4b5563" />
                         </button>
                     )}
 
-                    {status === "authenticated" && (
+                    {status === "authenticated" && data && (
                         <div className="flex items-baseline gap-4">
                             <Link href={"/dashboard"}>
                                 <FiUser size={26} color="#4b5563" />

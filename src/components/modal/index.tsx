@@ -13,7 +13,7 @@ export function ModalTicket() {
         }
     }
     return (
-        <section className="absolute bg-gray-900/80 w-full min-h-screen" onClick={handleModalClick}>
+        <section className="z-[99] absolute bg-gray-900/80 w-full min-h-screen" onClick={handleModalClick}>
             <div className="absolute inset-0 flex items-center justify-center">
                 <div ref={modalRef} className="bg-white shadow-lg w-4/5 md:w-1/2 max-w-2xl p-3 rounded">
                     <div className="flex item-center justify-between mb-4">
@@ -31,23 +31,23 @@ export function ModalTicket() {
                         <p>{ticket?.ticket.description}</p>
                     </div>
                     <div className="w-full border-b-[1.5px] my-4"></div>
-                    <h1 className="font-bold text-lg mb-4">Detalhe do cliente</h1>
+                    <h1 className="font-bold text-lg mb-4">Detalhe do Colaborador</h1>
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Nome:</h2>
-                        <p>{ticket?.cliente?.name}</p>
+                        <p>{ticket?.collaborator?.name}</p>
                     </div>
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Telefone:</h2>
-                        <p>{ticket?.cliente?.phone}</p>
+                        <p>{ticket?.collaborator?.phone}</p>
                     </div>
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Email:</h2>
-                        <p>{ticket?.cliente?.email}</p>
+                        <p>{ticket?.collaborator?.email}</p>
                     </div>
-                    {ticket?.cliente?.address && (
+                    {ticket?.collaborator?.address && (
                         <div className="flex flex-wrap gap-1 mb-2">
                             <h2 className="font-bold">Endereço:</h2>
-                            <p>{ticket?.cliente?.address}</p>
+                            <p>{ticket?.collaborator?.address}</p>
                         </div>
                     )}
                 </div>

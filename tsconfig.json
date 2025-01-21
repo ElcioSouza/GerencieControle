@@ -19,8 +19,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/Token"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/Token", "jest.config.ts"],
   "exclude": ["node_modules"]
 }

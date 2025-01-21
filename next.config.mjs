@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: true,
     images: {
         domains: ['www.dropbox.com'],
       },
