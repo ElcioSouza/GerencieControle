@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
 import { useRouter } from "next/navigation";
-import { FormCollaboratorSchema, FormCollaboratorSchemaData } from "@/app/dashboard/collaborator/schemas/formCollaboratorSchema";
+import { formCreateCollaboratorSchema,formCreateCollaboratorSchemaData } from "@/app/dashboard/collaborator/schemas/formCreateCollaboratorSchema";
 
 export function NewCollaboratorForm({ UserId }: { UserId: string }) {
     const {
@@ -13,14 +13,14 @@ export function NewCollaboratorForm({ UserId }: { UserId: string }) {
         control,
         setError,
         formState: { errors },
-    } = useForm<FormCollaboratorSchemaData>({
-        resolver: zodResolver(FormCollaboratorSchema),
+    } = useForm<formCreateCollaboratorSchemaData>({
+        resolver: zodResolver(formCreateCollaboratorSchema),
         defaultValues: {
             phone: "",
         },
     });
     const router = useRouter();
-    async function handleRegisterCollaborator(data: FormCollaboratorSchemaData) {
+    async function handleRegisterCollaborator(data: formCreateCollaboratorSchemaData) {
         const response = await fetch("/api/collaborator", {
             method: "POST",
             body: JSON.stringify({

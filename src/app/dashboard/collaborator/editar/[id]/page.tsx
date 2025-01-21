@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
 import { useRouter } from "next/navigation";
-import { FormCollaboratorSchema, FormCollaboratorSchemaData } from "@/app/dashboard/collaborator/schemas/formCollaboratorSchema";
+import { FormEditCollaboratorSchema, FormEditCollaboratorSchemaData } from "@/app/dashboard/collaborator/schemas/formEditCollaboratorSchema";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -51,8 +51,8 @@ export default function EditCollaborator({ params }: { params: { id: string } })
         reset,
         setError,
         formState: { errors },
-    } = useForm<FormCollaboratorSchemaData>({
-        resolver: zodResolver(FormCollaboratorSchema),
+    } = useForm<FormEditCollaboratorSchemaData>({
+        resolver: zodResolver(FormEditCollaboratorSchema),
        values: {
         email: listCollaborator?.collaborator.email as string,
         name: listCollaborator?.collaborator.name as string,
@@ -63,7 +63,7 @@ export default function EditCollaborator({ params }: { params: { id: string } })
     });
     const router = useRouter();
 
-    async function handleEditarCollaborator(data: FormCollaboratorSchemaData) {
+    async function handleEditarCollaborator(data: FormEditCollaboratorSchemaData) {
         const response = await fetch("/api/collaborator?id="+id, {
             method: "PUT",
             body: JSON.stringify({
