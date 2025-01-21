@@ -48,7 +48,7 @@ export default function OpenTicket() {
             <main className="flex flex-col mt-4 mb-2">
                 {collaborator ? (
                     <div className="flex items-center justify-between gap-3 bg-slate-200 py-6 px-4 rounded border-2">
-                        <p className="text-lg"><strong>Cliente Selecionado::</strong> {collaborator.name}</p>
+                        <p className="text-lg"><strong>Colaborador Selecionado::</strong> {collaborator.name}</p>
                         <button className="h-11 px-2 flex items-center justify-center rounded" onClick={handleCleaCollaborator}>
                             <FiX size={30} color="#ff2929" />
                         </button>
@@ -70,7 +70,7 @@ export default function OpenTicket() {
                         </div>
                         <div className="w-full">
                             <button type="submit" className="w-full bg-blue-500 flex flex-row gap-3 px-2 h-11 items-center justify-center rounded text-white font-bold">
-                                Procurar Cliente
+                                Procurar Colaborador
                                 <FiSearch size={24} color="#fff" />
                             </button>
                         </div>
