@@ -35,7 +35,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         }, 1000);
 
         return () => clearTimeout(timer); // Limpa o timer se o componente for desmontado antes dos 5 segundos
-    }, [loading]); // Executa apenas uma vez, equivalente a componentDidMount
+    }, [loading]); // Executa apenas uma vez, equivalente a componentDidMoun
 
     const { status, data } = useSession();
     const [tickets, setTickets] = useState<TicketType[]>(titcketsProps);
