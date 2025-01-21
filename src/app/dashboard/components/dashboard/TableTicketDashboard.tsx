@@ -150,7 +150,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         ...ticket,
     }))
     return <>
-        {status === "authenticated"  && (
+       
             <Table
                 size="large"
                 caption={(
@@ -188,7 +188,6 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                     setLoading(true);
                     handlePagination(_pagination as PaginationType)
                 }} />
-        )
-        }
+   
     </>
 }   
