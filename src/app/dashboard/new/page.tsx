@@ -11,7 +11,7 @@ export default async function NewTicket() {
     redirect('/');
   }
 
-  const clientes = await prisma.cliente.findMany({
+  const collaboratores = await prisma.collaborator.findMany({
     where: {
       UserId: session.user.id
     }
@@ -21,15 +21,15 @@ export default async function NewTicket() {
     "use server";
     const name = formData.get('name');
     const description = formData.get('description');
-    const clienteId = formData.get('cliente');
-    if(!name || !description || !clienteId) {
+    const collaboratorId = formData.get('cliente');
+    if(!name || !description || !collaboratorId) {
       return;
     }
     await prisma.ticket.create({
       data: {
          name: name as string,
          description: description as string,
-         ClienteId: clienteId as string,
+         CollaboratorId: collaboratorId as string,
          status: "Aberto",
          UserId: session?.user.id
       }
@@ -41,7 +41,7 @@ export default async function NewTicket() {
     <Container>
       <main className="flex flex-col mt-9 mb-2">
         <div className="flex items-center gap-3">
-          <Link href="/dashboard" className="bg-gray-900 px-4 py-1 text-white rounded">
+          <Link href="/dashboard" className="bg-gray-900 px-4 py-1 text-white rounded transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
             Voltar
           </Link>
           <h1 className="text-3xl font-bold">Novo Chamado</h1>
@@ -57,12 +57,12 @@ export default async function NewTicket() {
             <textarea placeholder="Descreva o problema..." name="description" className="w-full border-2 rounded-md px-2 mb-2 h-24 resize-none" required></textarea>
           </div>
           <div>
-            {clientes.length !== 0 && (
+            {collaboratores.length !== 0 && (
               <>
-                <label className="mb-1 fonte-medium text-lg">Selecione o cliente</label>
+                <label className="mb-1 fonte-medium text-lg">Selecione o Colaborador</label>
                 <select className="w-full border-2 rounded-md px-2 mb-2 h-11 resize-none bg-white" name="cliente">
-                  {clientes.map(cliente => (
-                      <option key={cliente.id} value={cliente.id}>{cliente.name}</option>
+                  {collaboratores.map(collaborator => (
+                    collaborator.status !== 'Inativo' && <option key={collaborator.id} value={collaborator.id}>{collaborator.name}</option>
                   ))}
                 </select>
 
@@ -70,18 +70,17 @@ export default async function NewTicket() {
             )}
           </div>
 
-          {clientes.length === 0 && (
-           <Link href="/dashboard/cliente/new">
-             Você ainda não tem nenhum cliente, <span className="text-blue-500 font-medium"> Cadastrar Cliente</span>
+          {collaboratores.length === 0 && (
+           <Link href="/dashboard/new">
+             Você ainda não tem nenhum colaborador, <span className="text-blue-500 font-medium"> Cadastrar colaborador</span>
            </Link>
           )}
-
           <button 
           type="submit"
-          className="bg-blue-500 text-white font-bold py-2 h-11 rounded-md my-4 disabled:bg-gray-400 disabled:cursor-not-allowed"
-          disabled={clientes.length === 0}
+          className="bg-blue-500 text-white font-bold py-2 h-11 rounded-md my-4 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          disabled={collaboratores.length === 0}
           >
-            Cadastrar
+            Cadastrar Chamado
           </button>
         </form>
       </main>

@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const FormClientSchema = z.object({
+export const FormLoginSchema = z.object({
     name: z.string().min(1, "O campo nome é obrigatorio"),
     email: z.string().email("Digite um e-mail valido").min(1, "O campo email é obrigatorio"),
  /*    phone: z.string().refine((value) => {
@@ -10,7 +10,8 @@ export const FormClientSchema = z.object({
         message: "O número de telefone deve estar (DD) 999999999"
     }), */
     phone: z.string().min(14, "O campo telefone é obrigatorio"),
-    address: z.string()
+    address: z.string(),
+    password: z.string().min(1, "O campo senha é obrigatorio"),
 })
 
-export type FormClientSchemaData = z.infer<typeof FormClientSchema>
+export type FormLoginSchemaData = z.infer<typeof FormLoginSchema>

@@ -1,4 +1,4 @@
-export interface ClienteDataInfo {
+export interface CollaboratorDataInfo {
     id: string;
     name: string;    
 }

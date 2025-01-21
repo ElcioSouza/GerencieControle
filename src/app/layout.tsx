@@ -5,12 +5,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/providers/auth";
 import { ModalProvider } from "@/providers/modal";
+import { LoadingProvider } from "@/providers/loading";
 
 
 const inter = Inter({ subsets: ["latin"] })
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  
   title: "Gerencie Controle - Seu sistema gerenciamento.",
   description: "Gerenciar seus clientes e atende de forma fácil!",
 };
@@ -26,9 +28,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <ModalProvider >
-            <Header />
             {children}
-            <Footer />
           </ModalProvider>
         </AuthProvider>
       </body>

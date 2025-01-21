@@ -1,4 +1,4 @@
-export function date() {
-    const date = new Date();
-    return date;
+export function date(date?: Date) {
+    const dateNew = new Date(date || Date.now())
+    return dateNew;
 }

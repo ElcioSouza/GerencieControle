@@ -8,8 +8,8 @@ export function DashboardHeader() {
                 <Link href="/dashboard" className="text-white hover:font-bold duration-300">
                     Chamados
                 </Link>
-                <Link href="/dashboard/cliente" className="text-white hover:font-bold duration-300">
-                    Clientes
+                <Link href="/dashboard/collaborator" className="text-white hover:font-bold duration-300">
+                    Colaborador
                 </Link>
             </header>
         </Container>
