@@ -33,7 +33,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(true); // Após 5 segundos, define loading como false
-        }, 2000);
+        }, 1000);
 
         return () => clearTimeout(timer); // Limpa o timer se o componente for desmontado antes dos 5 segundos
     }, [loading]); // Executa apenas uma vez, equivalente a componentDidMoun
