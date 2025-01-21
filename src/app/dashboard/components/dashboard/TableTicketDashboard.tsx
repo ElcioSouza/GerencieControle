@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { TicketProps } from '@/utils/ticket.type';
 import { useRouter } from "next/navigation";
-import { FiFile, FiCheckSquare, FiTrash2, FiLoader, FiEdit2, FiEdit, FiCheck, FiEye } from 'react-icons/fi';
+import { FiCheckSquare, FiLoader, FiEdit, FiEye } from 'react-icons/fi';
 import { useContext, useState } from 'react';
 import { ModalContext } from '@/providers/modal';
 import { Space, Table, Tag, Spin } from 'antd';

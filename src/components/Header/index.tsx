@@ -33,19 +33,19 @@ export default function Header() {
                         </h1>
                     </Link>
 
-                    {status === "loading"  &&  (
+                    {status === "loading" &&  (
                         <button className="animate-spin">
                             <FiLoader size={26} color="#4b5563" />
                         </button>
                     )}
 
-                    {status === "unauthenticated" && !data && (
+                    {status === "unauthenticated" && (
                         <button onClick={handleLogin}>
                             <FiLock size={26} color="#4b5563" />
                         </button>
                     )}
 
-                    {status === "authenticated" && data && (
+                    {status === "authenticated" && (
                         <div className="flex items-baseline gap-4">
                             <Link href={"/dashboard"}>
                                 <FiUser size={26} color="#4b5563" />

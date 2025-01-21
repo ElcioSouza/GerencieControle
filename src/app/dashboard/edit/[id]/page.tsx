@@ -45,7 +45,7 @@ export default async function EditTicket({ params }: { params: { id: string } })
     })
    redirect('/dashboard');
   }
-const ticketStatus = ["Aberto", "Fechado","Em andamento","Pendente","Cancelado","Urgente","Baixo"];
+const ticketStatus = ["Em andamento", "Fechado","Pendente","Cancelado","Urgente","Baixo"];
   return (
     <Container>
       <main className="flex flex-col mt-9 mb-2">
