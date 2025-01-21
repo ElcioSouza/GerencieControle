@@ -36,7 +36,6 @@ export default function EditCollaborator({ params }: { params: { id: string } })
                     }
                 });
                 const result = await response.json();
-                console.log(result?.pack.data);
                 setListCollaborator(result?.pack.data);
             } catch (error) {
                 console.error("Erro ao procurar o colaborador:", error);
@@ -45,7 +44,6 @@ export default function EditCollaborator({ params }: { params: { id: string } })
 
         fetchCollaborator();
     }, []);
-    console.log(listCollaborator?.collaborator.phone);
     const {
         handleSubmit,
         register,

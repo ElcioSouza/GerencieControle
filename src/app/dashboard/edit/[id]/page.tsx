@@ -27,7 +27,6 @@ export default async function EditTicket({ params }: { params: { id: string } })
     const description = formData.get('description');
     const status = formData.get('status');
     const id = String(formData.get('id'));
-    console.log(id);
     if (!name || !description || !status || !id) {
       return;
     }

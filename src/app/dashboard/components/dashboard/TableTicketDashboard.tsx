@@ -39,18 +39,11 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
 
     const { status, data } = useSession();
     const [tickets, setTickets] = useState<TicketType[]>(titcketsProps);
-    // current: 1, seria click do usuário no primeiro botão para ir para a primeira página e se clicar proximo seria para a página 2 e assim por diante
-    // pageSize: 10, seria o número de registros por página que será exibido nas linhas os registros nesse caso seria 10 linhas sera exibido
-    // total: 1000 seria o total de registros vindo do backend nesse caso seria 1000
     const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 5, total: 0 });
     const router = useRouter();
     const { handleModalVisible, setDetailTicket } = useContext(ModalContext);
     async function handlePagination(_pagination: PaginationType) {
         try {
-            console.log({
-                offset: (_pagination.current - 1) * _pagination.pageSize,
-                limit: _pagination.pageSize
-            })
 
             const response = await fetch(`/api/ticket?offset=${(_pagination.current - 1) * _pagination.pageSize}&limit=${_pagination.pageSize}`, {
                 method: "GET"
@@ -80,7 +73,6 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                 })
 
                 const result = response.json();
-                console.log(result);
                 window.location.reload();
             }
         } catch (error) {
@@ -158,7 +150,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         ...ticket,
     }))
     return <>
-        {status === "loading"  && (
+        {status === "authenticated"  && (
             <Table
                 size="large"
                 caption={(
@@ -182,7 +174,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                     indicator: (
                         <div className="w-full flex justify-center items-start">
                             <button className="animate-spin">
-                                {status === "loading" && loading && <FiLoader size='26' color="#4b5563" />}
+                                {status === "authenticated" && loading && <FiLoader size='26' color="#4b5563" />}
                             </button>
                         </div>
                     ), spinning: loading
@@ -192,7 +184,6 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                 dataSource={dataSource}
                 pagination={pagination}
                 onChange={(_pagination) => {
-                    console.log(_pagination);
                     setSearch(search);
                     setLoading(true);
                     handlePagination(_pagination as PaginationType)

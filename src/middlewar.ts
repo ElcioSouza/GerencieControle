@@ -3,7 +3,7 @@ import { getToken } from "next-auth/jwt";
 
 
 export async function middleware(req: Request) {
-  //  console.log("ola ola ola");
+
     const secret = process.env.NEXTAUTH_SECRET;
 //    console.log(req)
     // Obtém o token da requisição
