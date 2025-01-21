@@ -158,7 +158,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         ...ticket,
     }))
     return <>
-        {status === "authenticated" && (
+        {status === "loading"  && (
             <Table
                 size="large"
                 caption={(
@@ -182,7 +182,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                     indicator: (
                         <div className="w-full flex justify-center items-start">
                             <button className="animate-spin">
-                                {status === "authenticated" && loading && <FiLoader size='26' color="#4b5563" />}
+                                {status === "loading" && loading && <FiLoader size='26' color="#4b5563" />}
                             </button>
                         </div>
                     ), spinning: loading

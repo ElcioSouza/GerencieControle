@@ -28,7 +28,7 @@ export default function Input({
 }: InputProps) {
   const inputRef = useRef(null);
   const [showPassword, setShowPassword] = useState(false);
-  console.log(name);
+
   return (
     <div className="relative w-full">
       {control && mask ? (
