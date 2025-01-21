@@ -7,6 +7,7 @@ export async function POST(request: Request) {
     if(!session || !session.user) { 
         return NextResponse.json({error: "Colaborador não autenticado"}, {status: 401});
     }
+    console.log("entrou do cadastro colaborador")
     const {name,email,phone,address,status,UserId} = await request.json();
     try {
         const response = await prisma.collaborator.findFirst({
