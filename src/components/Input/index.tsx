@@ -1,18 +1,16 @@
 "use client";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-import { Controller, UseFormRegister, RegisterOptions } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import InputMask from "react-input-mask";
-import { ChangeEventHandler, useRef, useState } from "react";
+import { useState } from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  register?: UseFormRegister<any>;
+  register?: any;
   name: string;
   error?: any;
   control?: any;
-  mask?: any;
-  rules?: RegisterOptions;
-  onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
+  mask?: string;
 }
 
 export default function Input({
@@ -21,45 +19,37 @@ export default function Input({
   type,
   control,
   mask,
-  defaultValue = "",
   error = undefined,
-  onChange,
   ...rest
 }: InputProps) {
-  const inputRef = useRef(null);
   const [showPassword, setShowPassword] = useState(false);
-  console.log(name);
+
   return (
     <div className="relative w-full">
       {control && mask ? (
         <Controller
           control={control}
           name={name}
-          render={({ field: { onChange: onChangeForm, onBlur, value, name: nameField } }) => {
-            return (
-              <InputMask
-                {...rest}
-                value={value}
-                placeholder={rest.placeholder}
-                onChange={(e) => {
-                  const text = e.target.value;
-                  document.querySelector(`input[name="${name}"]`)?.setAttribute("value", text);
-                  if (typeof onChange === 'function') onChange(e);
-                  onChangeForm(text === '' ? undefined : text);
-                }}
-                maskChar=""
-                autoComplete="off"
-                className="border-primary w-full h-14 border focus:outline-none text-black  rounded-lg pl-3 pr-5 sm:pr-12"
-                mask={mask}
-              />
-            )
-          }}
+          render={({ field: { ref, ...field } }) => (
+            <InputMask
+              placeholder={rest.placeholder}
+              value={field.value}
+              onChange={field.onChange}
+              maskChar=""
+              autoComplete="off"
+              className={`${
+                error ? "border-secondary" : "border-primary"
+              } w-full h-14 border focus:outline-none text-black sm:pr-12 pl-6 border-[#ddd] bg-[#eff1f4] rounded-lg`}
+              mask={mask}
+            />
+          )}
         />
       ) : (
         <input
           autoComplete="off"
-          className={`${error ? "border-secondary" : "border-primary"
-            } w-full h-14 border focus:outline-none text-black  rounded-lg pl-3 pr-5 sm:pr-12 `}
+          className={`${
+            error ? "border-secondary" : "border-primary"
+          } w-full h-14 border focus:outline-none text-black  rounded-lg pl-3 pr-5 sm:pr-12 `}
           type={
             type === "password" ? (showPassword ? "text" : "password") : type
           }

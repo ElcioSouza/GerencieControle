@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { FormCollaboratorSchema, FormCollaboratorSchemaData } from "../../collaborator/schemas/formCollaboratorSchema";
+import { FormCollaboratorSchema, FormCollaboratorSchemaData } from "../../collaborator/schemas/formEditCollaboratorSchema";
 import Input from "@/components/Input";
 import { TicketType } from '../../../type/tickets.type';
 export function SearchTicket() {
