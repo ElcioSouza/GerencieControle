@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 import { ButtonRefresh } from '../buttonrefresh';
 import Link from 'next/link';
 import { TicketStatus } from '../ticketstatus';
+import Loading from '@/app/loading';
 interface Props {
     tickets: TicketType[],
     total: number
@@ -25,14 +26,14 @@ interface PaginationType {
     total: number;
 }
 export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
 
     
     useEffect(() => {
         const timer = setTimeout(() => {
-            setLoading(false); // Após 5 segundos, define loading como false
-        }, 1000);
+            setLoading(true); // Após 5 segundos, define loading como false
+        }, 2000);
 
         return () => clearTimeout(timer); // Limpa o timer se o componente for desmontado antes dos 5 segundos
     }, [loading]); // Executa apenas uma vez, equivalente a componentDidMoun
@@ -150,8 +151,15 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         ...ticket,
     }))
     return <>
-       
-            <Table
+            {!loading && (<>
+                <div className="w-full flex justify-center items-start">
+                            <button className="animate-spin">
+                            <FiLoader size='26' color="#4b5563" />
+                            </button>
+                        </div>
+            </>) }
+            {loading && (
+                <Table
                 size="large"
                 caption={(
                     <div className="flex items-center justify-between my-2">
@@ -177,7 +185,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                                 {status === "authenticated" && loading && <FiLoader size='26' color="#4b5563" />}
                             </button>
                         </div>
-                    ), spinning: loading
+                    ), spinning: !loading
                 }}
                 bordered={true}
                 columns={columns}
@@ -188,6 +196,8 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                     setLoading(true);
                     handlePagination(_pagination as PaginationType)
                 }} />
+            )}
+            
    
     </>
 }   
