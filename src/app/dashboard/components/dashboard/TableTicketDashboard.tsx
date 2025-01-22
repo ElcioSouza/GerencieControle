@@ -160,10 +160,10 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             </>) }
             {loading && (
                 <Table
-                size="large"
+                scroll={{ x: 'max-content' }}
                 caption={(
                     <div className="flex items-center justify-between my-2">
-                        <h1 className="text-3xl font-bold ">Chamados</h1>
+                        <h1 className="text-3xl font-bold mx-2 md:mr-0">Chamados</h1>
                         <div className="flex items-center gap-3">
                             <input type="text"
                                 placeholder="Pesquisar Chamado"
