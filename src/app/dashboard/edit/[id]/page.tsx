@@ -52,7 +52,7 @@ const ticketStatus = ["Em andamento", "Fechado","Pendente","Cancelado","Urgente"
           <Link href="/dashboard" className="bg-gray-900 px-4 py-1 text-white rounded transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
             Voltar
           </Link>
-          <h1 className="text-3xl font-bold">Atualizar Chamado</h1>
+          <h1 className="font-bold text-[26px] md:text-3xl">Atualizar Chamado</h1>
         </div>
 
         <form className="flex flex-col mt-6" action={handleEditTicket}>
