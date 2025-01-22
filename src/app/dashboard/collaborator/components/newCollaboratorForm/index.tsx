@@ -72,7 +72,9 @@ export function NewCollaboratorForm({ UserId }: { UserId: string }) {
                         control={control}
                         error={errors.phone?.message}
                         placeholder="Digite o telefone"
+                        className="bg-white"
                         mask="(99)99999-9999"
+                        
                     />
                     {errors.phone && (
                         <p className="text-red-500">{errors.phone?.message}</p>

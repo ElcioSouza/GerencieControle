@@ -39,7 +39,7 @@ export default function Input({
               autoComplete="off"
               className={`${
                 error ? "border-secondary" : "border-primary"
-              } w-full h-14 border focus:outline-none text-black sm:pr-12 pl-6 border-[#ddd] bg-[#eff1f4] rounded-lg`}
+              } w-full h-14 border focus:outline-none text-black sm:pr-12 pl-6 border-[#ddd] bg-[#fff] rounded-lg`}
               mask={mask}
             />
           )}
