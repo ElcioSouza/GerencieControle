@@ -7,7 +7,6 @@ export async function POST(request: Request) {
     if(!session || !session.user) { 
         return NextResponse.json({error: "Colaborador não autenticado"}, {status: 401});
     }
-    console.log("entrou do cadastro colaborador")
     const {name,email,phone,address,status,UserId} = await request.json();
     try {
         const response = await prisma.collaborator.findFirst({
@@ -58,10 +57,10 @@ export async function PATCH(request: Request) {
                 CollaboratorId: userId as string
             }
         })
-      
-        if(findTicket?.status === "Aberto") {
+        console.log(findTicket?.status)
+        if(findTicket?.status === "Em andamento" || findTicket?.status === "Urgente" || findTicket?.status === "Baixo" || findTicket?.status === "Pendente") {
             return NextResponse.json({pack: {
-                error: `Não é possível deletar o colaborador pois ele possui um chamado aberto`,
+                error: `Não é possível deletar o colaborador pois ele possui um chamado ${findTicket?.status}`,
                 status: findTicket.status
             }}, {status: 400});
         } else {

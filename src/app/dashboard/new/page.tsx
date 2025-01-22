@@ -30,7 +30,7 @@ export default async function NewTicket() {
          name: name as string,
          description: description as string,
          CollaboratorId: collaboratorId as string,
-         status: "Aberto",
+         status: "Em andamento",
          UserId: session?.user.id
       }
     })

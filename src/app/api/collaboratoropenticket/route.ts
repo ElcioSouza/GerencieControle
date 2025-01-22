@@ -38,7 +38,7 @@ export async function POST(request: Request) {
                 name,
                 description,
                 CollaboratorId: collaboratorId,
-                status: "Aberto",
+                status: "",
             }
         })
         return  NextResponse.json({message: "Chamado registrado com sucesso"});

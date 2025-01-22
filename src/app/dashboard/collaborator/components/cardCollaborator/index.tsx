@@ -14,7 +14,8 @@ export function CardCollaborator({ collaborator }: { collaborator: CollaboratorP
                     }
                 });
                 const result = await response.json();
-                if (result?.pack?.status === "Aberto") {
+                console.log(result);
+                if (result?.pack?.status === "Em andamento" || result?.pack?.status === "Urgente" || result?.pack?.status === "Baixo" || result?.pack?.status === "Pendente") {
                     alert(result?.pack?.error);
                 }
                 router.refresh();

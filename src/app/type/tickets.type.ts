@@ -5,7 +5,7 @@ import { CollaboratorType } from "./collaborator.type";
     id: string;
     name: string;
     description: string;
-    status: 'Aberto' | 'Fechado';
+    status: 'Em andamento' | 'Pendente' | 'Urgente' | 'Fechado';
     created_at: Date;
     updated_at: Date;
     ClienteId: string;
