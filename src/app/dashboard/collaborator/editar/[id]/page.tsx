@@ -83,8 +83,8 @@ export default function EditCollaborator({ params }: { params: { id: string } })
             setError("email", { type: "text", message: result.error })
             return;
         }
-        router.back()
-        router.refresh()
+        router.push("/dashboard/collaborator");
+        router.refresh();
     }
     return (
         <Container>
