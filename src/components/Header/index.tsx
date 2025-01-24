@@ -15,7 +15,6 @@ export default function Header() {
                 redirect: false,
             });
             router.push("/dashboard");
-
         } catch (error) {
             {
                 console.error("Erro ao fazer login:", error);
@@ -53,7 +52,7 @@ export default function Header() {
                         </button>
                     )}
 
-                    {status === "authenticated" || data && (
+                    {status === "authenticated" && data && (
                         <div className="flex items-baseline gap-4">
                             <Link href={"/dashboard"}>
                                 <FiUser size={26} color="#4b5563" />
