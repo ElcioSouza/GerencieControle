@@ -1,20 +1,20 @@
 "use client"
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
 export default function Header() {
     // data->dados do usuario logado
     const { status,data } = useSession();
-
-    const router = useRouter();
+    console.log(status)
+    console.log(data);
 
     async function handleLogin() {
         try {
             await signIn("credentials", {           
-                redirect: false,
+                redirect: true,
+                callbackUrl: "/dashboard",
             });
-            router.push("/dashboard");
+
         } catch (error) {
             {
                 console.error("Erro ao fazer login:", error);
@@ -40,13 +40,13 @@ export default function Header() {
                         </h1>
                     </Link>
  
-                    {status === "loading"  &&  (
+                    {status === "loading"  && !data &&  (
                         <button className="animate-spin">
                             <FiLoader size={26} color="#4b5563" />
                         </button>
                     )}
 
-                    {status === "unauthenticated" && (
+                    {status === "unauthenticated" && !data && (
                         <button onClick={handleLogin}>
                             <FiLock size={26} color="#4b5563" />
                         </button>
