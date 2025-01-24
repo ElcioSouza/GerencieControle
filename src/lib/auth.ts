@@ -53,15 +53,17 @@ export const authOptions: AuthOptions = {
          * @returns {Promessa<JWT | null>} A carga útil do token decodificado ou nulo se a decodificação falhar.
          */
         decode: async ({ secret, token }: JWTDecodeParams): Promise<JWT | null> => {
-
+            // Ensure both secret and token are provided and token is a string
             if (!secret || !token || typeof token !== 'string') {
                 return null;
             }
 
             try {
+                // Attempt to decode the token with the secret
                 const payload = await decode({ token, secret });
                 return payload;
             } catch (error) {
+                // Handle any errors that occur during decoding
                 console.error("Error decoding JWT:", error);
                 return null;
             }
@@ -77,7 +79,15 @@ export const authOptions: AuthOptions = {
          * @param {Object} user - O usuário logado.
          * @returns {Object} O token JWT atualizado.
          */
-        jwt: async ({ token, user }) => user ? { ...token, id: user.id, name: user.name, email: user.email } : token,
+        async jwt({ token, user }) {
+            
+            if (user) {
+                token.id = user.id;
+                token.name = user.name;
+                token.email = user.email;
+            }
+            return token;
+        },
 
         /**
          * Função callback chamada quando o Next-Auth precisa criar ou atualizar uma sessão.
@@ -92,9 +102,9 @@ export const authOptions: AuthOptions = {
             if (token) {
                 // Atualiza a sessão com os dados do usuário.
                 session.user = {
-                    id: token.id ? String(token.id) as string : "",
-                    name: token.name || null,
-                    email: token.email || null,
+                    id: token.id as string,
+                    name: token.name as string,
+                    email: token.email as string,
                 };
             }
             return session;
