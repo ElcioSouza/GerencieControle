@@ -52,7 +52,7 @@ export default function Header() {
                         </button>
                     )}
 
-                    {status === "authenticated" && data.user && (
+                    {status === "authenticated" && data && data.user && (
                         <div className="flex items-baseline gap-4">
                             <Link href={"/dashboard"}>
                                 <FiUser size={26} color="#4b5563" />

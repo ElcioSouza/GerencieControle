@@ -14,14 +14,14 @@ export const metadata: Metadata = {
   description: "Gerenciar seus colaboradores e atende de forma fácil!",
 };
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-    return (
-   <AuthProvider>
-          <ModalProvider>
-            <Header />
-            <DashboardHeader />
-            {children}
-            <Footer />
-          </ModalProvider>
-        </AuthProvider>
-        );
+  return (
+    <AuthProvider>
+      <ModalProvider>
+        <Header />
+        <DashboardHeader />
+        {children}
+        <Footer />
+      </ModalProvider>
+    </AuthProvider>
+  );
 }   
