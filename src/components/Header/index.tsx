@@ -3,11 +3,7 @@ import Link from "next/link";
 import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
 export default function Header() {
-    // data->dados do usuario logado
-    const { status,data } = useSession();
-    console.log(status)
-    console.log(data);
-
+    const { data: session, status} = useSession();
     async function handleLogin() {
         try {
             await signIn("credentials", {           
