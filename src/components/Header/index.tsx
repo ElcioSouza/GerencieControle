@@ -4,11 +4,16 @@ import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
 export default function Header() {
     // data->dados do usuario logado
-    const { status, data } = useSession();
+    const { status,data } = useSession();
+    console.log(status)
+    console.log(data);
 
     async function handleLogin() {
         try {
-            await signIn("google");
+            await signIn("credentials", {           
+                redirect: true,
+                callbackUrl: "/dashboard",
+            });
 
         } catch (error) {
             {
@@ -19,7 +24,9 @@ export default function Header() {
 
         async function handleLogout() {
             try {
-                await signOut();
+                await signOut( {
+                    callbackUrl: "/",
+                });
             } catch (error) {
                 console.error("Erro ao fazer logout:", error);
             }
@@ -32,8 +39,8 @@ export default function Header() {
                             <span className="text-blue-500">Gerencie </span>Controle
                         </h1>
                     </Link>
-
-                    {status === "loading" &&  (
+ 
+                    {status === "loading"  &&  (
                         <button className="animate-spin">
                             <FiLoader size={26} color="#4b5563" />
                         </button>
