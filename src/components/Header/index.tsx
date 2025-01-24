@@ -1,19 +1,20 @@
 "use client"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
 export default function Header() {
     // data->dados do usuario logado
     const { status,data } = useSession();
-    console.log(status)
-    console.log(data);
+
+    const router = useRouter();
 
     async function handleLogin() {
         try {
             await signIn("credentials", {           
-                redirect: true,
-                callbackUrl: "/dashboard",
+                redirect: false,
             });
+            router.push("/dashboard");
 
         } catch (error) {
             {
@@ -52,7 +53,7 @@ export default function Header() {
                         </button>
                     )}
 
-                    {status === "authenticated" && (
+                    {status === "authenticated" || data && (
                         <div className="flex items-baseline gap-4">
                             <Link href={"/dashboard"}>
                                 <FiUser size={26} color="#4b5563" />
