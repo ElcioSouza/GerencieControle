@@ -1,27 +1,6 @@
-'use client';
-import React from "react";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import {ContactSchema} from "@/constant/SchemaYup";
-import Link from "next/link";
 import Header from "@/components/Header";
-
 export default function Home() {
-  const [currentDate, setCurrentDate] = React.useState(new Date());
-  const [sendFormEmail, setSendFormEmail] = React.useState(true);
-  const {
-    handleSubmit,
-    register,
-    control,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(ContactSchema),
-    defaultValues: {
-      phone: "",
-    },
-  });
-
   return (
     <>
     <Header />
