@@ -15,13 +15,11 @@ export const metadata: Metadata = {
 };
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthProvider>
       <ModalProvider>
         <Header />
         <DashboardHeader />
         {children}
         <Footer />
       </ModalProvider>
-    </AuthProvider>
   );
 }   

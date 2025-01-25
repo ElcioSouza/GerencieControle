@@ -8,6 +8,7 @@ import { ticketsFactory } from '../factories/TicketsFactory';
 
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
+    console.log(session);
     if(!session || !session.user) {
         redirect('/');
     }
