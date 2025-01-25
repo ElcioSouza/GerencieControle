@@ -3,6 +3,11 @@ import { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(req: NextRequest) {
+    const refreshToken = req.cookies.get('next-auth.refresh-token');
+    console.log(refreshToken);
+    if (!refreshToken) { 
+        return NextResponse.json({ message: "Nao autenticado" }, { status: 401 });
+    }
     const secret = process.env.NEXTAUTH_SECRET;
     try {
         const token = await getToken({ req, secret, raw: true });
