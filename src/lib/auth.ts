@@ -12,7 +12,6 @@ export const authOptions: AuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
     ],
-    secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt", // Define que as sessões serão gerenciadas usando JWT.
         maxAge: 30 * 24 * 60 * 60, // Define o tempo de expiração da sessão (30 dias, neste caso).
@@ -55,7 +54,6 @@ export const authOptions: AuthOptions = {
          * @returns {Promessa<JWT | null>} A carga útil do token decodificado ou nulo se a decodificação falhar.
          */
         decode: async ({ secret, token }: JWTDecodeParams): Promise<JWT | null> => {
-            console.log(token);
             if (!secret || !token || typeof token !== 'string') {
                 return null;
             }
