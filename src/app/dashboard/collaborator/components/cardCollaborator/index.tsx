@@ -10,6 +10,7 @@ import { FiSearch } from "react-icons/fi";
 export function CardCollaborator({ collaborator }: { collaborator: CollaboratorProps[] }) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState("");
     const ITEMS_PER_PAGE = 3;
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -35,7 +36,6 @@ export function CardCollaborator({ collaborator }: { collaborator: CollaboratorP
     }
     function handlePageChange(page: number) {
         setCurrentPage(page);
-        console.log(page);
     }
     return (
         <>
@@ -44,13 +44,11 @@ export function CardCollaborator({ collaborator }: { collaborator: CollaboratorP
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <button className="absolute right-2 z-1 top-2"><FiSearch size={18} color="#4b5563" /></button>
-                        <input type="text"
+                      {/*   <input type="text"
                             placeholder="Pesquisar Colaborador"
                             className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
-                            onChange={(e) => {
-                                setCurrentPage(1);
-                            }}
-                        />
+                            onChange={(e) => setSearch(e.target.value) }
+                        /> */}
                     </div>
                     <ButtonRefresh href="/dashboard/collaborator" />
                     <Link href="/dashboard/collaborator/new" className="bg-blue-500 px-4 py-1 rounded text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
