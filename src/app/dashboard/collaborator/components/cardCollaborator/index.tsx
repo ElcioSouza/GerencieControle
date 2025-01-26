@@ -3,6 +3,8 @@ import { useState } from "react";
 import { CollaboratorProps } from "@/utils/cardCollaborator.type";
 import { useRouter } from "next/navigation";
 import { Pagination } from 'antd';
+import { ButtonRefresh } from "@/app/dashboard/components/buttonrefresh";
+import Link from "next/link";
 
 export function CardCollaborator({ collaborator }: { collaborator: CollaboratorProps[] }) {
     const router = useRouter();
@@ -36,6 +38,25 @@ export function CardCollaborator({ collaborator }: { collaborator: CollaboratorP
     }
     return (
         <>
+        <div className="flex items-center justify-between">
+                <h1 className="font-bold text-[20px] md:text-3xl">Meus Colaboradores</h1>
+                <div className="flex items-center gap-3">
+                    <div className="relative">
+                        <button className="absolute right-2 z-1 top-2"><FiSearch size={18} color="#4b5563" /></button>
+                        <input type="text"
+                            placeholder="Pesquisar Colaborador"
+                            className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
+                            onChange={(e) => {
+                                setCurrentPage(1);
+                            }}
+                        />
+                    </div>
+                    <ButtonRefresh href="/dashboard/collaborator" />
+                    <Link href="/dashboard/collaborator/new" className="bg-blue-500 px-4 py-1 rounded text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                        Novo Colaborador
+                    </Link>
+                </div>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
                 {currentCollaborators.map((item) => (
                     <article className="flex flex-col bg-gray-100 border-2 p-2 rounded-lg gap-2 hover:scale-105 duration-300">
