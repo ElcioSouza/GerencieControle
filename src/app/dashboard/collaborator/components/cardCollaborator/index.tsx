@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Pagination } from 'antd';
 import { ButtonRefresh } from "@/app/dashboard/components/buttonrefresh";
 import Link from "next/link";
+import { FiSearch } from "react-icons/fi";
 
 export function CardCollaborator({ collaborator }: { collaborator: CollaboratorProps[] }) {
     const router = useRouter();
