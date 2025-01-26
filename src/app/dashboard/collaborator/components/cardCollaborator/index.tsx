@@ -7,7 +7,7 @@ import { Pagination } from 'antd';
 export function CardCollaborator({ collaborator }: { collaborator: CollaboratorProps[] }) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
-    const ITEMS_PER_PAGE = 10;
+    const ITEMS_PER_PAGE = 3;
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const currentCollaborators = collaborator.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -38,7 +38,7 @@ export function CardCollaborator({ collaborator }: { collaborator: CollaboratorP
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
                 {currentCollaborators.map((item) => (
-                    <article key={item.id} className="flex flex-col bg-gray-100 border-2 p-2 rounded-lg gap-2 hover:scale-105 duration-300">
+                    <article className="flex flex-col bg-gray-100 border-2 p-2 rounded-lg gap-2 hover:scale-105 duration-300">
                         <h2>
                             <a className="font-bold">Nome:</a> {item.name}
                         </h2>
