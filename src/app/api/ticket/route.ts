@@ -3,6 +3,8 @@ import {getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth'; 
 import prisma from "@/lib/prisma";
 import { ticketsFactory } from "@/app/factories/TicketsFactory";
+import { Prisma } from "@prisma/client";
+
 
 export async function PATCH(request: Request) {
     const session = await getServerSession(authOptions);
@@ -41,23 +43,37 @@ export async function GET(request: Request) {
     const {searchParams} = new URL(request.url);
     const offset = Number(searchParams.get("offset"));
     const limit = Number(searchParams.get("limit"));
-    try { 
-        const [ticketQuery, total] = await Promise.all([
+    const search = String(searchParams.get("search"))
+ 
+    try {
+        const queryFetchDefault = {
+          where: {
+            Collaborator: {
+              UserId: session.user.id,
+              AND: [
+                {
+                  name: {
+                    contains: search,
+                    mode: Prisma.QueryMode.insensitive,
+                  }
+                },
+              ]
+            }
+          }
+        } 
+        const [ticketQuery, total_fetch, total] = await Promise.all([
             prisma.ticket.findMany({
-              where: {
-                Collaborator: {
-                  UserId: session.user.id
-                }
-              },
+              ...queryFetchDefault,
+              skip: offset,
+              take: limit,
               include: {
                 Collaborator: true
               },
-              skip: offset, // offset - inicio
-              take: limit, // limit - quantidade de registros
               orderBy: {
                 created_at: "desc"
               }
             }),
+            prisma.ticket.count(queryFetchDefault),
             prisma.ticket.count({
               where: {
                 Collaborator: {
@@ -67,7 +83,7 @@ export async function GET(request: Request) {
             })
         ]);
         const tickets = ticketsFactory(ticketQuery);
-        return NextResponse.json({pack: {data:{tickets, pagination: {offset, limit, total}}, message: "Chamados encontrados com sucesso"}}, {status: 200}); 
+        return NextResponse.json({pack: {data:{tickets, total_fetch, total}, message: "Chamados encontrados com sucesso"}}, {status: 200}); 
     } catch (error) {
         return NextResponse.json({error: "Falha ao buscar chamados"}, {status: 400});
     }

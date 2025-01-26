@@ -23,7 +23,7 @@ export default async function Dashboard() {
             Collaborator: true
           },
           skip: 0, // offset
-          take: 10, // limit
+          take: 5, // limit
           orderBy: {
             created_at: "desc"
           }

@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { TicketProps } from '@/utils/ticket.type';
 import { useRouter } from "next/navigation";
-import { FiCheckSquare, FiLoader, FiEdit, FiEye } from 'react-icons/fi';
+import { FiCheckSquare, FiLoader, FiEdit, FiEye, FiSearch } from 'react-icons/fi';
 import { useContext, useState } from 'react';
 import { ModalContext } from '@/providers/modal';
 import { Space, Table, Tag, Spin } from 'antd';
@@ -13,6 +13,7 @@ import { ButtonRefresh } from '../buttonrefresh';
 import Link from 'next/link';
 import { TicketStatus } from '../ticketstatus';
 import Loading from '@/app/loading';
+import { set } from 'zod';
 interface Props {
     tickets: TicketType[],
     total: number
@@ -25,40 +26,66 @@ interface PaginationType {
     pageSize: number;
     total: number;
 }
+interface ResponseTickets{
+    pack: {
+        data: {
+            tickets: TicketType[],
+            total: number,
+            total_fetch: number
+        }
+    }
+}
 export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
-    const [loading, setLoading] = useState(false);
-    const [search, setSearch] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [loadingTable, setLoadingTable] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
 
     
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(true); // Após 5 segundos, define loading como false
-        }, 1000);
-
-        return () => clearTimeout(timer); // Limpa o timer se o componente for desmontado antes dos 5 segundos
+        setLoading(false);
     }, [loading]); // Executa apenas uma vez, equivalente a componentDidMoun
 
     const { status, data } = useSession();
     const [tickets, setTickets] = useState<TicketType[]>(titcketsProps);
-    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 5, total: 0 });
+    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 5, total });
     const router = useRouter();
     const { handleModalVisible, setDetailTicket } = useContext(ModalContext);
+    async function fetchTickets(offset: number = 0, limit: number = 5, search: string = ''): Promise<ResponseTickets> {
+        const response = await fetch(`/api/ticket?offset=${offset}&limit=${limit}&search=${search}`, {
+            method: "GET"
+        })
+        return await response.json();
+    }
+
     async function handlePagination(_pagination: PaginationType) {
         try {
-
-            const response = await fetch(`/api/ticket?offset=${(_pagination.current - 1) * _pagination.pageSize}&limit=${_pagination.pageSize}`, {
-                method: "GET"
-            })
-            const result = await response.json();
+            setLoadingTable(true);
+            setPagination(_pagination);
+            const offset = (_pagination.current - 1) * _pagination.pageSize;
+            const limit = _pagination.pageSize;
+            const result = await fetchTickets(offset, limit, searchInput);
             setTickets(result.pack.data.tickets);
-            if (result.pack.data.length > 0) {
-                setPagination(result.pack.data.pagination as PaginationType)
-                return;
-            } else {
-                setPagination(result.pack.data.pagination as PaginationType)
-            }
         } catch (error) {
             console.log(error);
+        } finally{
+            setLoadingTable(false);
+        }
+    }
+
+    async function handleSearch(search: string) {
+        try {
+            setSearchInput(search);
+            setPagination({current: 1, pageSize: 5, total: 0})
+            setLoadingTable(true);
+            const offset = (pagination.current - 1) * pagination.pageSize;
+            const limit = pagination.pageSize;
+            const result = await fetchTickets(offset, limit, search);
+            setTickets(result.pack.data.tickets);
+            setPagination({...pagination, total: result.pack.data.total_fetch});
+        } catch (error) {
+            console.log(error);
+        } finally{
+            setLoadingTable(false);
         }
     }
 
@@ -94,7 +121,6 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             title: (<><div className='ont-medium text-left pl-1 text-[23px]'>Colaborador</div></>),
             dataIndex: 'Collaborator',
             key: 'Collaborator',
-            filteredValue: [search],
             onFilter: (value, record) => {
                 if(typeof value === 'string'){
                     return String(record.Collaborator.name).toLowerCase().includes(value.toLowerCase()) 
@@ -151,26 +177,29 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         ...ticket,
     }))
     return <>
-            {!loading && (<>
+            {loading && (<>
                 <div className="w-full flex justify-center items-start">
                             <button className="animate-spin">
                             <FiLoader size='26' color="#4b5563" />
                             </button>
                         </div>
             </>) }
-            {loading && (
+            {!loading && (
                 <Table
                 scroll={{ x: 'max-content' }}
                 caption={(
                     <div className="flex items-center justify-between my-2">
                         <h1 className="font-bold mx-2 md:mr-0 text-[26px] md:text-3xl">Chamados</h1>
                         <div className="flex items-center gap-3">
-                            <input type="text"
+                            <div className="relative">
+                            <button className="absolute right-2 z-1 top-2" onClick={()=> handleSearch(searchInput)}><FiSearch size={18} color="#4b5563" /></button>
+                                <input type="text"
                                 placeholder="Pesquisar Chamado"
-                                className="border-2 border-slate-300 rounded-md p-1 outline-none"
-                                onChange={(e) => setSearch(e.target.value)}
-                                value={search}
+                                className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyUp={(e)=> e.key === 'Enter' && handleSearch(searchInput)}
                             />
+                            </div>
                             <ButtonRefresh href="/dashboard" />
                             <Link href="/dashboard/new" className="bg-blue-500 px-4 py-1 rounded text-[#FFF!important] transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"> Abrir chamado </Link>
                         </div>
@@ -182,18 +211,16 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                     indicator: (
                         <div className="w-full flex justify-center items-start">
                             <button className="animate-spin">
-                                {status === "authenticated" && loading && <FiLoader size='26' color="#4b5563" />}
+                                {status === "authenticated" && !loadingTable && <FiLoader size='26' color="#4b5563" />}
                             </button>
                         </div>
-                    ), spinning: !loading
+                    ), spinning: loadingTable
                 }}
                 bordered={true}
                 columns={columns}
                 dataSource={dataSource}
                 pagination={pagination}
                 onChange={(_pagination) => {
-                    setSearch(search);
-                    setLoading(true);
                     handlePagination(_pagination as PaginationType)
                 }} />
             )}
