@@ -36,7 +36,7 @@ export function CardCollaborator({ collaborator }: { collaborator: CollaboratorP
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
                 {currentCollaborators.map((item) => (
-                    <article className="flex flex-col bg-gray-100 border-2 p-2 rounded-lg gap-2 hover:scale-105 duration-300">
+                    <article key={item.id} className="flex flex-col bg-gray-100 border-2 p-2 rounded-lg gap-2 hover:scale-105 duration-300">
                         <h2>
                             <a className="font-bold">Nome:</a> {item.name}
                         </h2>
