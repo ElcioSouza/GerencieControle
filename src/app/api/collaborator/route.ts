@@ -60,10 +60,9 @@ export async function POST(request: Request) {
                       name: {
                         contains: search,
                         mode: Prisma.QueryMode.insensitive,
-                      }
+                      },
                     },
-                  ]
-                
+                  ] 
               }
             } 
             const [collaboratorQuery, total_fetch, total] = await Promise.all([

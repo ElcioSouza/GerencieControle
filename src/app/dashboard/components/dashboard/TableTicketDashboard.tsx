@@ -62,6 +62,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
             const result = await fetchTickets(offset, limit, searchInput);
+            console.log(result);
             setTickets(result.pack.data.tickets);
         } catch (error) {
             console.log(error);

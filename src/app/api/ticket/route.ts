@@ -56,11 +56,12 @@ export async function GET(request: Request) {
                     contains: search,
                     mode: Prisma.QueryMode.insensitive,
                   }
-                },
-              ]
+                }
+              ],
             }
           }
-        } 
+        }
+
         const [ticketQuery, total_fetch, total] = await Promise.all([
             prisma.ticket.findMany({
               ...queryFetchDefault,

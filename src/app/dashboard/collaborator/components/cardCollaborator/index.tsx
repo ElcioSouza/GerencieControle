@@ -27,37 +27,26 @@ interface ResponseCollaborator {
 }
 export function CardCollaborator({ collaborator,total }: { collaborator: CollaboratorProps[], total: number }) {
     const router = useRouter();
-    const [currentPage, setCurrentPage] = useState(1);
     const [searchInput, setSearchInput] = useState("");
     const [collaborators, setCollaborators] = useState<CollaboratorProps[]>(collaborator);
-    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 5, total });
-    const ITEMS_PER_PAGE = 3;
-        const collaboratordata = collaborator.map(({ id, ...item }) => ({
-            key: id,
-            ...item,
-        }));
-
+    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 6, total });
     async function fetchCollaborator(offset: number = 0, limit: number = 5, search: string = ''): Promise<ResponseCollaborator> {
         const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}`, {
             method: "GET"
         })
         const result = await response.json();
-        console.log(result.pack.data.collaborator);
         return result;
     }
     async function handlePagination(_pagination: PaginationType) {
         try {
-            //setLoadingTable(true);
+
             setPagination(_pagination);
-            console.log(_pagination)
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
             const result = await fetchCollaborator(offset, limit, searchInput);
             setCollaborators(result.pack.data.collaborator);
         } catch (error) {
             console.log(error);
-        } finally{
-            //setLoadingTable(false);
         }
     }
 
@@ -65,7 +54,6 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
         try {
             setSearchInput(search);
             setPagination({current: 1, pageSize: 5, total: 0})
-            //setLoadingTable(true);
             const offset = (pagination.current - 1) * pagination.pageSize;
             const limit = pagination.pageSize;
             const result = await fetchCollaborator(offset, limit, search);
@@ -73,8 +61,6 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
             setPagination({...pagination, total: result.pack.data.total_fetch});
         } catch (error) {
             console.log(error);
-        } finally{
-            //setLoadingTable(false);
         }
     }
 
@@ -92,6 +78,7 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
                     alert(result?.pack?.error);
                 }
                 router.refresh();
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
