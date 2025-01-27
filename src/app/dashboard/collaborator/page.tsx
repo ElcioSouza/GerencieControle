@@ -15,7 +15,7 @@ export default async function Collaborator() {
     redirect('/');
   }
 
-  const [collaboratorQuery, total] = await Promise.all([
+/*   const [collaboratorQuery, total] = await Promise.all([
     prisma.collaborator.findMany({
       where: {
         UserId: session.user.id
@@ -29,14 +29,36 @@ export default async function Collaborator() {
         id: session.user.id
       }
     })
-  ]);
+  ]); */
 
-  const collaborator = colllaboratorFactory(collaboratorQuery);
+  const [collaboratorQuery, total] = await Promise.all([
+    prisma.collaborator.findMany({
+      where: {
+          UserId: session.user.id
+      },
+      skip: 0, // offset
+      take: 5, // limit
+      orderBy: {
+        created_at: "desc"
+      }
+    }),
+    prisma.collaborator.count({
+      where: {
+          UserId: session.user.id
+      }
+    })
+  ]);
+  
+  const result = {
+    data: collaboratorQuery,
+    total: total
+  };
+  const collaborator = colllaboratorFactory(result.data);
   return (
     <Container>
       <main className="mt-9 mb-2">
         <section>
-          <CardCollaborator collaborator={collaborator} />
+          <CardCollaborator collaborator={collaborator} total={total} />
         </section>
 
         {collaboratorQuery.length === 0 && (

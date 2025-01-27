@@ -43,7 +43,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
     
     useEffect(() => {
         setLoading(false);
-    }, [loading]); // Executa apenas uma vez, equivalente a componentDidMoun
+    }, [loading]); 
 
     const { status, data } = useSession();
     const [tickets, setTickets] = useState<TicketType[]>(titcketsProps);

@@ -6,11 +6,15 @@ import { Pagination } from 'antd';
 import { FiSearch } from "react-icons/fi";
 import { ButtonRefresh } from "@/app/dashboard/components/buttonrefresh";
 import Link from "next/link";
-export function CardCollaborator({ collaborator }: { collaborator: CollaboratorProps[] }) {
+export function CardCollaborator({ collaborator,total }: { collaborator: CollaboratorProps[], total: number }) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState("");
     const ITEMS_PER_PAGE = 3;
+        const dataSource = collaborator.map(({ id, ...item }) => ({
+            key: id,
+            ...item,
+        }));
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const currentCollaborators = collaborator.slice(startIndex, startIndex + ITEMS_PER_PAGE);
@@ -43,11 +47,11 @@ export function CardCollaborator({ collaborator }: { collaborator: CollaboratorP
                 <div className="flex items-center gap-3">
                     <div className="relative">
                         <button className="absolute right-2 z-1 top-2"><FiSearch size={18} color="#4b5563" /></button>
-                       {/* <input type="text"
+                       <input type="text"
                             placeholder="Pesquisar Colaborador"
                             className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
                             onChange={(e) => setSearch(e.target.value) }
-                        />  */}
+                        />  
                     </div>
                     <ButtonRefresh href="/dashboard/collaborator" />
                     <Link href="/dashboard/collaborator/new" className="bg-blue-500 px-4 py-1 rounded text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
