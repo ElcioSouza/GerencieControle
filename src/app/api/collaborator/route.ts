@@ -2,6 +2,8 @@ import {NextResponse} from  'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import prisma  from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
+import { colllaboratorFactory } from '@/app/factories/ColllaboratorFactory';
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     if(!session || !session.user) { 
@@ -33,12 +35,59 @@ export async function POST(request: Request) {
     }
 }   
 
-export async function GET(request: Request) {
+/* export async function GET(request: Request) {
     const requestAutorition = request.headers.get("authorization")
     const token = requestAutorition?.split(" ")[1];
-    //console.log(token);
     return NextResponse.json({message: "Colaborador cadastrado com sucesso"});
-}   
+}    */
+
+    export async function GET(request: Request) {
+        const session = await getServerSession(authOptions);
+        if(!session || !session.user) {
+            return NextResponse.json({error: "Colaborador não autenticado"}, {status: 401});
+        }
+        const {searchParams} = new URL(request.url);
+        const offset = Number(searchParams.get("offset"));
+        const limit = Number(searchParams.get("limit"));
+        const search = String(searchParams.get("search"))
+     
+        try {
+            const queryFetchDefault = {
+              where: {
+                  UserId: session.user.id,
+                  AND: [
+                    {
+                      name: {
+                        contains: search,
+                        mode: Prisma.QueryMode.insensitive,
+                      }
+                    },
+                  ]
+                
+              }
+            } 
+            const [collaboratorQuery, total_fetch, total] = await Promise.all([
+                prisma.collaborator.findMany({
+                  ...queryFetchDefault,
+                  skip: offset,
+                  take: limit,
+                  orderBy: {
+                    created_at: "desc"
+                  }
+                }),
+                prisma.collaborator.count(queryFetchDefault),
+                prisma.collaborator.count({
+                  where: {
+                      UserId: session.user.id
+                  }
+                })
+            ]);
+            const collaborator = colllaboratorFactory(collaboratorQuery);
+            return NextResponse.json({pack: {data:{collaborator, total_fetch, total}, message: "Chamados encontrados com sucesso"}}, {status: 200}); 
+        } catch (error) {
+            return NextResponse.json({error: "Falha ao buscar colaboradores"}, {status: 400});
+        }
+    }
 
 export async function PATCH(request: Request) {
     const session = await getServerSession(authOptions);

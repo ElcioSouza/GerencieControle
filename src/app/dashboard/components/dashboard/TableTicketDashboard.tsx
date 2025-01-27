@@ -12,8 +12,6 @@ import { useSession } from 'next-auth/react';
 import { ButtonRefresh } from '../buttonrefresh';
 import Link from 'next/link';
 import { TicketStatus } from '../ticketstatus';
-import Loading from '@/app/loading';
-import { set } from 'zod';
 interface Props {
     tickets: TicketType[],
     total: number

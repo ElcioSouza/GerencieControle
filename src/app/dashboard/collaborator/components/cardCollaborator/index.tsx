@@ -6,18 +6,78 @@ import { Pagination } from 'antd';
 import { FiSearch } from "react-icons/fi";
 import { ButtonRefresh } from "@/app/dashboard/components/buttonrefresh";
 import Link from "next/link";
+import Item from "antd/es/list/Item";
+interface Props {
+  // tickets: TicketType[],
+    total: number
+}
+interface PaginationType {
+    current: number;
+    pageSize: number;
+    total: number;
+}
+interface ResponseCollaborator {
+    pack: {
+        data: {
+            collaborator: CollaboratorProps[],
+            total: number,
+            total_fetch: number
+        }
+    }
+}
 export function CardCollaborator({ collaborator,total }: { collaborator: CollaboratorProps[], total: number }) {
     const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
-    const [search, setSearch] = useState("");
+    const [searchInput, setSearchInput] = useState("");
+    const [collaborators, setCollaborators] = useState<CollaboratorProps[]>(collaborator);
+    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 5, total });
     const ITEMS_PER_PAGE = 3;
-        const dataSource = collaborator.map(({ id, ...item }) => ({
+        const collaboratordata = collaborator.map(({ id, ...item }) => ({
             key: id,
             ...item,
         }));
 
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const currentCollaborators = collaborator.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    async function fetchCollaborator(offset: number = 0, limit: number = 5, search: string = ''): Promise<ResponseCollaborator> {
+        const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}`, {
+            method: "GET"
+        })
+        const result = await response.json();
+        console.log(result.pack.data.collaborator);
+        return result;
+    }
+    async function handlePagination(_pagination: PaginationType) {
+        try {
+            //setLoadingTable(true);
+            setPagination(_pagination);
+            console.log(_pagination)
+            const offset = (_pagination.current - 1) * _pagination.pageSize;
+            const limit = _pagination.pageSize;
+            const result = await fetchCollaborator(offset, limit, searchInput);
+            setCollaborators(result.pack.data.collaborator);
+        } catch (error) {
+            console.log(error);
+        } finally{
+            //setLoadingTable(false);
+        }
+    }
+
+    async function handleSearch(search: string) {
+        try {
+            setSearchInput(search);
+            setPagination({current: 1, pageSize: 5, total: 0})
+            //setLoadingTable(true);
+            const offset = (pagination.current - 1) * pagination.pageSize;
+            const limit = pagination.pageSize;
+            const result = await fetchCollaborator(offset, limit, search);
+            setCollaborators(result.pack.data.collaborator);
+            setPagination({...pagination, total: result.pack.data.total_fetch});
+        } catch (error) {
+            console.log(error);
+        } finally{
+            //setLoadingTable(false);
+        }
+    }
+
     async function handleDeleteCollaborator(id: string) {
         try {
             if (confirm("Deseja deletar o colaborador?")) {
@@ -38,7 +98,8 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
         }
     }
     function handlePageChange(page: number) {
-        setCurrentPage(page);
+        handlePagination({ ...pagination, current: page });
+      //  setCurrentPage(page);
     }
     return (
         <>
@@ -46,12 +107,12 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
                 <h1 className="font-bold text-[20px] md:text-3xl">Meus Colaboradores</h1>
                 <div className="flex items-center gap-3">
                     <div className="relative">
-                        <button className="absolute right-2 z-1 top-2"><FiSearch size={18} color="#4b5563" /></button>
-                    {/*    <input type="text"
-                            placeholder="Pesquisar Colaborador"
-                            className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
-                            onChange={(e) => setSearch(e.target.value) }
-                        />   */}
+                    <button className="absolute right-2 z-1 top-2" onClick={()=> handleSearch(searchInput)}><FiSearch size={18} color="#4b5563" /></button>
+                    <input type="text"
+                           placeholder="Pesquisar Colaborador"
+                           className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
+                           onChange={(e) => setSearchInput(e.target.value)}
+                           onKeyUp={(e)=> e.key === 'Enter' && handleSearch(searchInput)} />
                     </div>
                     <ButtonRefresh href="/dashboard/collaborator" />
                     <Link href="/dashboard/collaborator/new" className="bg-blue-500 px-4 py-1 rounded text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
@@ -60,7 +121,7 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
                 </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
-                {currentCollaborators.map((item) => (
+                {collaborators.map((item) => (
                     <article key={item.id} className="flex flex-col bg-gray-100 border-2 p-2 rounded-lg gap-2 hover:scale-105 duration-300">
                         <h2>
                             <a className="font-bold">Nome:</a> {item.name}
@@ -84,12 +145,13 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
                         </div>
                     </article>
                 ))}
+                {collaborators.length === 0 && <p className="font-medium">Nenhum colaborador encontrado</p>}
             </div>
             <div className="flex justify-end">
                 <Pagination
-                    current={currentPage}
-                    total={collaborator.length}
-                    pageSize={ITEMS_PER_PAGE}
+                    current={pagination.current}
+                    total={pagination.total}
+                    pageSize={pagination.pageSize}
                     onChange={(page) => handlePageChange(page)}
                 />
             </div>
