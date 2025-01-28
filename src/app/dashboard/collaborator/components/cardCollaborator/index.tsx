@@ -90,9 +90,9 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
     }
     return (
         <>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center flex-col md:flex-row gap-3 justify-between">
                 <h1 className="font-bold text-[20px] md:text-3xl">Meus Colaboradores</h1>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center flex-col md:flex-row gap-3">
                     <div className="relative">
                     <button className="absolute right-2 z-1 top-2" onClick={()=> handleSearch(searchInput)}><FiSearch size={18} color="#4b5563" /></button>
                     <input type="text"
