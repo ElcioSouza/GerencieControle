@@ -62,7 +62,6 @@ export async function POST(request: Request) {
                 mode?: "insensitive";
             }
         }
-       // criar uma pasta com o nome helpers para colocar essa função junto com o queryPrismaTypes
         const querySearchReturn = (search: string) => {
             if(!search) return undefined
             const query:queryPrismaTypes[] = [
@@ -93,7 +92,6 @@ export async function POST(request: Request) {
         }
         const queryFilterReturn = (filter: FilterType) => {
             const query:queryPrismaTypes[] = []
-            //se ele secionar um status ele cai no if
             if(filter.status) {
                 query.push({
                     status: {
