@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
 export default function Header() {
-    const { data: session, status} = useSession();
+    const { data, status} = useSession();
     async function handleLogin() {
         try {
             await signIn("credentials", {           
@@ -34,7 +34,7 @@ export default function Header() {
                         </h1>
                     </Link>
  
-                    {status === "loading"  && (
+                    {status === "loading" && !data  && (
                         <button className="animate-spin">
                             <FiLoader size={26} color="#4b5563" />
                         </button>

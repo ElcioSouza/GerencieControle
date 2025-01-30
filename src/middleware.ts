@@ -1,22 +1,19 @@
-import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { NextResponse,NextRequest } from "next/server";
 
-
-export async function middleware(req: Request) {
-
-    const secret = process.env.NEXTAUTH_SECRET;
-    // Obtém o token da requisição
-    const token = await getToken({ req, secret, raw: true } as any);
-    // Verifica se o token existe
+export async function middleware(req: NextRequest) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, raw: true });
+    console.log(token);
     if (!token) {
-        return NextResponse.json({message: "Nao autenticado"}, {status: 401});
+        return NextResponse.redirect(new URL("/", req.url));
     }
-
-    // Caso esteja autenticado, prossegue normalmente
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.cookies.set("token",token);
+    return response;
 }
- 
-// Define as rotas que utilizarão este middleware
+
 export const config = {
-    matcher: '/api/collaborator/:patch',
-  }
+    matcher: [
+        "/dashboard"
+    ],
+}

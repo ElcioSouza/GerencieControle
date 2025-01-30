@@ -24,7 +24,7 @@ interface PaginationType {
     pageSize: number;
     total: number;
 }
-interface ResponseTickets{
+interface ResponseTickets {
     pack: {
         data: {
             tickets: TicketType[],
@@ -37,53 +37,58 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
     const [loading, setLoading] = useState(true);
     const [loadingTable, setLoadingTable] = useState(false);
     const [searchInput, setSearchInput] = useState('');
+    const [selectStatus, setSelectStatus] = useState('Todos');
 
-    
     useEffect(() => {
         setLoading(false);
-    }, [loading]); 
+    }, [loading]);
 
     const { status, data } = useSession();
     const [tickets, setTickets] = useState<TicketType[]>(titcketsProps);
-    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 5, total });
+    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 6, total });
     const router = useRouter();
     const { handleModalVisible, setDetailTicket } = useContext(ModalContext);
-    async function fetchTickets(offset: number = 0, limit: number = 5, search: string = ''): Promise<ResponseTickets> {
-        const response = await fetch(`/api/ticket?offset=${offset}&limit=${limit}&search=${search}`, {
+    async function fetchTickets(offset: number = 0, limit: number = 5, search: string = '', status: string = ''): Promise<ResponseTickets> {
+        const response = await fetch(`/api/ticket?offset=${offset}&limit=${limit}&search=${search}&status=${status}`, {
             method: "GET"
         })
-        return await response.json();
+        const result = await response.json();
+        console.log(result.pack.data.tickets);
+        return result;
     }
 
     async function handlePagination(_pagination: PaginationType) {
         try {
+            console.log("entrou");
             setLoadingTable(true);
             setPagination(_pagination);
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
             const result = await fetchTickets(offset, limit, searchInput);
-            console.log(result);
+
             setTickets(result.pack.data.tickets);
         } catch (error) {
             console.log(error);
-        } finally{
+        } finally {
             setLoadingTable(false);
         }
     }
 
-    async function handleSearch(search: string) {
+    async function handleSearch(search: string, newSelectStatus: string = '') {
         try {
+            console.log(newSelectStatus);
             setSearchInput(search);
-            setPagination({current: 1, pageSize: 5, total: 0})
+            setSelectStatus(newSelectStatus);
+            setPagination({ current: 1, pageSize: 5, total: 0 })
             setLoadingTable(true);
             const offset = (pagination.current - 1) * pagination.pageSize;
             const limit = pagination.pageSize;
-            const result = await fetchTickets(offset, limit, search);
+            const result = await fetchTickets(offset, limit, search, newSelectStatus);
             setTickets(result.pack.data.tickets);
-            setPagination({...pagination, total: result.pack.data.total_fetch});
+            setPagination({ ...pagination, total: result.pack.data.total_fetch });
         } catch (error) {
             console.log(error);
-        } finally{
+        } finally {
             setLoadingTable(false);
         }
     }
@@ -121,14 +126,14 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             dataIndex: 'Collaborator',
             key: 'Collaborator',
             onFilter: (value, record) => {
-                if(typeof value === 'string'){
-                    return String(record.Collaborator.name).toLowerCase().includes(value.toLowerCase()) 
-                    ||  String(record.Collaborator.created_at).toLowerCase().includes(value.toLowerCase())
-                    ||  String(record.status).toLowerCase().includes(value.toLowerCase())
+                if (typeof value === 'string') {
+                    return String(record.Collaborator.name).toLowerCase().includes(value.toLowerCase())
+                        || String(record.Collaborator.created_at).toLowerCase().includes(value.toLowerCase())
+                        || String(record.status).toLowerCase().includes(value.toLowerCase())
                 } else {
                     return false;
                 }
-            },   
+            },
             render: (data,) => <span className='pl-1 text-left'>{data.name}</span>,
 
         },
@@ -176,29 +181,39 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         ...ticket,
     }))
     return <>
-            {loading && (<>
-                <div className="w-full flex justify-center items-start">
-                            <button className="animate-spin">
-                            <FiLoader size='26' color="#4b5563" />
-                            </button>
-                        </div>
-            </>) }
-            {!loading && (
-                <Table
+        {loading && (<>
+            <div className="w-full flex justify-center items-start">
+                <button className="animate-spin">
+                    <FiLoader size='26' color="#4b5563" />
+                </button>
+            </div>
+        </>)}
+        {!loading && (
+            <Table
                 scroll={{ x: 'max-content' }}
                 caption={(
                     <div className="flex items-center justify-between my-2">
                         <h1 className="font-bold mx-2 md:mr-0 text-[26px] md:text-3xl">Chamados</h1>
                         <div className="flex items-center gap-3">
                             <div className="relative">
-                            <button className="absolute right-2 z-1 top-2" onClick={()=> handleSearch(searchInput)}><FiSearch size={18} color="#4b5563" /></button>
+                                <button className="absolute right-2 z-1 top-2" onClick={() => handleSearch(searchInput,selectStatus)}><FiSearch size={18} color="#4b5563" /></button>
                                 <input type="text"
-                                placeholder="Pesquisar Chamado"
-                                className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
-                                onChange={(e) => setSearchInput(e.target.value)}
-                                onKeyUp={(e)=> e.key === 'Enter' && handleSearch(searchInput)}
-                            />
+                                    placeholder="Pesquisar Chamado"
+                                    className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    onKeyUp={(e) => e.key === 'Enter' && handleSearch(searchInput,selectStatus)}
+                                />
                             </div>
+                            <select className="h-[35.6px] w-full md:w-fit border-2 rounded-md px-2 resize-none bg-white"
+                                onChange={(e) => handleSearch(searchInput,e.target.value)}>
+                                <option value="" selected>Todos</option>
+                                <option value="Em andamento">Em andamento</option>
+                                <option value="Fechado">Fechado</option>
+                                <option value="Pendente">Pendente</option>
+                                <option value="Cancelado">Cancelado</option>
+                                <option value="Urgente">Urgente</option>
+                                <option value="Baixo">Baixo</option>
+                            </select>
                             <ButtonRefresh href="/dashboard" />
                             <Link href="/dashboard/new" className="bg-blue-500 px-4 py-1 rounded text-[#FFF!important] transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"> Abrir chamado </Link>
                         </div>
@@ -220,10 +235,11 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                 dataSource={dataSource}
                 pagination={pagination}
                 onChange={(_pagination) => {
+
                     handlePagination(_pagination as PaginationType)
                 }} />
-            )}
-            
-   
+        )}
+
+
     </>
 }   

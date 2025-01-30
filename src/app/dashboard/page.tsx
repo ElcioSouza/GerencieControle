@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { TableTicketDashboard } from './components/dashboard/TableTicketDashboard';
 import { ticketsFactory } from '../factories/TicketsFactory';
-
+import { cookies } from 'next/headers';
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
     if(!session || !session.user) {

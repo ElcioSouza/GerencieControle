@@ -1,7 +1,7 @@
-import { stat } from "fs"
 import { CollaboratorType } from "../type/collaborator.type"
 
 export const colllaboratorFactory = (data:any): CollaboratorType[] =>{
+    console.log(data)
     return data.map((item: any) => ({
         id: item.id,
         name: item.name,

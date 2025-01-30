@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
          * @returns {Promessa<string>} O token JWT codificado.
          */
         encode: async ({ secret, token }) => {
-            
+
             if (!secret) {
                 throw new Error("O segredo JWT é obrigatório");
             }
@@ -54,12 +54,14 @@ export const authOptions: AuthOptions = {
          * @returns {Promessa<JWT | null>} A carga útil do token decodificado ou nulo se a decodificação falhar.
          */
         decode: async ({ secret, token }: JWTDecodeParams): Promise<JWT | null> => {
+
             if (!secret || !token || typeof token !== 'string') {
                 return null;
             }
 
             try {
                 const payload = await decode({ token, secret });
+                console.log(token);
                 return payload;
             } catch (error) {
                 console.error("Error decoding JWT:", error);
@@ -83,6 +85,7 @@ export const authOptions: AuthOptions = {
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
+                token.picture = user.image
             }
             return token;
         },
@@ -103,6 +106,7 @@ export const authOptions: AuthOptions = {
                     id: token.id as string,
                     name: token.name as string,
                     email: token.email as string,
+                    image: token.picture as string
                 };
             }
             return session;

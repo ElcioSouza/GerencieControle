@@ -19,7 +19,7 @@ model Collaborator {
   phone String
   email String
   address String?
-  status String? @default("Ativo")
+  status String?
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
   UserId String? @db.ObjectId

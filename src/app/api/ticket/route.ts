@@ -5,7 +5,6 @@ import prisma from "@/lib/prisma";
 import { ticketsFactory } from "@/app/factories/TicketsFactory";
 import { Prisma } from "@prisma/client";
 
-
 export async function PATCH(request: Request) {
     const session = await getServerSession(authOptions);
     if(!session || !session.user) {
@@ -44,24 +43,54 @@ export async function GET(request: Request) {
     const offset = Number(searchParams.get("offset"));
     const limit = Number(searchParams.get("limit"));
     const search = String(searchParams.get("search"))
- 
-    try {
-        const queryFetchDefault = {
-          where: {
-            Collaborator: {
-              UserId: session.user.id,
-              AND: [
-                {
-                  name: {
-                    contains: search,
-                    mode: Prisma.QueryMode.insensitive,
-                  }
-                }
-              ],
-            }
+    const status = String(searchParams.get("status"))
+    const filter = {
+      status: status 
+  } 
+  interface queryPrismaTypes {
+      [key: string]: {
+          contains: string;
+          mode?: "insensitive";
+      }
+  }
+  const querySearchReturn = (search: string) => {
+      if(!search) return undefined
+      const query: queryPrismaTypes[] = [
+          {
+            name: {
+              contains: search,
+              mode: Prisma.QueryMode.insensitive,
+            },
           }
-        }
+      ]
+      return query.length ? query : undefined
+  }
 
+  interface FilterType {
+      status: string
+  }
+  const queryFilterReturn = (filter: FilterType) => {
+      const query:queryPrismaTypes[] = []
+      if(filter.status) {
+          query.push({
+              status: {
+                  contains: filter.status
+              }
+          })
+      }   
+      return query.length ? query : undefined
+  }
+
+    try {
+      const queryFetchDefault = {
+        where: {
+          Collaborator: {
+            UserId: session.user.id,
+            OR: querySearchReturn(search),
+          },
+          AND: queryFilterReturn(filter)
+        }
+      };
         const [ticketQuery, total_fetch, total] = await Promise.all([
             prisma.ticket.findMany({
               ...queryFetchDefault,
@@ -75,7 +104,7 @@ export async function GET(request: Request) {
               }
             }),
             prisma.ticket.count(queryFetchDefault),
-            prisma.ticket.count({
+            prisma.ticket.count({ 
               where: {
                 Collaborator: {
                   UserId: session.user.id
@@ -84,6 +113,7 @@ export async function GET(request: Request) {
             })
         ]);
         const tickets = ticketsFactory(ticketQuery);
+        console.log(total_fetch)
         return NextResponse.json({pack: {data:{tickets, total_fetch, total}, message: "Chamados encontrados com sucesso"}}, {status: 200}); 
     } catch (error) {
         return NextResponse.json({error: "Falha ao buscar chamados"}, {status: 400});

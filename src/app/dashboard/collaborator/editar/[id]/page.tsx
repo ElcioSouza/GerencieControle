@@ -71,8 +71,8 @@ export default function EditCollaborator({ params }: { params: { id: string } })
                 email: data.email,
                 phone: data.phone,
                 address: data.address ? data.address : "",
-                status: data.status,
-                UserId: listCollaborator?.userId
+                status: "Ativo",
+                userId: listCollaborator?.userId
             }),
             headers: {
                 "Content-Type": "application/json"
@@ -83,8 +83,12 @@ export default function EditCollaborator({ params }: { params: { id: string } })
             setError("email", { type: "text", message: result.error })
             return;
         }
-        router.push("/dashboard/collaborator");
-        router.refresh();
+        if (result?.pack?.status === "Em andamento" || result?.pack?.status === "Urgente" || result?.pack?.status === "Baixo" || result?.pack?.status === "Pendente") {
+            alert(result?.pack?.error);
+        } else {
+            router.push("/dashboard/collaborator");
+            router.refresh();
+        }
     }
     return (
         <Container>
@@ -160,7 +164,7 @@ export default function EditCollaborator({ params }: { params: { id: string } })
                                     <p className="text-red-500">{errors.address?.message}</p>
                                 )}
                             </div>
-                            <div className="flex-1">
+{/*                             <div className="flex-1">
                                 <label className="mb-1 text-lg font-medium">Selecione Status</label>
                                 <select
                                     {...register("status")}
@@ -169,7 +173,7 @@ export default function EditCollaborator({ params }: { params: { id: string } })
                                    <option value="Ativo" selected={listCollaborator?.collaborator.status === "Ativo"}>Ativo</option>
                                    <option value="Inativo" selected={listCollaborator?.collaborator.status === "Inativo"}>Inativo</option>
                                 </select>
-                            </div>
+                            </div> */}
                         </div>
 
                     <button

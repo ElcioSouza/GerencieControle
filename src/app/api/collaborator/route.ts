@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import prisma  from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { colllaboratorFactory } from '@/app/factories/ColllaboratorFactory';
+import { create } from 'domain';
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     if(!session || !session.user) { 
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
                 email,
                 phone,
                 address: address ? address : "",
-                status,
+                status:"Ativo",
                 UserId
             }
         })
@@ -49,22 +50,69 @@ export async function POST(request: Request) {
         const {searchParams} = new URL(request.url);
         const offset = Number(searchParams.get("offset"));
         const limit = Number(searchParams.get("limit"));
-        const search = String(searchParams.get("search"))
-     
-        try {
+        const search = String(searchParams.get("search"));
+        const status = String(searchParams.get("status"));
+        const filter = {
+            status: status
+        }   
+        console.log(status)   
+        interface queryPrismaTypes {
+            [key: string]: {
+                contains: string;
+                mode?: "insensitive";
+            }
+        }
+       // criar uma pasta com o nome helpers para colocar essa função junto com o queryPrismaTypes
+        const querySearchReturn = (search: string) => {
+            if(!search) return undefined
+            const query:queryPrismaTypes[] = [
+                {
+                  name: {
+                    contains: search,
+                    mode: Prisma.QueryMode.insensitive,
+                  }
+                },
+                {
+                    email: {
+                      contains: search,
+                      mode: Prisma.QueryMode.insensitive,
+                    }
+                  },
+                  {
+                    phone: {
+                      contains: search,
+                      mode: Prisma.QueryMode.insensitive,
+                    }
+                  }
+            ]
+            return query.length ? query : undefined
+        }
+
+        interface FilterType {
+            status: string
+        }
+        const queryFilterReturn = (filter: FilterType) => {
+            const query:queryPrismaTypes[] = []
+            //se ele secionar um status ele cai no if
+            if(filter.status) {
+                query.push({
+                    status: {
+                        contains: filter.status
+                    }
+                })
+            }   
+            return query.length ? query : undefined
+        }
+
+        try {    
             const queryFetchDefault = {
-              where: {
+                where: {
                   UserId: session.user.id,
-                  AND: [
-                    {
-                      name: {
-                        contains: search,
-                        mode: Prisma.QueryMode.insensitive,
-                      },
-                    },
-                  ] 
-              }
-            } 
+                  OR: querySearchReturn(search),
+                  AND: queryFilterReturn(filter)
+                },
+              };
+              
             const [collaboratorQuery, total_fetch, total] = await Promise.all([
                 prisma.collaborator.findMany({
                   ...queryFetchDefault,
@@ -105,7 +153,6 @@ export async function PATCH(request: Request) {
                 CollaboratorId: userId as string
             }
         })
-        console.log(findTicket?.status)
         if(findTicket?.status === "Em andamento" || findTicket?.status === "Urgente" || findTicket?.status === "Baixo" || findTicket?.status === "Pendente") {
             return NextResponse.json({pack: {
                 error: `Não é possível deletar o colaborador pois ele possui um chamado ${findTicket?.status}`,

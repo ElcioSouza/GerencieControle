@@ -17,7 +17,7 @@ export default async function Collaborator() {
           UserId: session.user.id
       },
       skip: 0, // offset
-      take: 6, // limit
+      take: 5, // limit
       orderBy: {
         created_at: "desc"
       }

@@ -7,6 +7,7 @@ import { FiSearch } from "react-icons/fi";
 import { ButtonRefresh } from "@/app/dashboard/components/buttonrefresh";
 import Link from "next/link";
 import Item from "antd/es/list/Item";
+import { set } from "zod";
 interface Props {
   // tickets: TicketType[],
     total: number
@@ -30,16 +31,19 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
     const [searchInput, setSearchInput] = useState("");
     const [collaborators, setCollaborators] = useState<CollaboratorProps[]>(collaborator);
     const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 6, total });
-    async function fetchCollaborator(offset: number = 0, limit: number = 5, search: string = ''): Promise<ResponseCollaborator> {
-        const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}`, {
+    const [selectStatus, setSelectStatus] = useState('Ativo');
+    async function fetchCollaborator(offset: number = 0, limit: number = 5, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
+        
+        const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}&status=${status}`, {
             method: "GET"
         })
         const result = await response.json();
         return result;
     }
+ 
+
     async function handlePagination(_pagination: PaginationType) {
         try {
-
             setPagination(_pagination);
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
@@ -50,13 +54,14 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
         }
     }
 
-    async function handleSearch(search: string) {
+    async function handleSearch(search: string, newSelectStatus: string = '') {
         try {
             setSearchInput(search);
+            setSelectStatus(newSelectStatus);
             setPagination({current: 1, pageSize: 5, total: 0})
             const offset = (pagination.current - 1) * pagination.pageSize;
             const limit = pagination.pageSize;
-            const result = await fetchCollaborator(offset, limit, search);
+            const result = await fetchCollaborator(offset, limit, search, newSelectStatus);
             setCollaborators(result.pack.data.collaborator);
             setPagination({...pagination, total: result.pack.data.total_fetch});
         } catch (error) {
@@ -94,13 +99,19 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
                 <h1 className="font-bold text-[20px] md:text-3xl">Meus Colaboradores</h1>
                 <div className="flex items-center flex-col md:flex-row gap-3">
                     <div className="relative">
-                    <button className="absolute right-2 z-1 top-2" onClick={()=> handleSearch(searchInput)}><FiSearch size={18} color="#4b5563" /></button>
+                    <button className="absolute right-2 z-1 top-2" onClick={()=> handleSearch(searchInput, selectStatus)}><FiSearch size={18} color="#4b5563" /></button>
                     <input type="text"
                            placeholder="Pesquisar Colaborador"
                            className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
                            onChange={(e) => setSearchInput(e.target.value)}
-                           onKeyUp={(e)=> e.key === 'Enter' && handleSearch(searchInput)} />
+                           onKeyUp={(e)=> e.key === 'Enter' && handleSearch(searchInput,selectStatus)} />
                     </div>
+                    <select className="h-[35.6px] w-full md:w-fit border-2 rounded-md px-2 resize-none bg-white" 
+                    onChange={(e)=>handleSearch(searchInput, e.target.value)}>
+                         <option value="">Todos</option>
+                        <option value="Ativo" selected>Ativo</option>
+                        <option value="Inativo">Inativo</option>
+                    </select>
                     <ButtonRefresh href="/dashboard/collaborator" />
                     <Link href="/dashboard/collaborator/new" className="bg-blue-500 px-4 py-1 rounded text-white transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
                         Novo Colaborador
@@ -134,6 +145,7 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
                 ))}
                 {collaborators.length === 0 && <p className="font-medium">Nenhum colaborador encontrado</p>}
             </div>
+            
             <div className="flex justify-end">
                 <Pagination
                     current={pagination.current}
