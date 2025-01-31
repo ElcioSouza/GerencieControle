@@ -2,8 +2,14 @@
 import Link from "next/link";
 import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
+import { Submenu } from "../SubMenu";
+import Image from "next/image";
 export default function Header() {
     const { data, status} = useSession();
+    const menuItems = [
+        { label: 'Chamados', href: '/dashboard' },
+        { label: 'Colaborador', href: '/dashboard/collaborator' },
+      ];
     async function handleLogin() {
         try {
             await signIn("credentials", {           
@@ -47,7 +53,11 @@ export default function Header() {
                     )}
 
                     {status === "authenticated" && (
+                        
+                        
                         <div className="flex items-baseline gap-4">
+                        <Submenu
+                            items={menuItems} title={<><Image src={data?.user?.image ?? ''} alt="profile" width={29} height={29} className="rounded-full" /></>} />    
                             <Link href={"/dashboard"}>
                                 <FiUser size={26} color="#4b5563" />
                             </Link>

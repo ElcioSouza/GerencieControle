@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ['www.dropbox.com'],
+        domains: ['www.dropbox.com','lh3.googleusercontent.com'],
       },
     env: {
         SERVICEID: process.env.SERVICEID,

@@ -95,7 +95,7 @@ export function CardCollaborator({ collaborator,total }: { collaborator: Collabo
     }
     return (
         <>
-          <div className="flex items-center flex-col md:flex-row gap-3 justify-between">
+          <div className="flex items-center flex-col md:flex-row gap-3 justify-between ">
                 <h1 className="font-bold text-[20px] md:text-3xl">Meus Colaboradores</h1>
                 <div className="flex items-center flex-col md:flex-row gap-3">
                     <div className="relative">
