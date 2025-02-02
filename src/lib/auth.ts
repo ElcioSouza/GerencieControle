@@ -62,7 +62,6 @@ export const authOptions: AuthOptions = {
 
             try {
                 const payload = await decode({ token, secret });
-                console.log(secret);
                 return payload;
             } catch (error) {
                 console.error("Error decoding JWT:", error);
