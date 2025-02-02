@@ -113,7 +113,6 @@ export async function GET(request: Request) {
             })
         ]);
         const tickets = ticketsFactory(ticketQuery);
-        console.log(total_fetch)
         return NextResponse.json({pack: {data:{tickets, total_fetch, total}, message: "Chamados encontrados com sucesso"}}, {status: 200}); 
     } catch (error) {
         return NextResponse.json({error: "Falha ao buscar chamados"}, {status: 400});

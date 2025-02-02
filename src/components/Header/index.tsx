@@ -26,6 +26,7 @@ export default function Header() {
 
         async function handleLogout() {
             try {
+               document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 await signOut();
             } catch (error) {
                 console.error("Erro ao fazer logout:", error);

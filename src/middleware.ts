@@ -1,19 +1,30 @@
 import { getToken } from "next-auth/jwt";
-import { NextResponse,NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, raw: true });
-    console.log(token);
-    if (!token) {
-        return NextResponse.redirect(new URL("/", req.url));
+    console.log("Token:", token);
+
+    if (token) {
+        // Permitir acesso apenas às páginas protegidas
+        if (req.nextUrl.pathname.startsWith("/dashboard") || req.nextUrl.pathname === "/teste") {
+            console.log("Permitir acesso: " + req.nextUrl.pathname);
+            return NextResponse.next();
+        } else {
+            // Redirecionar para /dashboard se tentar acessar páginas não protegidas
+            console.log("Redirecionando para /dashboard porque o token está presente.");
+            return NextResponse.redirect(new URL("/dashboard", req.url));
+        }
     }
-    const response = NextResponse.next();
-    response.cookies.set("token",token);
-    return response;
+
+    // Permitir acesso às páginas não protegidas para usuários não autenticados
+    return NextResponse.next();
 }
 
 export const config = {
     matcher: [
-        "/dashboard"
+        "/",          // Página inicial
+        "/teste",     // Página de teste
+        "/dashboard/:path*"  // Inclui todas as subpáginas do dashboard
     ],
 }

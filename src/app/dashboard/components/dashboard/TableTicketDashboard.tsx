@@ -37,7 +37,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
     const [loading, setLoading] = useState(true);
     const [loadingTable, setLoadingTable] = useState(false);
     const [searchInput, setSearchInput] = useState('');
-    const [selectStatus, setSelectStatus] = useState('Todos');
+    const [selectStatus, setSelectStatus] = useState('');
 
     useEffect(() => {
         setLoading(false);
@@ -53,19 +53,17 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             method: "GET"
         })
         const result = await response.json();
-        console.log(result.pack.data.tickets);
+        console.log(search);
         return result;
     }
 
     async function handlePagination(_pagination: PaginationType) {
         try {
-            console.log("entrou");
             setLoadingTable(true);
             setPagination(_pagination);
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
             const result = await fetchTickets(offset, limit, searchInput);
-
             setTickets(result.pack.data.tickets);
         } catch (error) {
             console.log(error);
@@ -76,7 +74,6 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
 
     async function handleSearch(search: string, newSelectStatus: string = '') {
         try {
-            console.log(newSelectStatus);
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
             setPagination({ current: 1, pageSize: 5, total: 0 })
