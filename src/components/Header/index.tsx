@@ -2,9 +2,9 @@
 import Link from "next/link";
 import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
-import { Submenu } from "../SubMenu";
+import { Submenu } from "@/components/SubMenu";
 import Image from "next/image";
-export default function Header() {
+export function Header() {
     const { data, status} = useSession();
     const menuItems = [
         { label: 'Chamados', href: '/dashboard' },

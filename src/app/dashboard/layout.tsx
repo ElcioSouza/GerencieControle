@@ -1,8 +1,7 @@
 import { DashboardHeader } from "./components/header";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { Header } from "@/components/Header";
 import { AuthProvider } from "@/providers/auth";
 import { ModalProvider } from "@/providers/modal";
 
@@ -19,7 +18,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <Header />
         <DashboardHeader />
         {children}
-        <Footer />
+
       </ModalProvider>
   );
 }   

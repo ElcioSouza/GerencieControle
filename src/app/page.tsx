@@ -1,6 +1,6 @@
 "use client"
-import Header from "@/components/Header";
-import { signIn, signOut, useSession } from "next-auth/react"
+import { Header } from "@/components/Header";
+import { signIn } from "next-auth/react"
 import { Feature } from '@/components/Features';
 import { Hero } from '@/components/Hero';
 import { Benefits } from '@/components/Benefits';
