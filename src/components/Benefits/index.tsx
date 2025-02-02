@@ -1,4 +1,4 @@
-import { FiMail } from "react-icons/fi";
+import { FiHome, FiMail } from "react-icons/fi";
 
 export function Benefits() {
   return (<div className="mt-20">
@@ -8,7 +8,7 @@ export function Benefits() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="flex items-start">
                   <div className="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-
+                      <FiHome className="h-5 w-5 text-blue-500" /> 
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold mb-2">
