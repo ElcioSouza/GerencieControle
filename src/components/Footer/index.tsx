@@ -37,7 +37,7 @@ export function Footer() {
                 <li>
                   <a onClick={() => signIn()} className="text-gray-400 hover:text-white cursor-pointer">
                     Login
-                  </a>
+                </a>
                 </li>
 
               </ul>
