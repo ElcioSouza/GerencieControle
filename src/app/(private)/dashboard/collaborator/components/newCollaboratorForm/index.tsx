@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
 import { useRouter } from "next/navigation";
-import { formCreateCollaboratorSchema,formCreateCollaboratorSchemaData } from "@/app/dashboard/collaborator/schemas/formCreateCollaboratorSchema";
+import { formCreateCollaboratorSchema,formCreateCollaboratorSchemaData } from "@/app/(private)/dashboard/collaborator/schemas/formCreateCollaboratorSchema";
 
 export function NewCollaboratorForm({ UserId }: { UserId: string }) {
     const {

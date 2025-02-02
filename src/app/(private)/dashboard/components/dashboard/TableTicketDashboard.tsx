@@ -7,11 +7,11 @@ import { useContext, useState } from 'react';
 import { ModalContext } from '@/providers/modal';
 import { Space, Table, Tag, Spin } from 'antd';
 import type { TableProps } from 'antd';
-import { TicketType } from '../../../type/tickets.type';
+import { TicketType } from '@/app/type/tickets.type';
 import { useSession } from 'next-auth/react';
-import { ButtonRefresh } from '../buttonrefresh';
+import { ButtonRefresh } from '@/app/(private)/dashboard/components/buttonrefresh';
 import Link from 'next/link';
-import { TicketStatus } from '../ticketstatus';
+import { TicketStatus } from '@/app/(private)/dashboard/components/ticketstatus';
 interface Props {
     tickets: TicketType[],
     total: number
@@ -33,7 +33,9 @@ interface ResponseTickets {
         }
     }
 }
+
 export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
+    const paginationDefaults = { current: 1, pageSize: 6, total }
     const [loading, setLoading] = useState(true);
     const [loadingTable, setLoadingTable] = useState(false);
     const [searchInput, setSearchInput] = useState('');
@@ -45,7 +47,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
 
     const { status, data } = useSession();
     const [tickets, setTickets] = useState<TicketType[]>(titcketsProps);
-    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 6, total });
+    const [pagination, setPagination] = useState<PaginationType>(paginationDefaults);
     const router = useRouter();
     const { handleModalVisible, setDetailTicket } = useContext(ModalContext);
     async function fetchTickets(offset: number = 0, limit: number = 5, search: string = '', status: string = ''): Promise<ResponseTickets> {
@@ -74,12 +76,13 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
 
     async function handleSearch(search: string, newSelectStatus: string = '') {
         try {
+        
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
-            setPagination({ current: 1, pageSize: 5, total: 0 })
+            setPagination(paginationDefaults)
             setLoadingTable(true);
-            const offset = (pagination.current - 1) * pagination.pageSize;
-            const limit = pagination.pageSize;
+            const offset = (paginationDefaults.current - 1) * paginationDefaults.pageSize;
+            const limit = paginationDefaults.pageSize;
             const result = await fetchTickets(offset, limit, search, newSelectStatus);
             setTickets(result.pack.data.tickets);
             setPagination({ ...pagination, total: result.pack.data.total_fetch });
@@ -197,6 +200,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                                 <input type="text"
                                     placeholder="Pesquisar Chamado"
                                     className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
+                                    onBlur={() =>handleSearch(searchInput, selectStatus)}
                                     onChange={(e) => setSearchInput(e.target.value)}
                                     onKeyUp={(e) => e.key === 'Enter' && handleSearch(searchInput,selectStatus)}
                                 />

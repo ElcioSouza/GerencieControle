@@ -2,7 +2,7 @@
 import {createContext, ReactNode, useState} from  'react';
 import { TicketProps } from '@/utils/ticket.type';
 import { CollaboratorProps } from '@/utils/collaborator.type';
-import {ModalTicket} from '../components/modal';
+import {ModalTicket} from '@/components/modal';
 
 interface ModalContextDataProps {
     visible: boolean;

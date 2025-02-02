@@ -1,4 +1,4 @@
-import { TicketType } from "../type/tickets.type"
+import { TicketType } from "@/app/type/tickets.type"
 
 export const ticketsFactory = (data:any): TicketType[] =>{
     return data.map((item: any) => ({

@@ -55,7 +55,7 @@ export async function POST(request: Request) {
         const filter = {
             status: status
         }   
-        console.log(status)   
+        console.log(offset, limit, search, status);   
         interface queryPrismaTypes {
             [key: string]: {
                 contains: string;

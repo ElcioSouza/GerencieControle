@@ -2,7 +2,7 @@ import { Container } from "@/components/Container";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { CardCollaborator } from "./components/cardCollaborator";
+import { CardCollaborator } from "@/app/(private)/dashboard/collaborator/components/cardCollaborator";
 import prisma from "@/lib/prisma";
 import { colllaboratorFactory } from "@/app/factories/ColllaboratorFactory";
 export default async function Collaborator() {
@@ -17,7 +17,7 @@ export default async function Collaborator() {
           UserId: session.user.id
       },
       skip: 0, // offset
-      take: 5, // limit
+      take: 6, // limit
       orderBy: {
         created_at: "desc"
       }

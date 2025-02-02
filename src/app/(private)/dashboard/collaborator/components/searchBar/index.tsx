@@ -18,6 +18,7 @@ export function SearchBar({ searchInput, setSearchInput, handleSearch, selectSta
                 placeholder="Pesquisar Colaborador"
                 className="border-2 border-slate-300 rounded-md pr-7 pl-2 p-1 outline-none"
                 value={searchInput}
+                onBlur={() =>handleSearch(searchInput, selectStatus)}
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyUp={(e) => e.key === 'Enter' && handleSearch(searchInput, selectStatus)}
             />

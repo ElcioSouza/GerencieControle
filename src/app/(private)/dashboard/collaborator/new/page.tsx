@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { NewCollaboratorForm } from "../components/newCollaboratorForm";
+import { NewCollaboratorForm } from "@/private/dashboard/collaborator/components/newCollaboratorForm";
 
 export default async function NewColaborador() {
     const session = await getServerSession(authOptions);

@@ -3,8 +3,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
-import { FormSchemaTicket, FormSchemaTicketData } from "@/app/openticket/schema/formTicketSchema";
-import { CollaboratorDataInfo } from "@/app/openticket/type";
+import { FormSchemaTicket, FormSchemaTicketData } from "@/app/(public)/openticket/schema/formTicketSchema";
+import { CollaboratorDataInfo } from "@/app/(public)/openticket/type";
 
 export interface collaboratorDataInfoProps {
     collaborator: CollaboratorDataInfo | null

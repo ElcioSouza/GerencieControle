@@ -1,4 +1,4 @@
-import { CollaboratorType } from "./collaborator.type";
+import { CollaboratorType } from "@/app/type/collaborator.type";
 
  
   export type TicketType = {

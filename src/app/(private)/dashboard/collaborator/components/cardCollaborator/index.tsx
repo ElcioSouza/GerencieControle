@@ -4,25 +4,27 @@ import { CollaboratorProps } from "@/utils/cardCollaborator.type";
 import { PaginationType, ResponseCollaborator } from "@/app/type/cardcollaborator.type";
 import { useRouter } from "next/navigation";
 import { Pagination } from 'antd';
-import { ButtonRefresh } from "@/app/dashboard/components/buttonrefresh";
+import { ButtonRefresh } from "@/app/(private)/dashboard/components/buttonrefresh";
 import Link from "next/link";
-import { SearchBar } from "../searchBar";
+import { SearchBar } from "@/app/(private)/dashboard/collaborator/components/searchBar";
 import { CollaboratorCard } from "../collaboratorCard";
-import { CardSelect } from "../cardSelect";
+import { CardSelect } from "@/app/(private)/dashboard/collaborator/components/cardSelect";  
 
 export function CardCollaborator({ collaborator, total }: { collaborator: CollaboratorProps[], total: number }) {
+    const paginationDefaults =
+    { current: 1, pageSize: 6, total: total }
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [searchInput, setSearchInput] = useState("");
     const [collaborators, setCollaborators] = useState<CollaboratorProps[]>(collaborator);
-    const [pagination, setPagination] = useState<PaginationType>({ current: 1, pageSize: 6, total });
+    const [pagination, setPagination] = useState<PaginationType>(paginationDefaults);
     const [selectStatus, setSelectStatus] = useState('Ativo');
 
     useEffect(() => {
         setLoading(false);
     }, [loading]);
 
-    async function fetchCollaborator(offset: number = 0, limit: number = 5, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
+    async function fetchCollaborator(offset: number = 0, limit: number = 6, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
         const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}&status=${status}`, {
             method: "GET"
         })
@@ -35,6 +37,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
             const result = await fetchCollaborator(offset, limit, searchInput);
+            console.log(offset, limit, searchInput,result);
             setCollaborators(result.pack.data.collaborator);
         } catch (error) {
             console.log(error);
@@ -45,9 +48,9 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
         try {
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
-            setPagination({ current: 1, pageSize: 5, total: 0 })
-            const offset = (pagination.current - 1) * pagination.pageSize;
-            const limit = pagination.pageSize;
+            setPagination(paginationDefaults)
+            const offset = (paginationDefaults.current - 1) * paginationDefaults.pageSize;
+            const limit = paginationDefaults.pageSize;
             const result = await fetchCollaborator(offset, limit, search, newSelectStatus);
             setCollaborators(result.pack.data.collaborator);
             setPagination({ ...pagination, total: result.pack.data.total_fetch });

@@ -6,6 +6,7 @@ import { Submenu } from "@/components/SubMenu";
 import Image from "next/image";
 export function Header() {
     const { data, status} = useSession();
+    
     const menuItems = [
         { label: 'Chamados', href: '/dashboard' },
         { label: 'Colaborador', href: '/dashboard/collaborator' },

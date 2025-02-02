@@ -3,10 +3,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
-import { FormSchema, FormSchemaData } from "@/app/openticket/schema/formOpenTicketSchema";
+import { FormSchema, FormSchemaData } from "@/app/(public)/openticket/schema/formOpenTicketSchema";
 import { FiSearch, FiX } from "react-icons/fi";
-import {FormTicket} from "./components/FormTicket"
-import { CollaboratorDataInfo } from "@/app/openticket/type";
+import {FormTicket} from "@/app/(public)/openticket/components/FormTicket"
+import { CollaboratorDataInfo } from "@/app/(public)/openticket/type";
 
 
 export default function OpenTicket() {

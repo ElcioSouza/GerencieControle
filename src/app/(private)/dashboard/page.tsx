@@ -3,8 +3,8 @@ import {getServerSession} from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-import { TableTicketDashboard } from './components/dashboard/TableTicketDashboard';
-import { ticketsFactory } from '../factories/TicketsFactory';
+import { TableTicketDashboard } from '@/app/(private)/dashboard/components/dashboard/TableTicketDashboard';
+import { ticketsFactory } from '@/app/factories/TicketsFactory';
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
     if(!session || !session.user) {
@@ -21,7 +21,7 @@ export default async function Dashboard() {
             Collaborator: true
           },
           skip: 0, // offset
-          take: 5, // limit
+          take: 6, // limit
           orderBy: {
             created_at: "desc"
           }

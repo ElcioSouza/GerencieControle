@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
 import { useRouter } from "next/navigation";
-import { FormEditCollaboratorSchema, FormEditCollaboratorSchemaData } from "@/app/dashboard/collaborator/schemas/formEditCollaboratorSchema";
+import { FormEditCollaboratorSchema, FormEditCollaboratorSchemaData } from "@/app/(private)/dashboard/collaborator/schemas/formEditCollaboratorSchema";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

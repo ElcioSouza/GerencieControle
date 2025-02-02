@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import { AuthOptions } from "next-auth";
-import prisma from "./prisma";
+import prisma from "@/lib/prisma";
 import { JWTDecodeParams, JWT, encode, decode } from "next-auth/jwt";
 
 export const authOptions: AuthOptions = {
@@ -55,13 +55,14 @@ export const authOptions: AuthOptions = {
          */
         decode: async ({ secret, token }: JWTDecodeParams): Promise<JWT | null> => {
 
+
             if (!secret || !token || typeof token !== 'string') {
                 return null;
             }
 
             try {
                 const payload = await decode({ token, secret });
-               // console.log(token);
+                console.log(secret);
                 return payload;
             } catch (error) {
                 console.error("Error decoding JWT:", error);
