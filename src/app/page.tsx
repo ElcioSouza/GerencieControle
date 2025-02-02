@@ -1,11 +1,11 @@
 "use client"
 import Header from "@/components/Header";
 import { signIn, signOut, useSession } from "next-auth/react"
-import { Footer } from "./dashboard/components/Footer";
-import { Cta } from './dashboard/components/cta';
 import { Feature } from '@/components/Features';
 import { Hero } from '@/components/Hero';
 import { Benefits } from '@/components/Benefits';
+import { Cta } from "@/components/cta";
+import { Footer } from "@/components/Footer";
 export default function Home() {
   return (
     <>
