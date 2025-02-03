@@ -5,39 +5,62 @@ const publicRoutes = [
     { path: "/dashboard", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator/new", whenAuthenticated: 'next' },
-    { path: "/dashboard/collaborator/editar", whenAuthenticated: 'next' },
-    { path: "/dashboard/edit", whenAuthenticated: 'next' },
+    { path: "/dashboard/collaborator/editar/[id]", whenAuthenticated: 'next' },
+    { path: "/dashboard/edit/[id]", whenAuthenticated: 'next' },
     { path: "/dashboard/new", whenAuthenticated: 'next' },
-    { path: "/api/auth/callback/credentials", whenAuthenticated: 'next' },
 ] as const;
 
-const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = "/"
+const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = "/";
+
 export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
-    const publicCurrentRoute = publicRoutes.find((route) => route.path === path);
+
+    const publicCurrentRoute = publicRoutes
+        .map((route) => matchRoute(route.path, path, route))
+        .find(result => result.matched);
+
+    const id = publicCurrentRoute?.params?.id;
+    const queryParams = req.nextUrl.searchParams.get("name") // Aqui você captura os query params
+
     const authToken = req.cookies.get("next-auth.session-token");
 
-    if (!authToken?.value && publicCurrentRoute) {
+    if (!authToken && publicCurrentRoute) {
         return NextResponse.next();
     }
-    if (!authToken?.value && !publicCurrentRoute) {
+    if (!authToken && !publicCurrentRoute) {
         const redirectUrl = req.nextUrl.clone();
         redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE;
         return NextResponse.redirect(redirectUrl);
     }
-    if (!authToken?.value && publicCurrentRoute && publicCurrentRoute.whenAuthenticated === 'redirect') {
+    if (authToken && publicCurrentRoute && publicCurrentRoute.route.whenAuthenticated === 'redirect') {
         const redirectUrl = req.nextUrl.clone();
-        redirectUrl.pathname = '/dashboard';
+        redirectUrl.pathname = "/dashboard";
         return NextResponse.redirect(redirectUrl);
     }
-    if (!authToken?.value && !publicCurrentRoute) {
-       return NextResponse.next();
+    if (!authToken && !publicCurrentRoute) {
+        return NextResponse.next();
     }
-   return NextResponse.next();
+    return NextResponse.next();
+}
+
+function matchRoute(routePath: string, requestPath: string, route: { path: string, whenAuthenticated: string }) {
+    const routeRegex = new RegExp(`^${routePath.replace(/\[([^\]]+)\]/g, '([^/]+)')}$`);
+    const match = requestPath.match(routeRegex);
+
+    if (!match) return { matched: false, params: {}, route };
+
+    const params: Record<string, string> = {};
+    const paramNames = (routePath.match(/\[([^\]]+)\]/g) || []).map(param => param.replace(/[\[\]]/g, ''));
+
+    paramNames.forEach((paramName, index) => {
+        params[paramName] = match[index + 1];
+    });
+
+    return { matched: true, params, route };
 }
 
 export const config: MiddlewareConfig = {
     matcher: [
-      '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+        '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
     ],
-  }
+}
