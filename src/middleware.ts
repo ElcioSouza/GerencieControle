@@ -5,7 +5,7 @@ const publicRoutes = [
     { path: "/dashboard", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator/new", whenAuthenticated: 'next' },
-    { path: "/dashboard/collaborator/editar", whenAuthenticated: 'next' },
+    { path: "/dashboard/collaborator/editar/[id]", whenAuthenticated: 'next' },
     { path: "/dashboard/edit", whenAuthenticated: 'next' },
     { path: "/dashboard/new", whenAuthenticated: 'next' },
     { path: "/api/auth/callback/credentials", whenAuthenticated: 'next' },
