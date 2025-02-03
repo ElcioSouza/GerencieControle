@@ -2,7 +2,6 @@ import { NextResponse, type MiddlewareConfig, NextRequest } from "next/server";
 
 const publicRoutes = [
     { path: "/", whenAuthenticated: 'redirect' },
-    { path: "/teste", whenAuthenticated: 'redirect' },
     { path: "/api/auth/callback/credentials", whenAuthenticated: 'next' },
 ] as const;
 
@@ -21,11 +20,12 @@ export async function middleware(req: NextRequest) {
     }
     if (authToken && publicCurrentRoute && publicCurrentRoute.whenAuthenticated === 'redirect') {
         const redirectUrl = req.nextUrl.clone();
-        redirectUrl.pathname = '/dashboard';
+        console.log(redirectUrl);
+        redirectUrl.pathname = '/';
         return NextResponse.redirect(redirectUrl);
     }
     if (authToken && !publicCurrentRoute) {
-        return NextResponse.next();
+       return NextResponse.next();
     }
     return NextResponse.next();
 }
