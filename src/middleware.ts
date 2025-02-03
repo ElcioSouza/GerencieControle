@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
     if (authToken && !publicCurrentRoute) {
        return NextResponse.next();
     }
-    return NextResponse.next();
+   // return NextResponse.next();
 }
 
 export const config: MiddlewareConfig = {
