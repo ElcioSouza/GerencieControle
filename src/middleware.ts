@@ -18,10 +18,7 @@ export async function middleware(req: NextRequest) {
     const publicCurrentRoute = publicRoutes
         .map((route) => matchRoute(route.path, path, route))
         .find(result => result.matched);
-
-    const id = publicCurrentRoute?.params?.id;
-    const queryParams = req.nextUrl.searchParams.get("name") // Aqui você captura os query params
-
+        
     const authToken = req.cookies.get("next-auth.session-token");
 
     if (!authToken && publicCurrentRoute) {
