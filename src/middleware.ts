@@ -5,8 +5,8 @@ const publicRoutes = [
     { path: "/dashboard", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator/new", whenAuthenticated: 'next' },
-    { path: "/dashboard/collaborator/editar/[id]", whenAuthenticated: 'next' },
-    { path: "/dashboard/edit/[id]", whenAuthenticated: 'next' },
+    { path: "/dashboard/collaborator/editar", whenAuthenticated: 'next' },
+    { path: "/dashboard/edit", whenAuthenticated: 'next' },
     { path: "/dashboard/new", whenAuthenticated: 'next' },
     { path: "/api/auth/callback/credentials", whenAuthenticated: 'next' },
 ] as const;
@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
     const publicCurrentRoute = publicRoutes.find((route) => route.path === path);
     const authToken = req.cookies.get("next-auth.session-token");
 
-    if (!authToken && publicCurrentRoute) {
+    if (!authToken?.value && publicCurrentRoute) {
         return NextResponse.next();
     }
     if (!authToken?.value && !publicCurrentRoute) {
