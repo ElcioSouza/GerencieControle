@@ -32,7 +32,6 @@ export const authOptions: AuthOptions = {
          * @returns {Promessa<string>} O token JWT codificado.
          */
         encode: async ({ secret, token }) => {
-            console.log(secret, token);
             if (!secret) {
                 throw new Error("O segredo JWT é obrigatório");
             }
