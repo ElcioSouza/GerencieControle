@@ -3,7 +3,7 @@ import { NextResponse, type MiddlewareConfig, NextRequest } from "next/server";
 const publicRoutes = [
     { path: "/", whenAuthenticated: 'redirect' },
     { path: "/dashboard", whenAuthenticated: 'next' },
-    { path: "/dashboard/collaborator", whenAuthenticated: 'next' },
+    { path: "/dashboard/collaborator", whenAuthenticated: 'redirect' },
     { path: "/dashboard/collaborator/new", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator/editar/[id]", whenAuthenticated: 'next' },
     { path: "/dashboard/edit/[id]", whenAuthenticated: 'next' },
@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
     const publicCurrentRoute = publicRoutes
         .map((route) => matchRoute(route.path, path, route))
         .find(result => result.matched);
-        
+
     const authToken = req.cookies.get("next-auth.session-token");
 
     if (!authToken && publicCurrentRoute) {
