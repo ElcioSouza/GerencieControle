@@ -21,16 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br" className={`${inter.className}`}>
-      <body>
-        <AuthProvider>
-          <ModalProvider >
-          <Header />
+    <>
+      <AuthProvider>
+        <ModalProvider>
           <DashboardHeader />
-            {children}
-          </ModalProvider>
-        </AuthProvider>
-      </body>
-    </html>
+          {children}
+        </ModalProvider>
+      </AuthProvider>
+    </>
   );
 }

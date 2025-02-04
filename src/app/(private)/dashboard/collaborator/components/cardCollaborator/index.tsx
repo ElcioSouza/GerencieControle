@@ -11,8 +11,7 @@ import { CollaboratorCard } from "../collaboratorCard";
 import { CardSelect } from "@/app/(private)/dashboard/collaborator/components/cardSelect";  
 
 export function CardCollaborator({ collaborator, total }: { collaborator: CollaboratorProps[], total: number }) {
-    const paginationDefaults =
-    { current: 1, pageSize: 6, total: total }
+    const paginationDefaults = { current: 1, pageSize: 6, total: total }
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [searchInput, setSearchInput] = useState("");
@@ -60,8 +59,10 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
     }
 
     async function handleDeleteCollaborator(id: string) {
+    
         try {
             if (confirm("Deseja deletar o colaborador?")) {
+   
                 const response = await fetch(`/api/collaborator?id=${id}`, {
                     method: "PATCH",
                     headers: {
@@ -69,6 +70,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
                     }
                 });
                 const result = await response.json();
+                console.log(result);
                 if (result?.pack?.status === "Em andamento" || result?.pack?.status === "Urgente" || result?.pack?.status === "Baixo" || result?.pack?.status === "Pendente") {
                     alert(result?.pack?.error);
                 }

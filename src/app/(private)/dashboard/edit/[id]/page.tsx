@@ -7,9 +7,6 @@ import prisma from "@/lib/prisma";
 
 export default async function EditTicket({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
-    redirect('/');
-  }
   const { id } = params
  
   const tickets = await prisma.ticket.findMany({

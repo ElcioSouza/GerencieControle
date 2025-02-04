@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/providers/auth";
 import { ModalProvider } from "@/providers/modal";
+import { Header } from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] })
 export const dynamic = "force-dynamic";
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className={`${inter.className}`}>
       <body>
+
         <AuthProvider>
+          <Header />
           <ModalProvider >
             {children}
           </ModalProvider>

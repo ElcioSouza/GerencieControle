@@ -7,13 +7,10 @@ import prisma from "@/lib/prisma";
 
 export default async function NewTicket() {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
-    redirect('/');
-  }
 
   const collaboratores = await prisma.collaborator.findMany({
     where: {
-      UserId: session.user.id
+      UserId: session?.user.id
     }
   })
 

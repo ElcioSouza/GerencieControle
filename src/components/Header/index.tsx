@@ -11,6 +11,7 @@ export function Header() {
         { label: 'Chamados', href: '/dashboard' },
         { label: 'Colaborador', href: '/dashboard/collaborator' },
       ];
+      
     async function handleLogin() {
         try {
             await signIn("credentials", {           
@@ -27,7 +28,7 @@ export function Header() {
 
         async function handleLogout() {
             try {
-               document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+               document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
                 await signOut();
             } catch (error) {
                 console.error("Erro ao fazer logout:", error);

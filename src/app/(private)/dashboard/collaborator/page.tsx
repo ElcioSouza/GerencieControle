@@ -7,14 +7,11 @@ import prisma from "@/lib/prisma";
 import { colllaboratorFactory } from "@/app/factories/ColllaboratorFactory";
 export default async function Collaborator() {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
-    redirect('/');
-  }
-
+  
   const [collaboratorQuery, total] = await Promise.all([
     prisma.collaborator.findMany({
       where: {
-          UserId: session.user.id
+          UserId: session?.user.id
       },
       skip: 0, // offset
       take: 6, // limit
@@ -24,7 +21,7 @@ export default async function Collaborator() {
     }),
     prisma.collaborator.count({
       where: {
-          UserId: session.user.id
+          UserId: session?.user.id
       }
     })
   ]);

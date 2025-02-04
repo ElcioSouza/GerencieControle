@@ -1,3 +1,5 @@
+
+"use client";
 import { FiSearch } from "react-icons/fi";
 
 interface searchBarProps {

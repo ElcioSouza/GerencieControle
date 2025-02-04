@@ -7,9 +7,7 @@ import { NewCollaboratorForm } from "@/private/dashboard/collaborator/components
 
 export default async function NewColaborador() {
     const session = await getServerSession(authOptions);
-    if (!session || !session.user) {
-        redirect('/');
-    }
+
     return (
         <Container>
             <main className="flex flex-col mt-9 mb-2">
@@ -20,7 +18,7 @@ export default async function NewColaborador() {
                     <h1 className="text-3xl font-bold">Novo Colaborador</h1>
                 </div>
 
-                <NewCollaboratorForm  UserId={session.user.id} />
+                <NewCollaboratorForm  UserId={session?.user.id || ""} />
             </main>
         </Container>
 

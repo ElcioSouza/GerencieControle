@@ -7,14 +7,11 @@ import { TableTicketDashboard } from '@/app/(private)/dashboard/components/dashb
 import { ticketsFactory } from '@/app/factories/TicketsFactory';
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
-    if(!session || !session.user) {
-        redirect('/');
-    }
     const [ticketQuery, total] = await Promise.all([
         prisma.ticket.findMany({
           where: {
             Collaborator: {
-              UserId: session.user.id
+              UserId: session?.user.id
             }
           },
           include: {
@@ -29,7 +26,7 @@ export default async function Dashboard() {
         prisma.ticket.count({
           where: {
             Collaborator: {
-              UserId: session.user.id
+              UserId: session?.user.id
             }
           }
         })
