@@ -21,7 +21,6 @@ export async function middleware(req: NextRequest) {
         .map((route) => matchRoute(route.path, path, route))
         .find(result => result.matched);
         const authToken = await getToken({ req, secret, raw: true } as any); 
-        //const authToken = req.cookies.get("next-auth.session-token");
         const response = NextResponse.next();
         if(publicCurrentRoute) {
             if(!authToken && publicCurrentRoute && publicCurrentRoute?.route.whenAuthenticated === 'next') {
