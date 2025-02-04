@@ -2,7 +2,7 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse, type MiddlewareConfig, NextRequest } from "next/server";
 
 const publicRoutes = [
-    { path: "/", whenAuthenticated: 'next' },
+    { path: "/", whenAuthenticated: 'redirect' },
     { path: "/dashboard", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator/new", whenAuthenticated: 'next' },
