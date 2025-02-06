@@ -14,7 +14,9 @@ export function CollaboratorCard({ collaborator, handleDelete }: collaboratorCar
             <h2><strong>Nome:</strong> {collaborator.name}</h2>
             <p><strong>Email:</strong> {collaborator.email}</p>
             <p><strong>Telefone:</strong> {collaborator.phone}</p>
+            <p><strong>Data de Cadastro:</strong> {collaborator?.created_at?.toLocaleDateString("pt-BR")}</p>
             <p><strong>Status:</strong> {collaborator.status}</p>
+
             <div className="flex gap-3">
                 <button onClick={() => handleDelete(collaborator.id)} className="rounded-md bg-red-600 py-1 px-5 text-white hover:bg-red-700">Deletar</button>
                 <button onClick={() => router.push(`/dashboard/collaborator/editar/${collaborator.id}`)} className="rounded-md bg-blue-600 py-1 px-5 text-white hover:bg-blue-700">Editar</button>

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { TicketProps } from '@/utils/ticket.type';
 import { useRouter } from "next/navigation";
 import { FiCheckSquare, FiLoader, FiEdit, FiEye, FiSearch } from 'react-icons/fi';
@@ -114,11 +114,21 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
     async function handleSearchTicket(ticket: TicketType) {
         router.push(`/dashboard/edit/${ticket.id}`);
     }
-    function handleOpenModal(ticket: TicketType) {
-
-        handleModalVisible();
+    function handleOpenModal(ticket: TicketType, e?: React.MouseEvent<HTMLDivElement>) {
+        if (!e || !e.target) return;
+        const evento = e.target as HTMLElement;
+        if (evento.closest(".mx-1.edit, .checkstatus")) return;
+        
+        handleModalVisible(); 
         setDetailTicket({ ticket, collaborator: ticket.Collaborator });
     }
+
+    async function handleClickRowModalShow(record: TicketType, e: React.MouseEvent<HTMLDivElement>) {
+        if(window.innerWidth > 992) {
+            handleOpenModal(record, e);
+         } 
+  }
+
 
     const columns: TableProps<DataType>['columns'] = [
         {
@@ -162,13 +172,13 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             dataIndex: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <button onClick={() => handleChangeStatus(record)}>
+                    <button className="checkstatus"  onClick={() => handleChangeStatus(record)}>
                         <FiCheckSquare size={24} color="#131313" />
                     </button>
-                    <button className="mx-1" onClick={() => handleSearchTicket(record)}>
+                    <button className="mx-1 edit" onClick={() => handleSearchTicket(record)}>
                         <FiEdit size={24} color="#131313" />
                     </button>
-                    <button onClick={() => handleOpenModal(record)}>
+                    <button className="view" onClick={() => handleOpenModal(record)}>
                         <FiEye size={24} color="#131313" />
                     </button>
                 </Space>
@@ -190,6 +200,9 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         </>)}
         {!loading && (
             <Table
+            onRow={(record) => ({
+                onClick: (e) => handleClickRowModalShow(record,e),
+            })}
                 scroll={{ x: 'max-content' }}
                 caption={(
                     <div className="flex items-center justify-between my-2">

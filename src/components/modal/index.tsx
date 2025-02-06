@@ -6,7 +6,7 @@ import { ModalContext } from "@/providers/modal"
 export function ModalTicket() {
     const { handleModalVisible, ticket } = useContext(ModalContext)
     const modalRef = useRef<HTMLDivElement | null>(null);
-
+    //console.log();
     const handleModalClick = (e: MouseEvent<HTMLDivElement>) => {
         if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
             handleModalVisible()
@@ -30,6 +30,14 @@ export function ModalTicket() {
                         <h2 className="font-bold">Descrição:</h2>
                         <p>{ticket?.ticket.description}</p>
                     </div>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                        <h2 className="font-bold">Data de Abertura:</h2>
+                        <p>{ticket?.ticket.created_at?.toLocaleDateString("pt-BR")}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                        <h2 className="font-bold">Data de Atualização:</h2>
+                        <p>{ticket?.ticket.updated_at?.toLocaleDateString("pt-BR")}</p>
+                    </div>
                     <div className="w-full border-b-[1.5px] my-4"></div>
                     <h1 className="font-bold text-lg mb-4">Detalhe do Colaborador</h1>
                     <div className="flex flex-wrap gap-1 mb-2">
@@ -50,6 +58,14 @@ export function ModalTicket() {
                             <p>{ticket?.collaborator?.address}</p>
                         </div>
                     )}
+                    <div className="flex flex-wrap gap-1 mb-2">
+                        <h2 className="font-bold">Data de Abertura:</h2>
+                        <p>{ticket?.collaborator?.created_at?.toLocaleDateString("pt-BR")}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                        <h2 className="font-bold">Data de Atualização:</h2>
+                        <p>{ticket?.collaborator?.updated_at?.toLocaleDateString("pt-BR")}</p>
+                    </div>
                 </div>
             </div>
         </section>
