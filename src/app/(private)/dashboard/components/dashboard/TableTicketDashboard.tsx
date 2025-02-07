@@ -115,7 +115,13 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
         router.push(`/dashboard/edit/${ticket.id}`);
     }
     function handleOpenModal(ticket: TicketType, e?: React.MouseEvent<HTMLDivElement>) {
+        if(window.innerWidth < 992)  {
+            handleModalVisible(); 
+            setDetailTicket({ ticket, collaborator: ticket.Collaborator });
+            return;
+        }
         if (!e || !e.target) return;
+        
         const evento = e.target as HTMLElement;
         if (evento.closest(".mx-1.edit, .checkstatus")) return;
         

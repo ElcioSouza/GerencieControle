@@ -32,11 +32,11 @@ export function ModalTicket() {
                     </div>
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Data de Abertura:</h2>
-                        <p>{ticket?.ticket.created_at?.toLocaleDateString("pt-BR")}</p>
+                        <p>{ticket?.ticket.created_at ? new Date(ticket.ticket.created_at).toLocaleDateString("pt-BR") : "Data inválida"}</p>
                     </div>
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Data de Atualização:</h2>
-                        <p>{ticket?.ticket.updated_at?.toLocaleDateString("pt-BR")}</p>
+                        <p>{ticket?.ticket.updated_at ? new Date(ticket.ticket.updated_at).toLocaleDateString("pt-BR") : "Data inválida"}</p>
                     </div>
                     <div className="w-full border-b-[1.5px] my-4"></div>
                     <h1 className="font-bold text-lg mb-4">Detalhe do Colaborador</h1>
@@ -60,11 +60,11 @@ export function ModalTicket() {
                     )}
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Data de Abertura:</h2>
-                        <p>{ticket?.collaborator?.created_at?.toLocaleDateString("pt-BR")}</p>
+                        <p>{ticket?.collaborator?.created_at ? new Date(ticket.collaborator.created_at).toLocaleDateString("pt-BR") : "Data inválida"}</p>
                     </div>
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Data de Atualização:</h2>
-                        <p>{ticket?.collaborator?.updated_at?.toLocaleDateString("pt-BR")}</p>
+                        <p>{ticket?.collaborator?.updated_at ? new Date(ticket.collaborator.updated_at).toLocaleDateString("pt-BR") : "Data inválida"}</p>
                     </div>
                 </div>
             </div>

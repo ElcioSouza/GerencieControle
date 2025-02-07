@@ -14,7 +14,7 @@ export function CollaboratorCard({ collaborator, handleDelete }: collaboratorCar
             <h2><strong>Nome:</strong> {collaborator.name}</h2>
             <p><strong>Email:</strong> {collaborator.email}</p>
             <p><strong>Telefone:</strong> {collaborator.phone}</p>
-            <p><strong>Data de Cadastro:</strong> {collaborator?.created_at?.toLocaleDateString("pt-BR")}</p>
+            <p><strong>Data de Cadastro:</strong> {collaborator.created_at ? new Date(collaborator.created_at).toLocaleDateString("pt-BR") : "Data inválida"}</p>
             <p><strong>Status:</strong> {collaborator.status}</p>
 
             <div className="flex gap-3">
