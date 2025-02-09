@@ -55,17 +55,17 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             method: "GET"
         })
         const result = await response.json();
-        console.log(search);
         return result;
     }
 
-    async function handlePagination(_pagination: PaginationType) {
+    async function handlePagination(_pagination: PaginationType, newSelectStatus: string = '') {
         try {
             setLoadingTable(true);
+            setSelectStatus(newSelectStatus);
             setPagination(_pagination);
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
-            const result = await fetchTickets(offset, limit, searchInput);
+            const result = await fetchTickets(offset, limit, searchInput,newSelectStatus);
             setTickets(result.pack.data.tickets);
         } catch (error) {
             console.log(error);
@@ -76,7 +76,6 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
 
     async function handleSearch(search: string, newSelectStatus: string = '') {
         try {
-        
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
             setPagination(paginationDefaults)
@@ -255,8 +254,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
                 dataSource={dataSource}
                 pagination={pagination}
                 onChange={(_pagination) => {
-
-                    handlePagination(_pagination as PaginationType)
+                    handlePagination(_pagination as PaginationType, selectStatus)
                 }} />
         )}
 

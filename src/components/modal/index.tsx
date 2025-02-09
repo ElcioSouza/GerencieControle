@@ -6,7 +6,6 @@ import { ModalContext } from "@/providers/modal"
 export function ModalTicket() {
     const { handleModalVisible, ticket } = useContext(ModalContext)
     const modalRef = useRef<HTMLDivElement | null>(null);
-    //console.log();
     const handleModalClick = (e: MouseEvent<HTMLDivElement>) => {
         if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
             handleModalVisible()

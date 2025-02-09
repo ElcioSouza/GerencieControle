@@ -30,13 +30,13 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
         const result = await response.json();
         return result;
     }
-    async function handlePagination(_pagination: PaginationType) {
+    async function handlePagination(_pagination: PaginationType, newSelectStatus: string = '') {
         try {
             setPagination(_pagination);
+            setSelectStatus(newSelectStatus);
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
-            const result = await fetchCollaborator(offset, limit, searchInput);
-            console.log(offset, limit, searchInput,result);
+            const result = await fetchCollaborator(offset, limit, searchInput,newSelectStatus);
             setCollaborators(result.pack.data.collaborator);
         } catch (error) {
             console.log(error);
@@ -70,7 +70,6 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
                     }
                 });
                 const result = await response.json();
-                console.log(result);
                 if (result?.pack?.status === "Em andamento" || result?.pack?.status === "Urgente" || result?.pack?.status === "Baixo" || result?.pack?.status === "Pendente") {
                     alert(result?.pack?.error);
                 }
@@ -81,9 +80,8 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
             console.log(error);
         }
     }
-    function handlePageChange(page: number) {
-        handlePagination({ ...pagination, current: page });
-        //  setCurrentPage(page);
+    function handlePageChange(page: number,newSelectStatus: string) {
+        handlePagination({ ...pagination, current: page },newSelectStatus);
     }
     return (
         <>
@@ -107,7 +105,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
                     current={pagination.current}
                     total={pagination.total}
                     pageSize={pagination.pageSize}
-                    onChange={(page) => handlePageChange(page)}
+                    onChange={(page) => handlePageChange(page,selectStatus)}
                 />
             </div>
         </>
