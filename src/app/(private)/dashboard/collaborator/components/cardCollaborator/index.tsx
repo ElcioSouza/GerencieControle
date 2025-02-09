@@ -17,7 +17,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
     const [searchInput, setSearchInput] = useState("");
     const [collaborators, setCollaborators] = useState<CollaboratorProps[]>(collaborator);
     const [pagination, setPagination] = useState<PaginationType>(paginationDefaults);
-    const [selectStatus, setSelectStatus] = useState('Ativo');
+    const [selectStatus, setSelectStatus] = useState<string>('');
 
     useEffect(() => {
         setLoading(false);

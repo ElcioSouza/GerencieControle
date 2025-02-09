@@ -54,7 +54,7 @@ export async function POST(request: Request) {
         const status = String(searchParams.get("status"));
         const filter = {
             status: status
-        }    
+        } 
         interface queryPrismaTypes {
             [key: string]: {
                 contains: string;

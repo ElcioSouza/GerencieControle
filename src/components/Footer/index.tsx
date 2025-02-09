@@ -1,8 +1,10 @@
 "use client"
 import { signIn } from "next-auth/react";
 import { date } from "@/utils/date";
-
-export function Footer() {
+interface FooterProps {
+    status: string;
+}
+export function Footer({status}: FooterProps) {
     const currentData =  date();
     const year = currentData.getFullYear();
     return (
@@ -33,14 +35,15 @@ export function Footer() {
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4">Link</h4>
+              { status === "unauthenticated" && (
               <ul className="space-y-2">
-                <li>
-                  <a onClick={() => signIn()} className="text-gray-400 hover:text-white cursor-pointer">
-                    Login
-                </a>
-                </li>
-
-              </ul>
+              <li>
+                <a onClick={() => signIn()} className="text-gray-400 hover:text-white cursor-pointer">
+                  Login
+              </a>
+              </li>
+            </ul>
+              )}
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">

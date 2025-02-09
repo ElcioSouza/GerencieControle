@@ -2,9 +2,10 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse, type MiddlewareConfig, NextRequest } from "next/server";
 
 const publicRoutes = [
+    // next ele é public e o redirect é privada
     { path: "/dashboard", whenAuthenticated: 'next' },
     { path: "/dashboard/collaborator", whenAuthenticated: 'next' },
-    { path: "/dashboard/collaborator/new", whenAuthenticated: 'next' },
+    { path: "/dashboard/collaborator/new", whenAuthenticated: 'redirect' },
     { path: "/dashboard/collaborator/editar/[id]", whenAuthenticated: 'next' },
     { path: "/dashboard/edit/[id]", whenAuthenticated: 'next' },
     { path: "/dashboard/new", whenAuthenticated: 'next' },
