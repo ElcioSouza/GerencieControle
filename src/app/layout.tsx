@@ -6,6 +6,7 @@ import { ModalProvider } from "@/providers/modal";
 import ReactGA from "react-ga4";
 ReactGA.initialize("G-0F59VKD9NS");
 ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+
 const inter = Inter({ subsets: ["latin"] })
 export const dynamic = "force-dynamic";
 
