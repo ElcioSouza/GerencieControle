@@ -22,13 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <AuthProvider>
-        <ModalProvider>
+
           <Header />
           <DashboardHeader />
           {children}
-        </ModalProvider>
-      </AuthProvider>
+
     </>
   );
 }
