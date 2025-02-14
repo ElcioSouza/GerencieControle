@@ -23,10 +23,6 @@ export default function Login() {
           formState: { errors },
       } = useForm<FormSchemaUserData>({
           resolver: zodResolver(FormSchemaUser),
-          defaultValues: {
-              email: "elcio.monico@gmail.com",
-              password: "@@Elcio@@90",
-          }
       });
   const router = useRouter()
   const handleSubmitLogin = async (data: FormSchemaUserData) => {
