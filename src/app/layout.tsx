@@ -23,9 +23,10 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className={`${inter.className}`}>
       <body>
-      <GoogleAnalytics />
+  
         <AuthProvider>
           <ModalProvider >
+          <GoogleAnalytics />
             {children}
           </ModalProvider>
         </AuthProvider>

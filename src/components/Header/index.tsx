@@ -9,6 +9,7 @@ import { LuUserPlus } from "react-icons/lu";
 
 export function Header() {
     const { data, status } = useSession();
+    console.log(data);
     const menuItems = [
         { label: 'Chamados', href: '/dashboard' },
         { label: 'Colaborador', href: '/dashboard/collaborator' },
@@ -69,7 +70,6 @@ export function Header() {
                 )}
 
                 {status === "authenticated" && (
-
 
                     <div className="flex items-baseline gap-4">
 
