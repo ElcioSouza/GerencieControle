@@ -18,20 +18,20 @@ export default async function NewTicket() {
     "use server";
     const name = formData.get('name');
     const description = formData.get('description');
-    const collaboratorId = formData.get('cliente');
-    if(!name || !description || !collaboratorId) {
+    const collaboratorId = formData.get('collaborator');
+    if (!name || !description || !collaboratorId) {
       return;
     }
     await prisma.ticket.create({
       data: {
-         name: name as string,
-         description: description as string,
-         CollaboratorId: collaboratorId as string,
-         status: "Em andamento",
-         UserId: session?.user.id
+        name: name as string,
+        description: description as string,
+        CollaboratorId: collaboratorId as string,
+        status: "Em andamento",
+        UserId: session?.user.id
       }
     })
-    redirect('/dashboard');
+    //redirect('/dashboard');
   }
 
   return (
@@ -54,28 +54,28 @@ export default async function NewTicket() {
             <textarea placeholder="Descreva o problema..." name="description" className="w-full border-2 rounded-md px-2 mb-2 h-24 resize-none" required></textarea>
           </div>
           <div>
-            {collaboratores.length !== 0 && (
-              <>
+            {collaboratores.filter(Collaborator => Collaborator.status !== "Inativo").length > 0 ? (
+              <div>
                 <label className="mb-1 fonte-medium text-lg">Selecione o Colaborador</label>
-                <select className="w-full border-2 rounded-md px-2 mb-2 h-11 resize-none bg-white" name="cliente">
+                <select className="w-full border-2 rounded-md px-2 mb-2 h-11 resize-none bg-white" name="collaborator">
                   {collaboratores.map(collaborator => (
                     collaborator.status !== 'Inativo' && <option key={collaborator.id} value={collaborator.id}>{collaborator.name}</option>
                   ))}
                 </select>
-
-              </>
+              </div>
+            ) : (
+              <div>
+                <div className="mb-1 text-lg font-medium">
+                  Nenhum colaborador cadastrado? <Link href="/dashboard/collaborator/new" className="text-blue-500 font-semibold">Cadastre um agora</Link>
+                </div>
+              </div>
             )}
-          </div>
 
-          {collaboratores.length === 0 && (
-           <Link href="/dashboard/new">
-             Você ainda não tem nenhum colaborador, <span className="text-blue-500 font-medium"> Cadastrar colaborador</span>
-           </Link>
-          )}
-          <button 
-          type="submit"
-          className="bg-blue-500 text-white font-bold py-2 h-11 rounded-md my-4 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          disabled={collaboratores.length === 0}
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white font-bold py-2 h-11 rounded-md my-4 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            disabled={collaboratores.length === 0}
           >
             Cadastrar Chamado
           </button>

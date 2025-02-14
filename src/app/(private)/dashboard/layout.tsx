@@ -24,6 +24,7 @@ export default function RootLayout({
     <>
       <AuthProvider>
         <ModalProvider>
+          <Header />
           <DashboardHeader />
           {children}
         </ModalProvider>

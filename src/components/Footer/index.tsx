@@ -3,8 +3,9 @@ import { signIn } from "next-auth/react";
 import { date } from "@/utils/date";
 interface FooterProps {
   status: string;
+  loading: boolean;
 }
-export function Footer({ status }: FooterProps) {
+export function Footer({ status, loading }: FooterProps) {
   const currentData = date();
   const year = currentData.getFullYear();
   return (

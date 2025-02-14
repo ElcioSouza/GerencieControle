@@ -6,19 +6,26 @@ import { Benefits } from '@/components/Benefits';
 import { Cta } from "@/components/cta";
 import { Footer } from "@/components/Footer";
 import { authOptions } from "@/lib/auth";
+import {useLayoutEffect,useState} from "react";
+import { Header } from "@/components/Header";
 export default function Home() {
   const { data, status} = useSession();
+  const [loading, setLoading] = useState(true);
+  useLayoutEffect(() => {
+    status === "unauthenticated" && loading && setLoading(false);
+  }, [status]);
   return (
     <>
+      <Header />
       <main>
         <div className="min-h-screen bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <Hero signIn={signIn} status={status} />
+          <div className="max-w-7xl mx-auto px-6 sm:px-6 md:px-0 lg:px-0 py-20">
+            <Hero signIn={signIn} status={status} loading={loading} />
             <Feature />
-            <Cta signIn={signIn} status={status} />
+            <Cta signIn={signIn} status={status}  loading={loading} />
             <Benefits />
           </div>
-          <Footer status={status} />
+          <Footer status={status}  loading={loading} />
         </div>
       </main>
     </>
