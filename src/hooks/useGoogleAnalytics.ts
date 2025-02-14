@@ -5,7 +5,7 @@ import ReactGA from "react-ga4";
 
 export function useGoogleAnalytics() { // Certifique-se de que está exportando corretamente
   useEffect(() => {
-    ReactGA.initialize("G-0F59VKD9NS");
+    ReactGA.initialize(process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS || "");
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, []);
 }
