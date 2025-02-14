@@ -31,7 +31,7 @@ export default async function NewTicket() {
         UserId: session?.user.id
       }
     })
-    //redirect('/dashboard');
+    redirect('/dashboard');
   }
 
   return (
