@@ -3,10 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/providers/auth";
 import { ModalProvider } from "@/providers/modal";
-import ReactGA from "react-ga4";
-ReactGA.initialize("G-0F59VKD9NS");
-ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-
+//import ReactGA from "react-ga4";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 const inter = Inter({ subsets: ["latin"] })
 export const dynamic = "force-dynamic";
 
@@ -21,13 +19,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="pt-br" className={`${inter.className}`}>
       <body>
-
+      <GoogleAnalytics />
         <AuthProvider>
           <ModalProvider >
-
             {children}
           </ModalProvider>
         </AuthProvider>

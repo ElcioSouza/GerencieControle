@@ -23,6 +23,6 @@
       "@/public/*": ["./src/app/(public)/*"]
     },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/Token", "jest.config.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/auth/Token", "jest.config.ts", "src/components/GoogleAnalytics"],
   "exclude": ["node_modules"]
 }
