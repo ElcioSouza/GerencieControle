@@ -36,6 +36,7 @@ export default function Login() {
      toast.error(result.error, { theme: "colored"});
     }
     if (result?.ok) {
+      
       toast.success("Login realizado com sucesso!", { theme: "colored" });
       router.replace("/dashboard");
     }
