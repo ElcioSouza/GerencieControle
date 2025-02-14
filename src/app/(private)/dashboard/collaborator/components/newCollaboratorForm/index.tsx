@@ -40,7 +40,7 @@ export function NewCollaboratorForm({ UserId }: { UserId: string }) {
             setError("email", { type: "text", message: result.error })
             return;
         }
-        router.push("/dashboard/collaborator"); 
+        router.replace("/dashboard/collaborator"); 
     }
 
     return (
