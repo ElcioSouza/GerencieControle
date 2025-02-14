@@ -3,8 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/providers/auth";
 import { ModalProvider } from "@/providers/modal";
-import { Header } from "@/components/Header";
-
+import ReactGA from "react-ga4";
+ReactGA.initialize("G-0F59VKD9NS");
+ReactGA.send({ hitType: "pageview", page: "/my-path", title: "Custom Title" });
 const inter = Inter({ subsets: ["latin"] })
 export const dynamic = "force-dynamic";
 
