@@ -8,7 +8,9 @@ import { ButtonRefresh } from "@/app/(private)/dashboard/components/buttonrefres
 import Link from "next/link";
 import { SearchBar } from "@/app/(private)/dashboard/collaborator/components/searchBar";
 import { CollaboratorCard } from "../collaboratorCard";
-import { CardSelect } from "@/app/(private)/dashboard/collaborator/components/cardSelect";  
+import { CardSelect } from "@/app/(private)/dashboard/collaborator/components/cardSelect";
+import Loading from "@/app/loading";
+import { FiLoader } from "react-icons/fi";
 
 export function CardCollaborator({ collaborator, total }: { collaborator: CollaboratorProps[], total: number }) {
     const paginationDefaults = { current: 1, pageSize: 6, total: total }
@@ -36,7 +38,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
             setSelectStatus(newSelectStatus);
             const offset = (_pagination.current - 1) * _pagination.pageSize;
             const limit = _pagination.pageSize;
-            const result = await fetchCollaborator(offset, limit, searchInput,newSelectStatus);
+            const result = await fetchCollaborator(offset, limit, searchInput, newSelectStatus);
             setCollaborators(result.pack.data.collaborator);
         } catch (error) {
             console.log(error);
@@ -59,10 +61,10 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
     }
 
     async function handleDeleteCollaborator(id: string) {
-    
+
         try {
             if (confirm("Deseja deletar o colaborador?")) {
-   
+
                 const response = await fetch(`/api/collaborator?id=${id}`, {
                     method: "PATCH",
                     headers: {
@@ -80,9 +82,9 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
             console.log(error);
         }
     }
-    function handlePageChange(page: number,newSelectStatus: string) {
+    function handlePageChange(page: number, newSelectStatus: string) {
 
-        handlePagination({ ...pagination, current: page },newSelectStatus);
+        handlePagination({ ...pagination, current: page }, newSelectStatus);
     }
     return (
         <>
@@ -97,19 +99,33 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
                     </Link>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
-                {collaborators.length ? collaborators.map(item => <CollaboratorCard key={item.id} collaborator={item} handleDelete={handleDeleteCollaborator} />)
-                    : <p className="font-medium">Nenhum colaborador encontrado</p>}
-            </div>
-            <div className="flex justify-end">
-            {collaborators.length > 0 && (
-               <Pagination
-               current={pagination.current}
-               total={pagination.total}
-               pageSize={pagination.pageSize}
-               onChange={(page) => handlePageChange(page,selectStatus)} />  
+            {loading ? (
+                <div className="w-full flex justify-center items-start mt-16">
+                    <button className="animate-spin">
+                        <FiLoader size='26' color="#4b5563" />
+                    </button>
+                </div>
+            ) : (
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-10">
+                        {collaborators.length ? collaborators.map(item => <CollaboratorCard key={item.id} collaborator={item} handleDelete={handleDeleteCollaborator} />)
+                            : <p className="font-medium">Nenhum colaborador encontrado</p>}
+                    </div>
+                    <div className="flex justify-end">
+                        {collaborators.length > 0 ? (
+                            <Pagination
+                                current={pagination.current}
+                                total={pagination.total}
+                                pageSize={pagination.pageSize}
+                                onChange={(page) => handlePageChange(page, selectStatus)} />
+                        ) : (
+                            <p>Carregando</p>
+                        )}
+                    </div>
+
+                </>
             )}
-            </div>
+
         </>
     )
 }
