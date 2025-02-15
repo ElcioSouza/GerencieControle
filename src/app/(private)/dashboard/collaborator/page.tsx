@@ -39,10 +39,6 @@ export default async function Collaborator() {
           <CardCollaborator collaborator={collaborator} total={total} />
         </section>
 
-        {collaboratorQuery.length === 0 && (
-          <p className="text-gray-400 mt-4">Nenhum Colaborador cadastrado</p>
-        )}
-
       </main>
     </Container>
   );
