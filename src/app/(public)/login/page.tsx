@@ -142,8 +142,8 @@ export default function Login() {
         </button>
            <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
-            Não tem uma conta?
-            <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+            Não tem uma conta? 
+            <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500 inline-block mx-1">
               Cadastre-se
             </Link>
           </p>
