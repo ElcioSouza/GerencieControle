@@ -9,10 +9,10 @@ import { LuUserPlus } from "react-icons/lu";
 
 export function Header() {
     const { data, status } = useSession();
-    console.log(data);
     const menuItems = [
         { label: 'Chamados', href: '/dashboard' },
         { label: 'Colaborador', href: '/dashboard/collaborator' },
+        {label: "Sair", href: "", handleLogout: handleLogout  },
     ];
 
     async function handleLogin() {
@@ -45,7 +45,7 @@ export function Header() {
         <header className="w-full flex items-center px-2 py-4 bg-white h-20 shadow-sm login">
             <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
                 <Link href="/">
-                    <h1 className="text-2xl font-bold pl-1 hover:tracking-widest duration-300">
+                    <h1 className="text-2xl font-bold pl-1 sm:hover:tracking-widest sm:duration-300">
                         <span className="text-blue-500">Gerencie </span>Controle
                     </h1>
                 </Link>
@@ -75,17 +75,11 @@ export function Header() {
 
                         {data?.user.image ? (
                             <Submenu
-                                items={menuItems} title={<><Image src={data?.user?.image ?? ''} alt="profile" width={29} height={29} className="rounded-full" /></>} />
+                                items={menuItems} data={data}  title={<><Image src={data?.user?.image ?? ''} alt="profile" className="rounded-full w-[26px!important] h-[26px!important]  sm:w-[48px!important] sm:h-[48px!important]" width={26} height={26}  /></>} />
                         ) : (
                             <Submenu
-                                items={menuItems} title={<><div className="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium">{getUserFirstAndSecondLetter()}</div></>} />
+                                items={menuItems} data={data} title={<><div className="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium">{getUserFirstAndSecondLetter()}</div></>} />
                         )}
-                        <Link href={"/dashboard"}>
-                            <FiUser size={26} color="#4b5563" />
-                        </Link>
-                        <button onClick={handleLogout}>
-                            <FiLogOut size={26} color="#ff2313" />
-                        </button>
                     </div>
                 )}
             </div>
