@@ -30,7 +30,7 @@ export function Submenu({ title, items, data }: SubmenuProps) {
   return (
     <div className="relative inline-block">
       <div className='flex items-center justify-between relative z-10 px-0 md:px-4 py-2 cursor-pointer w-full'  onClick={() => setIsOpen(!isOpen)}>
-        <div>
+        <div className='pl-2'>
           <div className="font-medium text-[#14171a] text-[10px] sm:text-[14px]">Ola, {data?.user.name} </div>
           <div className="text-sm text-gray-500 text-[10px] sm:text-[14px]">{data?.user.email} </div>
         </div>
@@ -48,7 +48,7 @@ export function Submenu({ title, items, data }: SubmenuProps) {
       </div>
 
       {isOpen && (
-        <div className="absolute z-9 mt-2 w-44  sm:w-64 top-[-10px] pt-16 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" onClick={() => setIsOpen(false)}>
+        <div className="absolute z-9 mt-2 w-60  sm:w-64 md:w-72 top-[-10px] pt-16 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" onClick={() => setIsOpen(false)}>
           <div className="py-1" role="menu">
             {items.map((item) => (
               <Link
