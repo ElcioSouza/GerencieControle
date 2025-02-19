@@ -80,7 +80,7 @@ export function Header() {
                         ) : (
                             <Submenu
                                 items={menuItems} data={data} title={<>
-                                <div className="bg-gray-200 rounded-full text-sm font-medium w-[26px!important] h-[26px!important] leading-[26px]  sm:w-[48px!important] sm:h-[48px!important] sm:leading-[48px] ">{getUserFirstAndSecondLetter()}</div></>} />
+                                <div className="bg-gray-200 rounded-full text-sm font-medium w-[26px!important] h-[26px!important] leading-[26px]  sm:w-[45px!important] sm:h-[45px!important] sm:leading-[48px] ">{getUserFirstAndSecondLetter()}</div></>} />
                         )}
                     </div>
                 )}
