@@ -46,7 +46,7 @@ export function Submenu({ title, items, data }: SubmenuProps) {
       </div>
 
       {isOpen && (
-        <div className="absolute z-9 mt-2 w-[14.2rem] sm:w-[14rem] md:w-[17.5rem] top-[-10px] pt-16 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" onClick={() => setIsOpen(false)}>
+        <div className="absolute right-0 z-9 mt-2 w-[14.2rem] sm:w-[14rem] md:w-[17.5rem] top-[-10px] pt-16 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5" onClick={() => setIsOpen(false)}>
           <div className="py-1" role="menu">
             {items.map((item) => (
               <Link
