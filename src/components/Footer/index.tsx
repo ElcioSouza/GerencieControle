@@ -1,6 +1,7 @@
 "use client"
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { date } from "@/utils/date";
+import Link from "next/link";
 interface FooterProps {
   status: string;
   loading: boolean;
@@ -8,6 +9,10 @@ interface FooterProps {
 export function Footer({ status, loading }: FooterProps) {
   const currentData = date();
   const year = currentData.getFullYear();
+
+  function handleLogout() {
+    signOut();
+  }
   return (
     <footer className="bg-gray-900 text-white mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -36,14 +41,35 @@ export function Footer({ status, loading }: FooterProps) {
           </div>
           <div>
 
-            {status === "unauthenticated" && (
+            {status === "unauthenticated" ? (
               <>
                 <h4 className="text-lg font-semibold mb-4">Link</h4>
                 <ul className="space-y-2">
                   <li>
-                    <a onClick={() => signIn()} className="text-gray-400 hover:text-white cursor-pointer">
+                    <Link href={""} onClick={() => signIn()} className="text-gray-400 hover:text-white cursor-pointer">
                       Login
-                    </a>
+                    </Link>
+                  </li>
+                </ul>
+              </>
+            ): (
+              <>
+                 <h4 className="text-lg font-semibold mb-4">Link</h4>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href={"/dashboard"} className="text-gray-400 hover:text-white cursor-pointer">
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href={"/dashboard/collaborator"} className="text-gray-400 hover:text-white cursor-pointer">
+                      Colaboradores
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href={""} onClick={handleLogout} className="text-gray-400 hover:text-white cursor-pointer">
+                      Sair
+                    </Link>
                   </li>
                 </ul>
               </>

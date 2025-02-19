@@ -37,7 +37,7 @@ export function Header() {
     function getUserFirstAndSecondLetter() {
         const name = data?.user?.name;
         const userName = name?.split(" ")
-        const userNameLetter = userName?.map((item) => item.charAt(0))
+        const userNameLetter = userName?.map((item) => item.charAt(0).toUpperCase())
         return userNameLetter;
     }
 
@@ -75,10 +75,12 @@ export function Header() {
 
                         {data?.user.image ? (
                             <Submenu
-                                items={menuItems} data={data}  title={<><Image src={data?.user?.image ?? ''} alt="profile" className="rounded-full w-[26px!important] h-[26px!important]  sm:w-[48px!important] sm:h-[48px!important]" width={26} height={26}  /></>} />
+                                items={menuItems} data={data}  title={<>
+                                <Image src={data?.user?.image ?? ''} alt="profile" className="rounded-full w-[26px!important] h-[26px!important]  sm:w-[48px!important] sm:h-[48px!important]" width={26} height={26}  /></>} />
                         ) : (
                             <Submenu
-                                items={menuItems} data={data} title={<><div className="bg-gray-200 px-3 py-1 rounded-full text-sm font-medium">{getUserFirstAndSecondLetter()}</div></>} />
+                                items={menuItems} data={data} title={<>
+                                <div className="bg-gray-200 rounded-full text-sm font-medium w-[26px!important] h-[26px!important] leading-[26px]  sm:w-[48px!important] sm:h-[48px!important] sm:leading-[48px] ">{getUserFirstAndSecondLetter()}</div></>} />
                         )}
                     </div>
                 )}
