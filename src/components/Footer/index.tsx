@@ -9,6 +9,7 @@ interface FooterProps {
 export function Footer({ status, loading }: FooterProps) {
   const currentData = date();
   const year = currentData.getFullYear();
+  
 
   function handleLogout() {
     signOut();
@@ -39,7 +40,7 @@ export function Footer({ status, loading }: FooterProps) {
             </div>
 
           </div>
-          <div>
+          <div className={` ${loading ? 'hidden':''} `}>
 
             {status === "unauthenticated" ? (
               <>
