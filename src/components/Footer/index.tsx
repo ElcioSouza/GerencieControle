@@ -54,7 +54,7 @@ export function Footer({ status, loading }: FooterProps) {
               </>
             ): (
               <>
-                 <h4 className="text-lg font-semibold mb-4">Link</h4>
+                 <h4 className="text-lg font-semibold mb-4">Links</h4>
                 <ul className="space-y-2">
                   <li>
                     <Link href={"/dashboard"} className="text-gray-400 hover:text-white cursor-pointer">
