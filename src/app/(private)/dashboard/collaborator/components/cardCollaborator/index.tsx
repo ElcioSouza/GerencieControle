@@ -25,7 +25,6 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
     }, [loading]);
 
     async function fetchCollaborator(offset: number, limit: number, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
-        console.log(offset, limit, search, status);
         const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}&status=${status}`, {
             method: "GET"
         })
@@ -47,13 +46,13 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
 
     async function handleSearch(search: string, newSelectStatus: string = '') {
         try {
+            
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
-
             const offset = (paginationDefaults.current - 1) * paginationDefaults.pageSize;
             const limit = paginationDefaults.pageSize;
             const result = await fetchCollaborator(offset, limit, search, newSelectStatus);
-            setPagination({current: 1, pageSize: 6, total: result.pack.data.total_fetch});
+            setPagination({...paginationDefaults, total: result.pack.data.total_fetch});
             setCollaborators(result.pack.data.collaborator);
         } catch (error) {
             console.log(error);
@@ -83,10 +82,9 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
         }
     }
     function handlePageChange(page: number, newSelectStatus: string) {
-        console.log(page, selectStatus)
         handlePagination({ ...pagination, current: page }, newSelectStatus);
     }
-    console.log(pagination)
+  
     return (
         <>
             <div className="flex items-center flex-col md:flex-row gap-3 justify-between ">
