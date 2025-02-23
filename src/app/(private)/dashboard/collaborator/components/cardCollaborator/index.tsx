@@ -46,7 +46,6 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
 
     async function handleSearch(search: string, newSelectStatus: string = '') {
         try {
-            
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
             const offset = (paginationDefaults.current - 1) * paginationDefaults.pageSize;
