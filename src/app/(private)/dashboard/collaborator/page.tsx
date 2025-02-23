@@ -32,7 +32,6 @@ export default async function Collaborator() {
   };
 
   const collaborator = colllaboratorFactory(result.data);
-  console.log(collaborator.length);
   return (
     <Container>
       <main className="mt-9 mb-2">
