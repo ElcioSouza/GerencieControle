@@ -32,13 +32,13 @@ export default async function Collaborator() {
   };
 
   const collaborator = colllaboratorFactory(result.data);
+  console.log(result.data)
   return (
     <Container>
       <main className="mt-9 mb-2">
         <section>
           <CardCollaborator collaborator={collaborator} total={total} />
         </section>
-
       </main>
     </Container>
   );

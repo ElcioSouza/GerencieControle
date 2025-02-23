@@ -112,15 +112,11 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
                             : <p className="font-medium">Nenhum colaborador encontrado</p>}
                     </div>
                     <div className="flex justify-end">
-                        {collaborators.length > 0 ? (
-                            <Pagination
-                                current={pagination.current}
-                                total={pagination.total}
-                                pageSize={pagination.pageSize}
-                                onChange={(page) => handlePageChange(page, selectStatus)} />
-                        ) : (
-                            <p>Carregando</p>
-                        )}
+                        <Pagination
+                            current={pagination.current}
+                            total={pagination.total}
+                            pageSize={pagination.pageSize}
+                            onChange={(page) => handlePageChange(page, selectStatus)} />
                     </div>
 
                 </>
