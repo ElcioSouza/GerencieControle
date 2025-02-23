@@ -3,53 +3,6 @@ import { Tabs } from "@/components/Tabs"
 import { CiHome, CiUser } from "react-icons/ci";
 
 export function Benefits() {
-  const tabs = [
-    {
-      id: 'home',
-      label: 'Home',
-      content: (
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <CiHome className="w-5 h-5 text-indigo-600" />
-            <h2 className="text-xl font-semibold">Welcome Home</h2>
-          </div>
-          <p className="text-gray-600">
-            This is the home tab content. You can put anything here.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: 'profile',
-      label: 'Profile',
-      content: (
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <CiUser className="w-5 h-5 text-indigo-600" />
-            <h2 className="text-xl font-semibold">User Profile</h2>
-          </div>
-          <p className="text-gray-600">
-            This is the profile tab content. You can customize this section.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      content: (
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <FiSettings className="w-5 h-5 text-indigo-600" />
-            <h2 className="text-xl font-semibold">Settings</h2>
-          </div>
-          <p className="text-gray-600">
-            This is the settings tab content. Configure your preferences here.
-          </p>
-        </div>
-      ),
-    },
-  ];
 
   return (
     <div className="mt-20">
@@ -85,12 +38,7 @@ export function Benefits() {
           </div>
         </div>
       </div>
-      <div className="max-w-4xl mx-auto p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">React Tabs Example</h1>
-        <div className="bg-white rounded-lg shadow p-6">
-          
-        </div>
-      </div>
+
     </div>
     );
 }
