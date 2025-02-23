@@ -9,6 +9,7 @@ import { LuUserPlus } from "react-icons/lu";
 
 export function Header() {
     const { data, status } = useSession();
+    
     const menuItems = [
         { label: 'Chamados', href: '/dashboard' },
         { label: 'Colaborador', href: '/dashboard/collaborator' },
