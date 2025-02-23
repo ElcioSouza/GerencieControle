@@ -10,7 +10,7 @@ export interface ResponseCollaborator {
         data: {
             collaborator: CollaboratorProps[],
             total: number,
-            total_fetch: number
+        total_fetch: number
         }
     }
 }

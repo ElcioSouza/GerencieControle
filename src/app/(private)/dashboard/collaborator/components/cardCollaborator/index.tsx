@@ -9,7 +9,6 @@ import Link from "next/link";
 import { SearchBar } from "@/app/(private)/dashboard/collaborator/components/searchBar";
 import { CollaboratorCard } from "../collaboratorCard";
 import { CardSelect } from "@/app/(private)/dashboard/collaborator/components/cardSelect";
-import Loading from "@/app/loading";
 import { FiLoader } from "react-icons/fi";
 
 export function CardCollaborator({ collaborator, total }: { collaborator: CollaboratorProps[], total: number }) {
@@ -25,7 +24,8 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
         setLoading(false);
     }, [loading]);
 
-    async function fetchCollaborator(offset: number = 0, limit: number = 6, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
+    async function fetchCollaborator(offset: number, limit: number, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
+        console.log(offset, limit, search, status);
         const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}&status=${status}`, {
             method: "GET"
         })
@@ -49,12 +49,12 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
         try {
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
-            setPagination(paginationDefaults)
+
             const offset = (paginationDefaults.current - 1) * paginationDefaults.pageSize;
             const limit = paginationDefaults.pageSize;
             const result = await fetchCollaborator(offset, limit, search, newSelectStatus);
+            setPagination({current: 1, pageSize: 6, total: result.pack.data.total_fetch});
             setCollaborators(result.pack.data.collaborator);
-            setPagination({ ...pagination, total: result.pack.data.total_fetch });
         } catch (error) {
             console.log(error);
         }
@@ -83,9 +83,10 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
         }
     }
     function handlePageChange(page: number, newSelectStatus: string) {
-
+        console.log(page, selectStatus)
         handlePagination({ ...pagination, current: page }, newSelectStatus);
     }
+    console.log(pagination)
     return (
         <>
             <div className="flex items-center flex-col md:flex-row gap-3 justify-between ">
@@ -112,11 +113,14 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
                             : <p className="font-medium">Nenhum colaborador encontrado</p>}
                     </div>
                     <div className="flex justify-end">
-                        <Pagination
-                            current={pagination.current}
-                            total={pagination.total}
-                            pageSize={pagination.pageSize}
-                            onChange={(page) => handlePageChange(page, selectStatus)} />
+                      {pagination.total > 0 && (
+                         <Pagination
+                         current={pagination.current}
+                         total={pagination.total}
+                         pageSize={pagination.pageSize}
+                         onChange={(page) => handlePageChange(page, selectStatus)} />
+                      )}
+                       
                     </div>
 
                 </>
