@@ -41,9 +41,9 @@ export function Footer({ status, loading }: FooterProps) {
             </div>
 
           </div>
-          <div className={` ${loading ? '':''} `}>
+          <div>
 
-            {status === "unauthenticated" ? (
+            {status === "unauthenticated" && !loading ? (
               <>
                 <h4 className="text-lg font-semibold mb-4">Link</h4>
                 <ul className="space-y-2">
