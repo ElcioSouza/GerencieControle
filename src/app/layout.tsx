@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: {
-    default: "Gerencie Controle - ",
+    default: "Gerencie Controle - home",
     template: "%s",
   },
   description: "Gerenciar seus clientes e atende de forma fácil!",
