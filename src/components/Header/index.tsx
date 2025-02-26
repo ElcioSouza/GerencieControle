@@ -59,7 +59,7 @@ export function Header() {
 
                 {status === "unauthenticated" && (
                     <div className="flex items-center space-x-4">
-                        <Link href="/login" className="px-4 py-2 text-blue-600 hover:text-blue-700 font-medium flex items-center">
+                        <Link href="/login" className="px-2 py-2 text-blue-600 hover:text-blue-700 font-medium flex items-center">
                         <CiLogin className="w-4 h-4 mr-2" />
                         Entrar
                         </Link>
