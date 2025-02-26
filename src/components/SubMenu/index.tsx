@@ -27,7 +27,7 @@ export function Submenu({ title, items, data }: SubmenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative inline-block mr-6 ml-0 sm:mr-0">
+    <div className="relative inline-block mr-0 ml-0 sm:mr-0">
       <div className='flex items-center justify-between relative z-10 px-0 md:px-4 py-2 cursor-pointer w-full'  onClick={() => setIsOpen(!isOpen)}>
         <div className='pl-2'>
           <div className="font-medium text-[#14171a] text-[14px] sm:text-[14px]">Ola, {data?.user.name} </div>
@@ -35,7 +35,7 @@ export function Submenu({ title, items, data }: SubmenuProps) {
         </div>
         <div>
           <button
-            className="flex items-center gap-0 sm:gap-1 px-2 sm:px-4 py-2 text-gray-700 rounded-md transition-colors">
+            className="flex items-center gap-0 sm:gap-1 px-0 sm:px-4 py-2 text-gray-700 rounded-md transition-colors">
               <div className='w-[26px] h-[26px] sm:w-[48px] md:h-[48px] '>
                 {title} 
               </div>
