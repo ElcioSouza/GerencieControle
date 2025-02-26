@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: "Gerencie Controle - Home",
     template: "%s",
   },
-  description: "Gerenciar seus clientes e atende de forma fácil!",
+  description: "Gerenciar seus colaboradores e atende de forma fácil!",
 };
 
 

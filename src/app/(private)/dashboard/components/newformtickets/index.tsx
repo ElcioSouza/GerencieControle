@@ -37,6 +37,7 @@ export function NewFormTickets({ collaboratores }: NewFormTicketsProps) {
     })
     const result = await response.json();
     if(result) {
+      router.refresh();
       router.replace("/dashboard");
     }
   }
