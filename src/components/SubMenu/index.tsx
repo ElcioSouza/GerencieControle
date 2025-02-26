@@ -31,7 +31,7 @@ export function Submenu({ title, items, data }: SubmenuProps) {
       <div className='flex items-center justify-between relative z-10 px-0 md:px-4 py-2 cursor-pointer w-full'  onClick={() => setIsOpen(!isOpen)}>
         <div className='pl-2'>
           <div className="font-medium text-[#14171a] text-[14px] sm:text-[14px]">Ola, {data?.user.name} </div>
-          <div className="text-sm text-gray-500 text-[10px] sm:text-[14px]">{data?.user.email} </div>
+          <div className="text-sm text-gray-500 text-[14px] sm:text-[14px]">{data?.user.email} </div>
         </div>
         <div>
           <button
