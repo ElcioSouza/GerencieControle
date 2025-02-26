@@ -172,7 +172,7 @@ export function TableTicketDashboard({ tickets: titcketsProps, total }: Props) {
             ),
         },
         {
-            title: (<><div className='ont-medium text-left pl-1 text-[23px]'>Action</div></>),
+            title: (<><div className='ont-medium text-left pl-1 text-[23px]'>Ações</div></>),
             key: 'action',
             dataIndex: 'action',
             render: (_, record) => (
