@@ -2,7 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormSchemaTicket, FormSchemaTicketData, } from "@/private/dashboard/components/newformtickets/schemas/newFormTicketSchema";
+import { FormSchemaTicket, FormSchemaTicketData, } from "@/app/(private)/dashboard/components/newformtickets/schemas/editFormTicketSchema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -21,8 +21,6 @@ export function NewFormTickets({ collaboratores }: NewFormTicketsProps) {
   const {
     handleSubmit,
     register,
-    setValue,
-    setError,
     formState: { errors },
   } = useForm<FormSchemaTicketData>({
     resolver: zodResolver(FormSchemaTicket),

@@ -1,11 +1,9 @@
 
 import { Container } from "@/components/Container";
 import { NewFormTickets } from "@/private/dashboard/components/newformtickets";
-
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 
 export default async function NewTicket() {
@@ -16,8 +14,6 @@ export default async function NewTicket() {
       UserId: session?.user.id
     }
   })
-
-
 
   return (
     <Container>
