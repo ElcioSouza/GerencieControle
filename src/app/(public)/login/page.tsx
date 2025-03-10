@@ -23,12 +23,16 @@ export default function Login() {
           formState: { errors },
       } = useForm<FormSchemaUserData>({
           resolver: zodResolver(FormSchemaUser),
+          defaultValues: {
+              email: "alex@hotmail.com",
+              password: "123",
+          }
       });
   const router = useRouter()
   const handleSubmitLogin = async (data: FormSchemaUserData) => {
-
     const result = await signIn("credentials", {
-      ...data,
+      ...data, 
+      origin: "user",
       redirect: false
     });
     
@@ -134,7 +138,7 @@ export default function Login() {
           </button>
         </form>
         <button
-          onClick={() => signIn("google")}
+          onClick={() => signIn("google", { })}
           className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-50 focus:ring-4 focus:ring-gray-200 transition-colors"
         >
           <FiChrome className="w-5 h-5 text-blue-500" />

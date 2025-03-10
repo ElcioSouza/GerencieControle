@@ -12,14 +12,21 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+enum Level {
+  USER
+  COLLABORATOR
+}
+
 // Collaborator
 model Collaborator {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   phone String
-  email String
+  email  String?   @unique
   address String?
   status String?
+  password String?
+  origin Level @default(COLLABORATOR) 
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
   UserId String? @db.ObjectId
@@ -67,10 +74,6 @@ model Session {
   @@map("sessions")
 }
 
-enum Level {
-  USER
-  ADMIN
-}
 
  // ex criamos um User nossa aplicação esse user pode ter varios cliente então esse user temos ter uma relação a tabela cliente
  // e também cada Ticket, quando agente for abrir um Ticket ou seja abrir um chamado esse chamado, tem que esta atrelhado ao um usuario e tambem esse Ticket tem  que esta atrelhado ao um cliente
@@ -86,7 +89,7 @@ model User {
   sessions      Session[]
   tickets Ticket[]
   Collaboratores Collaborator[]
-  Level Level @default(USER)
+  origin Level @default(USER)
   @@map("users")
 }
  

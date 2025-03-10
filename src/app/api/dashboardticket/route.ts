@@ -32,6 +32,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const session = await getServerSession(authOptions);
+  console.log(session);
   if(!session || !session.user) { 
       return NextResponse.json({error: "Ticket não autenticado"}, {status: 401});
   }

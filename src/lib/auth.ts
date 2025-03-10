@@ -4,6 +4,9 @@ import { AuthOptions } from "next-auth";
 import prisma from "@/lib/prisma";
 import { JWTDecodeParams, JWT, encode, decode } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+import findByEmail from "@/app/repositories/findByEmail";
+import { Level } from "@prisma/client";
+import bcript from "bcrypt";
 
 export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
@@ -21,21 +24,25 @@ export const authOptions: AuthOptions = {
                 email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password"}
             },
-            async authorize(credentials, req) {
-                if(!credentials) return null;
-                if (!credentials?.email || !credentials.password) {
-                    throw new Error("Credenciais inválidas");
+            async authorize(params, req) {
+              
+                 if (!params || params && (!params.email ||  !params.password)) {
+                     throw new Error("Credenciais inválidas");
+                 }
+                 const checkUser = await findByEmail(params.email);
+
+                 if (!checkUser) {
+                     throw new Error("Usuário não encontrado");
+                 }
+                if (!checkUser.password) {
+                     throw new Error("Senha não encontrada");
                 }
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email: credentials.email,
-                    },
-                });
-                if (!user) {
-                    throw new Error("Credenciais inválidas");
+                const passwordMatch = await bcript.compare(params.password, checkUser.password);
+                if (!passwordMatch) {
+                    throw new Error("Senha incorreta");
                 }
-                return user;
-            }
+                return checkUser
+             }
         })
     ],
     session: {
@@ -69,6 +76,7 @@ export const authOptions: AuthOptions = {
 
             try {
                 const payload = await decode({ token, secret });
+              
                 return payload;
             } catch (error) {
                 console.error("Error decoding JWT:", error);
@@ -77,12 +85,22 @@ export const authOptions: AuthOptions = {
         },
     },
     callbacks: {
+        async signIn(rr) {
+            console.log("signIn callback:", rr);
+            // if (account?.provider === "google") {
+            //     const origin = query?.origin || "default";
+            //     console.log("Origin:", origin);
+            //     account.origin = origin; // Adiciona ao objeto account
+            // }
+            return true;
+        },
         async jwt({ token, user, account }) {
             if (user) {
                 token.id = user.id;
                 token.name = user.name;
                 token.email = user.email;
                 token.picture = user.image;
+                token.origin = user.origin;
             }
             return token;
         },
@@ -93,7 +111,8 @@ export const authOptions: AuthOptions = {
                     id: token.id as string,
                     name: token.name as string,
                     email: token.email as string,
-                    image: token.picture as string || null
+                    image: token.picture as string || null,
+                    origin: token.origin as string,
                 };
             }
             return session;
