@@ -30,6 +30,7 @@ export const authOptions: AuthOptions = {
                      throw new Error("Credenciais inválidas");
                  }
                  const checkUser = await findByEmail(params.email);
+                 console.log(checkUser)
 
                  if (!checkUser) {
                      throw new Error("Usuário não encontrado");
@@ -41,7 +42,10 @@ export const authOptions: AuthOptions = {
                 if (!passwordMatch) {
                     throw new Error("Senha incorreta");
                 }
-                return checkUser
+
+                return {
+                    ...checkUser
+                };
              }
         })
     ],
