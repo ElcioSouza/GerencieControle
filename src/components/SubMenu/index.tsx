@@ -8,6 +8,7 @@ type UserSession = {
     name?: string | null;
     email?: string | null;
     image?: string | null;
+    origin?: string | null;
   };
   expires: string;
 };
@@ -25,7 +26,6 @@ interface SubmenuProps {
 
 export function Submenu({ title, items, data }: SubmenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div className="relative inline-block mr-0 ml-0 sm:mr-0">
       <div className='flex items-center justify-between relative z-10 px-0 md:px-4 py-2 cursor-pointer w-full'  onClick={() => setIsOpen(!isOpen)}>
@@ -55,7 +55,7 @@ export function Submenu({ title, items, data }: SubmenuProps) {
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                 role="menuitem"
                 onClick={item.label === "Sair" ? item.handleLogout : undefined} >
-                {item.label}
+                {data?.user.origin === 'USER' ? item.label : item.label.replace('Colaborador', 'Perfil')}
               </Link>
             ))}
           </div>
