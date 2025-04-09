@@ -141,7 +141,7 @@ export async function CardCollaborator({ collaborator, total, session }: { colla
 
             ) : (
                 <>
-                    <h1 className="font-bold text-[20px] md:text-3xl text-center mb-5">Perfil do Colaborador </h1>
+                    <h1 className="font-bold text-[20px] md:text-3xl text-center mb-5">Meu perfil </h1>
                     {
                         collaborators.length ? collaborators.map(item => (
                             <div key={item.id} className="py-5 max-w-xl mx-auto shadow-lg rounded-xl overflow-hidden border-2 border-purple-100 hover:border-purple-200 transition-all duration-300">
@@ -175,7 +175,7 @@ export async function CardCollaborator({ collaborator, total, session }: { colla
                                 </div>
                             </div>
                             <div className="mt-5 text-center">
-                                <div className="inline-flex items-center rounded-full border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-100 text-green-800 hover:bg-green-200/80 text-sm px-4 py-1">Colaborador {item.status}</div>
+                                <div className="inline-flex items-center rounded-full border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-green-100 text-green-800 hover:bg-green-200/80 text-sm px-4 py-1">Perfil {item.status}</div>
                             </div>
                             <div className="flex justify-center mt-4">
                                 <button 
