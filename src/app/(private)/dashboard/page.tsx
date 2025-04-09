@@ -10,9 +10,9 @@ export default async function Dashboard() {
     const [ticketQuery, total] = await Promise.all([
         prisma.ticket.findMany({
           where: {
-            Collaborator: {
-              UserId: session?.user.id
-            }
+            Collaborator: session?.user.origin === "USER" 
+            ? { UserId: session?.user.id } 
+            :  { email: session?.user.email}
           },
           include: {
             Collaborator: true
@@ -25,9 +25,9 @@ export default async function Dashboard() {
         }),
         prisma.ticket.count({
           where: {
-            Collaborator: {
-              UserId: session?.user.id
-            }
+            Collaborator: session?.user.origin === "USER" 
+            ? { UserId: session?.user.id } 
+            :  { email: session?.user.email}
           }
         })
       ]);
@@ -37,6 +37,7 @@ export default async function Dashboard() {
         total: total
       };
     const tickets = ticketsFactory(result.data);
+   // console.log(tickets);
     return (
        <Container>
         <main className="mt-9 mb-2">

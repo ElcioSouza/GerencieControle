@@ -4,13 +4,18 @@ import { authOptions } from '@/lib/auth';
 import prisma  from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { colllaboratorFactory } from '@/app/factories/ColllaboratorFactory';
-import { create } from 'domain';
+import bcrypt from 'bcrypt';
 export async function POST(request: Request) {
     const session = await getServerSession(authOptions);
     if(!session || !session.user) { 
         return NextResponse.json({error: "Colaborador não autenticado"}, {status: 401});
     }
-    const {name,email,phone,address,status,UserId} = await request.json();
+    const {name,email,password,lastName,phone,address,status,UserId} = await request.json();
+    console.log(name,email,password,lastName,phone,address,status,UserId)
+    if(!name || !email || !password || !lastName || !phone || !address || !status || !UserId) {
+        return NextResponse.json({error: "Campos obrigatórios não preenchidos"}, {status: 400});
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
     try {
         const response = await prisma.collaborator.findFirst({
             where: {
@@ -23,7 +28,9 @@ export async function POST(request: Request) {
         await prisma.collaborator.create({
             data: {
                 name,
+                lastName,
                 email,
+                password: hashedPassword,
                 phone,
                 address: address ? address : "",
                 status:"Ativo",
@@ -178,31 +185,35 @@ export async function PUT(request: Request) {
         return NextResponse.json({error: "Colaborador não autenticado"}, {status: 401});
     }
     try {
-        const {name,email,phone,address,status,UserId} = await request.json();
+        const {name,email,lastName,password,phone,address,status,UserId} = await request.json();
         const {searchParams} = new URL(request.url);
         const collaboratorId = searchParams.get("id");
+
         const collaborator = await prisma.collaborator.findMany({
             where: {
                 id: collaboratorId as string
             }
         })
+        const passwordHash = await bcrypt.hash(password, 10);
         if(!collaborator) {
             return NextResponse.json({message: "Colaborador id não encontrado"}, {status:400});
         }
-        await prisma.collaborator.update({
+        const collaboratorUpdate = await prisma.collaborator.update({
             where: {
                 id: collaboratorId as string
             },
             data: {
                 name,
+                lastName,
                 email,
+                password: passwordHash,
                 phone,
                 address: address ? address : "",
                 status,
                 UserId
             }
         }) 
-            return NextResponse.json({message: "Colaborador alterado com sucesso"});
+            return NextResponse.json({pack: {data:collaboratorUpdate, message: "Colaborador alterado com sucesso"}}, {status: 200}); 
     } catch (error) {
         return NextResponse.json({error: "Falha ao alterar o colaborador"}, {status: 400});
     }

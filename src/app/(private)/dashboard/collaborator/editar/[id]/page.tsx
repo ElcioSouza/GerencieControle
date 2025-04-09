@@ -3,14 +3,18 @@ import { Container } from "@/components/Container";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/Input";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { FormEditCollaboratorSchema, FormEditCollaboratorSchemaData } from "@/app/(private)/dashboard/collaborator/schemas/formEditCollaboratorSchema";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { signIn, useSession,getSession } from "next-auth/react";
+import { authOptions } from "@/lib/auth";
 
 interface collaborator {
     name: string;
     email: string;
+    lastName: string;
+    password: string;
     phone: string;
     address: string;
     status: string;
@@ -19,11 +23,11 @@ interface listCollaboratorProp {
     collaborator: collaborator;
     userId: string;
 }
-export default function EditCollaborator({ params }: { params: { id: string } }) {       
-   // const [valuePhone, setValuePhone] = useState<string | number | readonly string[] | undefined>();
+export default  function EditCollaborator({ params }: { params: { id: string } }) {       
     const [listCollaborator, setListCollaborator] = useState<listCollaboratorProp>();
+    const {data: session,update} = useSession();
     const id = params.id;
-
+    //console.log(session)
     useEffect(() => {
         async function fetchCollaborator ()  {
             if (!id) return;
@@ -48,7 +52,6 @@ export default function EditCollaborator({ params }: { params: { id: string } })
         handleSubmit,
         register,
         control,
-        reset,
         setError,
         formState: { errors },
     } = useForm<FormEditCollaboratorSchemaData>({
@@ -56,7 +59,9 @@ export default function EditCollaborator({ params }: { params: { id: string } })
        values: {
         email: listCollaborator?.collaborator.email as string,
         name: listCollaborator?.collaborator.name as string,
+        lastName: listCollaborator?.collaborator.lastName as string,
         phone: listCollaborator?.collaborator.phone as string,
+        password: "",
         address: listCollaborator?.collaborator.address as string,
         status: listCollaborator?.collaborator.status as string
     }
@@ -68,6 +73,8 @@ export default function EditCollaborator({ params }: { params: { id: string } })
             method: "PUT",
             body: JSON.stringify({
                 name: data.name,
+                lastName: data.lastName,
+                password: data.password,
                 email: data.email,
                 phone: data.phone,
                 address: data.address ? data.address : "",
@@ -79,6 +86,19 @@ export default function EditCollaborator({ params }: { params: { id: string } })
             }
         });
         const result = await response.json();
+
+/*         await signIn("credentials", {
+            redirect: false,
+            email: result.pack.data.email,
+            password: data.password
+          }); */
+
+
+
+          // Atualiza os dados da session no client
+  await update();
+router.refresh();
+
         if (result.error) {
             setError("email", { type: "text", message: result.error })
             return;
@@ -86,7 +106,8 @@ export default function EditCollaborator({ params }: { params: { id: string } })
         if (result?.pack?.status === "Em andamento" || result?.pack?.status === "Urgente" || result?.pack?.status === "Baixo" || result?.pack?.status === "Pendente") {
             alert(result?.pack?.error);
         } else {
-            router.push("/dashboard/collaborator");
+
+           // router.push("/dashboard/collaborator");
             router.refresh();
         }
     }
@@ -102,79 +123,101 @@ export default function EditCollaborator({ params }: { params: { id: string } })
 
                 <form className="flex flex-col mt-6" onSubmit={handleSubmit(handleEditarCollaborator)}>
                     <input type="text" name="id" hidden />
-                    <div className="flex gap-2 my-2 flex-col sm:flex-row">
-                        <div className="flex-1">
-                            <label className="mb-1 fonte-medium text-lg">Nome Completo</label>
-                            <Input
-                                type="text"
-                                name="name"
-                                register={register}
-                                control={control}
-                                error={errors.name?.message}
-                                placeholder="Digite seu nome" 
-                            />
-                            {errors.name && (
-                                <p className="text-red-500">{errors.name?.message}</p>
-                            )}
-                        </div>
+            <div className="flex gap-2 my-2 flex-col sm:flex-row">
+                <div className="flex-1">
+                <label className="mb-1 text-lg font-medium">Nome</label>
+                <Input
+                    type="text"
+                    name="name"
+                    register={register}
+                    control={control}
+                    error={errors.name?.message}
+                    placeholder="Digite o nome completo"
+                />
+                {errors.name && (
+                    <p className="text-red-500">{errors.name?.message}</p>
+                )}
+                </div>
+                <div className="flex-1">
+                <label className="mb-1 text-lg font-medium">Sobrenome</label>
+                <Input
+                    type="text"
+                    name="lastName"
+                    register={register}
+                    control={control}
+                    error={errors.lastName?.message}
+                    placeholder="Digite o nome completo"
+                />
+                {errors.name && (
+                    <p className="text-red-500">{errors.lastName?.message}</p>
+                )}
+                </div>
+            </div>
+
+
+            <div className="flex gap-2 my-2 flex-col sm:flex-row">
+                <div className="flex-1">
+                    <label className="mb-1 text-lg font-medium">Email</label>
+                    <Input
+                        type="email"
+                        name="email"
+                        register={register}
+                        control={control}
+                        error={errors.email?.message}
+                        placeholder="Digite seu email"
+                    />
+                    {errors.email && (
+                        <p className="text-red-500">{errors.email?.message}</p>
+                    )}
+                </div>
+                <div className="flex-1">
+                    <label className="mb-1 text-lg font-medium">Senha</label>
+                    <Input
+                        type="password"
+                        name="password"
+                        register={register}
+                        control={control}
+                        error={errors.password?.message}
+                        placeholder="Digite sua senha"
+                    />
+                    {errors.email && (
+                        <p className="text-red-500">{errors.password?.message}</p>
+                    )}
+                </div>
+            </div>
+            <div className="flex gap-2 my-2 flex-col sm:flex-row">
+                <div className="flex-1">
+                        <label className="mb-1 text-lg font-medium">Telefone</label>
+                        <Input
+                            type="tel"
+                            name="phone"
+                            register={register}
+                            control={control}
+                            error={errors.phone?.message}
+                            placeholder="Digite o telefone"
+                            className="bg-white"
+                            mask="(99)99999-9999"
+                            
+                        />
+                        {errors.phone && (
+                            <p className="text-red-500">{errors.phone?.message}</p>
+                        )}
                     </div>
-                    <div className="flex gap-2 my-2 flex-col sm:flex-row">
-                        <div className="flex-1">
-                            <label className="mb-1 fonte-medium text-lg">Telefone</label>
-                            <Input
-                                type="tel"
-                                name="phone"
-                                register={register}
-                                control={control}
-                                error={errors.phone?.message}
-                                mask="(99)99999-9999"
-                                placeholder="Digite seu telefone"
-                            />
-                            {errors.phone && (
-                                <p className="text-red-500">{errors.phone?.message}</p>
-                            )}
-                        </div>
-                        <div className="flex-1">
-                            <label className="mb-1 fonte-medium text-lg">Email</label>
-                            <Input
-                                type="email"
-                                name="email"
-                                register={register}
-                                control={control}
-                                error={errors.email?.message}
-                                placeholder="Digite seu email"
-                            />
-                            {errors.email && (
-                                <p className="text-red-500">{errors.email?.message}</p>
-                            )}
-                        </div>
+                    <div className="flex-1">
+                    <label className="mb-1 text-lg font-medium">Endereço completo</label>
+                        <Input
+                            type="text"
+                            name="address"
+                            register={register}
+                            control={control}
+                            error={errors.address?.message}
+                            placeholder="Digite o endereço do colaborador"
+                        />
+                        {errors.address && (
+                            <p className="text-red-500">{errors.address?.message}</p>
+                        )}
                     </div>
-                    <div className="flex gap-2 my-2 flex-col sm:flex-row">
-                        <div className="flex-1">
-                                <label className="mb-1 text-lg font-medium">Endereço completo</label>
-                                <Input
-                                    type="text"
-                                    name="address"
-                                    register={register}
-                                    control={control}
-                                    error={errors.address?.message}
-                                    placeholder="Digite o endereço do colaborador"
-                                />
-                                {errors.address && (
-                                    <p className="text-red-500">{errors.address?.message}</p>
-                                )}
-                            </div>
-{/*                             <div className="flex-1">
-                                <label className="mb-1 text-lg font-medium">Selecione Status</label>
-                                <select
-                                    {...register("status")}
-                                    className="w-full border-2 rounded-md px-2 mb-2 h-11 resize-none bg-white"
-                                >
-                                   <option value="Ativo" selected={listCollaborator?.collaborator.status === "Ativo"}>Ativo</option>
-                                   <option value="Inativo" selected={listCollaborator?.collaborator.status === "Inativo"}>Inativo</option>
-                                </select>
-                            </div> */}
-                        </div>
+            </div>
 
                     <button
                         type="submit"

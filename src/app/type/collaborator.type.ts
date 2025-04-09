@@ -1,6 +1,7 @@
 export type CollaboratorType = {
   id: string;
   name: string;
+  lastName: string;
   phone: string;
   email: string;
   address: string;

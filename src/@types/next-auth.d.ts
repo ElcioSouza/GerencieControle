@@ -1,8 +1,8 @@
 import  { DefaultSession } from "next-auth";
-
+declare module 'nodemailer';
 declare module "next-auth" {
     interface User {
-        origin?: string;  // Adiciona a propriedade `role` ao tipo User
+        origin?: string;
     }
     interface Session{
         user: DefaultSession["user"] & {

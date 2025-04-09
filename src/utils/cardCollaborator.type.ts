@@ -1,6 +1,7 @@
 export interface CollaboratorProps {
     name: string;
     email: string;
+    lastName: string;
     id: string;
     address: string | null;
     phone: string;

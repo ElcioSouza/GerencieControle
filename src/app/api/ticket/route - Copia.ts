@@ -80,16 +80,14 @@ export async function GET(request: Request) {
       }   
       return query.length ? query : undefined
   }
-
+/*  Collaborator: session?.user.origin === "USER" 
+            ? { UserId: session?.user.id } 
+            :  { email: session?.user.email} */
     try {
       const queryFetchDefault = {
         where: {
           Collaborator: {
-            AND: [ 
-                session?.user.origin === "USER"
-                ? { UserId: session?.user.id }
-                : { email: session?.user.email }
-            ], 
+            UserId: session.user.id,
             OR: querySearchReturn(search),
           },
           AND: queryFilterReturn(filter)

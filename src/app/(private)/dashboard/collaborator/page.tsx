@@ -11,7 +11,9 @@ export default async function Collaborator() {
   const [collaboratorQuery, total] = await Promise.all([
     prisma.collaborator.findMany({
       where: {
-          UserId: session?.user.id
+        ...(session?.user.origin === "USER"
+          ? { UserId: session?.user.id } 
+          : { id: session?.user.id }) 
       },
       skip: 0, // offset
       take: 6, // limit
@@ -36,7 +38,7 @@ export default async function Collaborator() {
     <Container>
       <main className="mt-9 mb-2">
         <section>
-          <CardCollaborator collaborator={collaborator} total={total} />
+          <CardCollaborator collaborator={collaborator} total={total} session={session} />
         </section>
       </main>
     </Container>

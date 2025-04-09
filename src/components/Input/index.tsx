@@ -46,7 +46,7 @@ export default function Input({
         />
       ) : (
         <input
-          autoComplete="off"
+          autoComplete="new-password"
           className={`${
             error ? "border-secondary" : "border-primary"
           } w-full h-14 border focus:outline-none text-black  rounded-lg pl-3 pr-5 sm:pr-12 `}
@@ -58,6 +58,7 @@ export default function Input({
         />
       )}
       {type === "password" && (
+
         <div
           className="absolute top-1/2 transform -translate-y-1/2 right-4 cursor-pointer"
           onClick={() => setShowPassword(!showPassword)}

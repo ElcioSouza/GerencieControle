@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.register input:focus ~ label,
+/* .register input:focus ~ label,
 .register input:valid ~ label {
     top: -20px;
     font-size: 12px;
@@ -10,3 +10,4 @@
 }
 
 
+ */   

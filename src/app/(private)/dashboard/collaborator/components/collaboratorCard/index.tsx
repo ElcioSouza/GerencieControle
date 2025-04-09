@@ -9,9 +9,11 @@ interface collaboratorCardProps {
 }
 export function CollaboratorCard({ collaborator, handleDelete }: collaboratorCardProps) {
     const router = useRouter();
+    console.log(collaborator)
     return (
         <article className="flex flex-col bg-gray-100 border-2 p-2 rounded-lg gap-2 hover:scale-105 duration-300">
             <h2><strong>Nome:</strong> {collaborator.name}</h2>
+            <p><strong>Sobrenome:</strong> {collaborator.lastName}</p>
             <p><strong>Email:</strong> {collaborator.email}</p>
             <p><strong>Telefone:</strong> {collaborator.phone}</p>
             <p><strong>Data de Cadastro:</strong> {collaborator.created_at ? new Date(collaborator.created_at).toLocaleDateString("pt-BR") : "Data inválida"}</p>

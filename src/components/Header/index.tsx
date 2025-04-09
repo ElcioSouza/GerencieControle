@@ -1,14 +1,16 @@
 "use client"
 import Link from "next/link";
-import { FiUser, FiLogOut, FiLoader, FiLock } from "react-icons/fi";
+import { FiLoader } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Submenu } from "@/components/SubMenu";
 import Image from "next/image";
 import { CiLogin } from "react-icons/ci";
 import { LuUserPlus } from "react-icons/lu";
 
+
 export function Header() {
-    const { data, status } = useSession();
+    const { data, status} = useSession();
+    console.log(data)
     
     const menuItems = [
         { label: 'Chamados', href: '/dashboard' },
@@ -19,6 +21,7 @@ export function Header() {
     async function handleLogin() {
         try {
             await signIn("google");
+            
 
         } catch (error) {
             {
@@ -37,7 +40,9 @@ export function Header() {
     }
     function getUserFirstAndSecondLetter() {
         const name = data?.user?.name;
-        const userName = name?.split(" ")
+        const lastName = '';
+        const fullName = `${name} ${lastName}`;
+        const userName = fullName?.split(" ");
         const userNameLetter = userName?.map((item) => item.charAt(0).toUpperCase())
         return userNameLetter;
     }

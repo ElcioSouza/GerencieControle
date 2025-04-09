@@ -5,12 +5,13 @@ import { Hero } from '@/components/Hero';
 import { Benefits } from '@/components/Benefits';
 import { Cta } from "@/components/cta";
 import { Footer } from "@/components/Footer";
-import { authOptions } from "@/lib/auth";
 import {useLayoutEffect,useState} from "react";
 import { Header } from "@/components/Header";
 export default function Home() {
   const { data, status} = useSession();
+
   const [loading, setLoading] = useState(true);
+
   useLayoutEffect(() => {
     status === "unauthenticated" && loading && setLoading(false);
   }, [status]);

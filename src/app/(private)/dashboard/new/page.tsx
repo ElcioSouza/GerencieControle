@@ -11,7 +11,11 @@ export default async function NewTicket() {
 
   const collaboratores = await prisma.collaborator.findMany({
     where: {
-      UserId: session?.user.id
+      OR: [
+        session?.user.origin === "USER"
+          ? { UserId: session?.user.id }
+          : { email: session?.user.email }
+      ]
     }
   })
 
@@ -24,7 +28,7 @@ export default async function NewTicket() {
           </Link>
           <h1 className="text-3xl font-bold">Novo Chamado</h1>
         </div>
-        <NewFormTickets collaboratores={collaboratores}  />
+        <NewFormTickets collaboratores={collaboratores} user={session?.user}  />
       </main>
     </Container>
   );

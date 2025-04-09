@@ -21,6 +21,7 @@ enum Level {
 model Collaborator {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
+  lastName String?
   phone String
   email  String?   @unique
   address String?

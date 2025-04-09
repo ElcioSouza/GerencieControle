@@ -14,9 +14,16 @@ interface ticket {
 }
 interface NewFormTicketsProps {
   collaboratores: ticket[];
-}
+  user?: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    origin?: string | null;
+  }
+};
 
-export function NewFormTickets({ collaboratores }: NewFormTicketsProps) {
+export function NewFormTickets({ collaboratores, user}: NewFormTicketsProps) {
   const router = useRouter();
   const {
     handleSubmit,
@@ -26,6 +33,7 @@ export function NewFormTickets({ collaboratores }: NewFormTicketsProps) {
     resolver: zodResolver(FormSchemaTicket),
   });
   async function handleRegisterTicket(data: FormSchemaTicketData) {
+
     const response = await fetch("/api/dashboardticket", {
       method: "POST",
       headers: {
@@ -51,18 +59,26 @@ return <form className="flex flex-col mt-6" onSubmit={handleSubmit(handleRegiste
     {errors.description && <span className="text-red-500">{errors.description.message}</span>}
   </div>
   <div>
-    {collaboratores.filter(Collaborator => Collaborator.status !== "Inativo").length > 0 ? <div>
+    {
+      user?.origin
+    }
+    {user?.origin === "USER" && collaboratores.filter(Collaborator => Collaborator.status !== "Inativo").length > 0 ? <div>
       <label className="mb-1 fonte-medium text-lg">Selecione o Colaborador</label>
       <select className="w-full border-2 rounded-md px-2 mb-2 h-11 resize-none bg-white" {...register?.("collaboratorId")}>
         <option value="">Selecione um colaborador</option>
         {collaboratores.map(collaborator => collaborator.status !== 'Inativo' && <option key={collaborator.id} value={collaborator.id}>{collaborator.name}</option>)}
       </select>
       {errors.collaboratorId && <span className="text-red-500">{errors.collaboratorId.message}</span>}
-    </div> : <div>
+    </div> : ''}
+
+    {
+      user?.origin === "USER" ? <div>
       <div className="mb-1 text-lg font-medium">
         Nenhum colaborador cadastrado? <Link href="/dashboard/collaborator/new" className="text-blue-500 font-semibold">Cadastre um agora</Link>
       </div>
-    </div>}
+    </div> : ''
+    }
+
 
   </div>
   <button type="submit" className="bg-blue-500 text-white font-bold py-2 h-11 rounded-md my-4 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" disabled={collaboratores.length === 0}>

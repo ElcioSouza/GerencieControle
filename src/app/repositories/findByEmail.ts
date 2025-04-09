@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma"
 
 const findByEmail = async (email: string) => {
     let user = await prisma.user.findUnique({where: {email}})
+    
     if(user){
         return user
     }
