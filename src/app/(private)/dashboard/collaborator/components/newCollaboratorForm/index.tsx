@@ -15,14 +15,6 @@ export function NewCollaboratorForm({ UserId }: { UserId: string }) {
         formState: { errors },
     } = useForm<formCreateCollaboratorSchemaData>({
         resolver: zodResolver(formCreateCollaboratorSchema),
-        defaultValues: {
-            phone: "(27)99781-9999",
-            password: "123",
-            name: "teste",
-            email: "teste@teste.com",
-            lastName: "teste",
-            address: "teste",
-        },
     });
     const router = useRouter();
 
