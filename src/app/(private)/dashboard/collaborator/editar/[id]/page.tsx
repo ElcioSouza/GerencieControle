@@ -87,17 +87,15 @@ export default  function EditCollaborator({ params }: { params: { id: string } }
         });
         const result = await response.json();
 
-/*         await signIn("credentials", {
+         await signIn("credentials", {
             redirect: false,
             email: result.pack.data.email,
             password: data.password
-          }); */
-
-
-
+          }); 
+          
           // Atualiza os dados da session no client
-  await update();
-router.refresh();
+          await update();
+          router.refresh();
 
         if (result.error) {
             setError("email", { type: "text", message: result.error })
