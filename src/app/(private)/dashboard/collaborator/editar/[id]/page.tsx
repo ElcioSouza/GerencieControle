@@ -92,7 +92,7 @@ export default  function EditCollaborator({ params }: { params: { id: string } }
             email: result.pack.data.email,
             password: data.password
           }); 
-          
+
           // Atualiza os dados da session no client
           await update();
           router.refresh();
@@ -105,7 +105,7 @@ export default  function EditCollaborator({ params }: { params: { id: string } }
             alert(result?.pack?.error);
         } else {
 
-           // router.push("/dashboard/collaborator");
+           router.push("/dashboard/collaborator");
             router.refresh();
         }
     }
