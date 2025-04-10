@@ -33,7 +33,7 @@ export function NewFormTickets({ collaboratores, user}: NewFormTicketsProps) {
     resolver: zodResolver(FormSchemaTicket),
   });
   async function handleRegisterTicket(data: FormSchemaTicketData) {
-
+    console.log("entrou")
     const response = await fetch("/api/dashboardticket", {
       method: "POST",
       headers: {
@@ -42,6 +42,8 @@ export function NewFormTickets({ collaboratores, user}: NewFormTicketsProps) {
       body: JSON.stringify(data)
     })
     const result = await response.json();
+    
+    console.log("nao cadastrada",result);
     if(result) {
       router.refresh();
       router.replace("/dashboard");
@@ -59,20 +61,18 @@ return <form className="flex flex-col mt-6" onSubmit={handleSubmit(handleRegiste
     {errors.description && <span className="text-red-500">{errors.description.message}</span>}
   </div>
   <div>
-    {
-      user?.origin
-    }
-    {user?.origin === "USER" && collaboratores.filter(Collaborator => Collaborator.status !== "Inativo").length > 0 ? <div>
-      <label className="mb-1 fonte-medium text-lg">Selecione o Colaborador</label>
-      <select className="w-full border-2 rounded-md px-2 mb-2 h-11 resize-none bg-white" {...register?.("collaboratorId")}>
+ 
+    {collaboratores.filter(Collaborator => Collaborator.status !== "Inativo").length > 0 ? <div>
+ {user?.origin === "USER" ? <label className="mb-1 fonte-medium text-lg">Colaborador</label> : ''}
+      <select className={`w-full border-2 rounded-md px-2 mb-2 h-11 resize-none bg-white ${user?.origin === "COLLABORATOR" ? 'hidden' : ''}`} {...register?.("collaboratorId")}>
         <option value="">Selecione um colaborador</option>
-        {collaboratores.map(collaborator => collaborator.status !== 'Inativo' && <option key={collaborator.id} value={collaborator.id}>{collaborator.name}</option>)}
+        {collaboratores.map(collaborator => collaborator.status !== 'Inativo' && <option key={collaborator.id} value={collaborator.id} selected={user?.origin === "COLLABORATOR"? true : false}>{collaborator.name}</option>)}
       </select>
       {errors.collaboratorId && <span className="text-red-500">{errors.collaboratorId.message}</span>}
     </div> : ''}
 
     {
-      user?.origin === "USER" ? <div>
+       collaboratores.length === 0 ? <div>
       <div className="mb-1 text-lg font-medium">
         Nenhum colaborador cadastrado? <Link href="/dashboard/collaborator/new" className="text-blue-500 font-semibold">Cadastre um agora</Link>
       </div>

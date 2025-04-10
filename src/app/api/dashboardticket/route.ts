@@ -9,7 +9,6 @@ export async function POST(request: Request) {
     }
 
     const {name,description,collaboratorId} = await request.json();
-    console.log(collaboratorId);
     if (!name || !description || !collaboratorId) {
         return;
       }

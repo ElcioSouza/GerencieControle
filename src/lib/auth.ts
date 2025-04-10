@@ -30,7 +30,7 @@ export const authOptions: AuthOptions = {
                      throw new Error("Credenciais inválidas");
                  }
                  const checkUser = await findByEmail(params.email);
-                 console.log(checkUser)
+
 
                  if (!checkUser) {
                      throw new Error("Usuário não encontrado");
@@ -89,15 +89,6 @@ export const authOptions: AuthOptions = {
         },
     },
     callbacks: {
-        async signIn(rr) {
-            console.log("signIn callback:", rr);
-            // if (account?.provider === "google") {
-            //     const origin = query?.origin || "default";
-            //     console.log("Origin:", origin);
-            //     account.origin = origin; // Adiciona ao objeto account
-            // }
-            return true;
-        },
         async jwt({ token, user, account }) {
             if (user) {
                 token.id = user.id;
