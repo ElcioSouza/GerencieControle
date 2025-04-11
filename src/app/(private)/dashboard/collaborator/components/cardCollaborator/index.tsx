@@ -9,27 +9,26 @@ import Link from "next/link";
 import { SearchBar } from "@/app/(private)/dashboard/collaborator/components/searchBar";
 import { CollaboratorCard } from "../collaboratorCard";
 import { CardSelect } from "@/app/(private)/dashboard/collaborator/components/cardSelect";
-import { FiLoader, FiMail, FiPhone } from "react-icons/fi";
-import { CiCalendar } from "react-icons/ci";
-import { FaRegEdit } from "react-icons/fa";
+import Loading from "@/app/loading";
+import { FiEdit, FiLoader, FiMail, FiPhone } from "react-icons/fi";
 import { useSession } from "next-auth/react";
-export async function CardCollaborator({ collaborator, total, session }: { collaborator: CollaboratorProps[], total: number, session: any }) {
+import { CiCalendar } from "react-icons/ci";
 
+export function CardCollaborator({ collaborator, total }: { collaborator: CollaboratorProps[], total: number }) {
     const paginationDefaults = { current: 1, pageSize: 6, total: total }
     const router = useRouter();
-
     const [loading, setLoading] = useState(true);
     const [searchInput, setSearchInput] = useState("");
     const [collaborators, setCollaborators] = useState<CollaboratorProps[]>(collaborator);
     const [pagination, setPagination] = useState<PaginationType>(paginationDefaults);
     const [selectStatus, setSelectStatus] = useState<string>('');
-    console.log(session);
+    const { data: session } = useSession();
 
     useEffect(() => {
         setLoading(false);
     }, [loading]);
 
-    async function fetchCollaborator(offset: number, limit: number, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
+    async function fetchCollaborator(offset: number = 0, limit: number = 6, search: string = '', status: string = ''): Promise<ResponseCollaborator> {
         const response = await fetch(`/api/collaborator?offset=${offset}&limit=${limit}&search=${search}&status=${status}`, {
             method: "GET"
         })
@@ -53,11 +52,12 @@ export async function CardCollaborator({ collaborator, total, session }: { colla
         try {
             setSearchInput(search);
             setSelectStatus(newSelectStatus);
+            setPagination(paginationDefaults)
             const offset = (paginationDefaults.current - 1) * paginationDefaults.pageSize;
             const limit = paginationDefaults.pageSize;
             const result = await fetchCollaborator(offset, limit, search, newSelectStatus);
-            setPagination({ ...paginationDefaults, total: result.pack.data.total_fetch });
             setCollaborators(result.pack.data.collaborator);
+            setPagination({ ...pagination, total: result.pack.data.total_fetch });
         } catch (error) {
             console.log(error);
         }
@@ -86,14 +86,14 @@ export async function CardCollaborator({ collaborator, total, session }: { colla
         }
     }
     function handlePageChange(page: number, newSelectStatus: string) {
+
         handlePagination({ ...pagination, current: page }, newSelectStatus);
     }
-    function getUserFirstAndSecondLetter(name: string) {
-        const firstName = name
-        const fullName = `${firstName}`;
+    function getUserFirstAndSecondLetter() {
+        const name = session?.user.name;
+        const fullName = `${name}`;
         const userName = fullName?.split(" ");
         const userNameLetter = userName?.map((item) => item.charAt(0).toUpperCase())
-        session.user.name = "aaaaaaq"
         return userNameLetter;
     }
     return (
@@ -149,7 +149,7 @@ export async function CardCollaborator({ collaborator, total, session }: { colla
                             <div className="p-0 md:px-6">
                                 <div className="flex flex-col items-center mb-8">
                                     <span className="relative flex shrink-0 overflow-hidden rounded-full h-24 w-24 mb-4">
-                                        <span className="flex h-full w-full items-center justify-center rounded-full  bg-gray-200">{getUserFirstAndSecondLetter(item.name)}</span>
+                                        <span className="flex h-full w-full items-center justify-center rounded-full  bg-gray-200">{getUserFirstAndSecondLetter()}</span>
                                     </span>
                                     <div className="text-center">
                                         <h3 className="text-2xl font-bold mb-2">{item.name}</h3>
@@ -159,15 +159,15 @@ export async function CardCollaborator({ collaborator, total, session }: { colla
                                     <div className="mt-0 pt-0 border-t border-purple-100">
                                         <div className="flex flex-col space-y-4">
                                             <div className="grid grid-cols-[auto,1fr] gap-4 items-center">
-                                               <FiMail size={24} className="" />
+                                              <FiMail size={24} className="" /> 
                                                 <span className="text-gray-700 font-medium">{item.email}</span>
                                             </div>
                                             <div className="grid grid-cols-[auto,1fr] gap-4 items-center">
-                                               <FiPhone size={24} />
+                                                <FiPhone size={24} /> 
                                                 <span className="text-gray-700 font-medium">{item.phone}</span>
                                             </div>
                                             <div className="grid grid-cols-[auto,1fr] gap-4 items-center">
-                                               <CiCalendar size={24} />
+                                              <CiCalendar size={24} />
                                                 <span className="text-gray-700 font-medium">Cadastrado em: {item.created_at ? new Date(item.created_at).toLocaleDateString() : ""}</span>
                                             </div>
                                         </div>
@@ -181,7 +181,7 @@ export async function CardCollaborator({ collaborator, total, session }: { colla
                                 <button 
                                 onClick={() => router.push(`/dashboard/collaborator/editar/${item.id}`)}
                                 className="flex justify-center items-center gap-2 w-full max-w-[220px] bg-blue-500 my-4 px-2 h-11 rounded text-white font-bold transition-all shadow-md hover:shadow-lg focus:bg-blue-700 focus:shadow-none active:bg-blue-700 hover:bg-blue-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                <FaRegEdit size={24} className="cursor-pointer" />
+                                 <FiEdit size={24} className="cursor-pointer" /> 
                                 <span>Editar Informações</span>    
                                 </button>
                                 
