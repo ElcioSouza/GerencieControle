@@ -38,7 +38,7 @@ export default async function Collaborator() {
     <Container>
       <main className="mt-9 mb-2">
         <section>
-          <CardCollaborator collaborator={collaborator} total={total} session={session} />
+          <CardCollaborator collaborator={collaborator} total={total} />
         </section>
       </main>
     </Container>

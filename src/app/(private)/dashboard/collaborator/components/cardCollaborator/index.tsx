@@ -14,7 +14,7 @@ import { FiEdit, FiLoader, FiMail, FiPhone } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 import { CiCalendar } from "react-icons/ci";
 
-export function CardCollaborator({ collaborator, total }: { collaborator: CollaboratorProps[], total: number }) {
+export function CardCollaborator({ collaborator, total }: { collaborator: CollaboratorProps[], total: number}) {
     const paginationDefaults = { current: 1, pageSize: 6, total: total }
     const router = useRouter();
     const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
     const [collaborators, setCollaborators] = useState<CollaboratorProps[]>(collaborator);
     const [pagination, setPagination] = useState<PaginationType>(paginationDefaults);
     const [selectStatus, setSelectStatus] = useState<string>('');
-    const { data: session } = useSession();
+    const { data, status} = useSession();
 
     useEffect(() => {
         setLoading(false);
@@ -90,7 +90,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
         handlePagination({ ...pagination, current: page }, newSelectStatus);
     }
     function getUserFirstAndSecondLetter() {
-        const name = session?.user.name;
+        const name = data?.user.name;
         const fullName = `${name}`;
         const userName = fullName?.split(" ");
         const userNameLetter = userName?.map((item) => item.charAt(0).toUpperCase())
@@ -98,7 +98,7 @@ export function CardCollaborator({ collaborator, total }: { collaborator: Collab
     }
     return (
         <>
-            {session?.user.origin == "USER" ? (
+            {data?.user.origin == "USER" ? (
                 <>
                     <div className="flex items-center flex-col md:flex-row gap-3 justify-between ">
                         <h1 className="font-bold text-[20px] md:text-3xl">Meus Colaboradores</h1>
