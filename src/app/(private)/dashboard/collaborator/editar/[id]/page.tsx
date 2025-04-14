@@ -26,6 +26,7 @@ interface listCollaboratorProp {
 export default  function EditCollaborator({ params }: { params: { id: string } }) {       
     const [listCollaborator, setListCollaborator] = useState<listCollaboratorProp>();
     const {data: session,update} = useSession();
+
     const id = params.id;
     //console.log(session)
     useEffect(() => {
@@ -86,15 +87,14 @@ export default  function EditCollaborator({ params }: { params: { id: string } }
             }
         });
         const result = await response.json();
-
+        if (session?.user.origin === "COLLABORATOR") {	
          await signIn("credentials", {
             redirect: false,
             email: result.pack.data.email,
             password: data.password
           }); 
-
-          // Atualiza os dados da session no client
           await update();
+        }
           router.refresh();
 
         if (result.error) {

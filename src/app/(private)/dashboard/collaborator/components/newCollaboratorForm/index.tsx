@@ -20,31 +20,12 @@ export function NewCollaboratorForm({ UserId }: { UserId: string }) {
 
     function sendEmail(data: formCreateCollaboratorSchemaData) {
         console.log("Enviando email");
-        const response = fetch("/api/collaboratorsendEmail", {
-            method: "POST",
-            body: JSON.stringify({
-                name: "teste",
-                email: "teste@teste.com",
-                password: "123",
-                lastName: "teste",
-                phone: "(27)99781-9999",
-                address: "teste",
-                status: "Ativo",
-                UserId: UserId
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        return response;
     }
     async function handleRegisterCollaborator(data: formCreateCollaboratorSchemaData) {
-        console.log(data);
-        const result = await sendEmail(data);
-        const json = await result.json();
-        console.log(json);
-        setError("root", { type: "manual", message: json.message });
-/*         const response = await fetch("/api/collaborator", {
+//        const result = await sendEmail(data);
+        //onst json = await result.json();
+    
+       const response = await fetch("/api/collaborator", {
             method: "POST",
             body: JSON.stringify({
                 name: data.name,
@@ -65,7 +46,7 @@ export function NewCollaboratorForm({ UserId }: { UserId: string }) {
             setError("email", { type: "text", message: result.error })
             return;
         }
-        router.replace("/dashboard/collaborator");  */
+        router.replace("/dashboard/collaborator");  
     }
 
     return (
