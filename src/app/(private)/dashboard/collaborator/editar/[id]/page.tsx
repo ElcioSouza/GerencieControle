@@ -26,9 +26,9 @@ interface listCollaboratorProp {
 export default  function EditCollaborator({ params }: { params: { id: string } }) {       
     const [listCollaborator, setListCollaborator] = useState<listCollaboratorProp>();
     const {data: session,update} = useSession();
-
+    console.log(session);
     const id = params.id;
-    //console.log(session)
+
     useEffect(() => {
         async function fetchCollaborator ()  {
             if (!id) return;
@@ -87,11 +87,12 @@ export default  function EditCollaborator({ params }: { params: { id: string } }
             }
         });
         const result = await response.json();
-        if (session?.user.origin === "COLLABORATOR") {	
+        if (session?.user.origin === "COLLABORATOR" && session?.user.status === "Ativo") {	
          await signIn("credentials", {
             redirect: false,
             email: result.pack.data.email,
-            password: data.password
+            password: data.password,
+            status: "Ativo"
           }); 
           await update();
         }
@@ -105,7 +106,7 @@ export default  function EditCollaborator({ params }: { params: { id: string } }
             alert(result?.pack?.error);
         } else {
 
-           router.push("/dashboard/collaborator");
+            router.push("/dashboard/collaborator");
             router.refresh();
         }
     }

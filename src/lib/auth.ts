@@ -30,8 +30,7 @@ export const authOptions: AuthOptions = {
                      throw new Error("Credenciais inválidas");
                  }
                  const checkUser = await findByEmail(params.email);
-
-
+                 console.log(checkUser);
                  if (!checkUser) {
                      throw new Error("Usuário não encontrado");
                  }
@@ -44,7 +43,8 @@ export const authOptions: AuthOptions = {
                 }
 
                 return {
-                    ...checkUser
+                    ...checkUser,
+                    status: "Ativo",
                 };
              }
         })
@@ -95,6 +95,7 @@ export const authOptions: AuthOptions = {
                 token.name = user.name;
                 token.email = user.email;
                 token.picture = user.image;
+                token.status = user.status;
                 token.origin = user.origin;
             }
             return token;
@@ -106,6 +107,7 @@ export const authOptions: AuthOptions = {
                     id: token.id as string,
                     name: token.name as string,
                     email: token.email as string,
+                    status: token.status as string,
                     image: token.picture as string || null,
                     origin: token.origin as string,
                 };

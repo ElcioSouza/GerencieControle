@@ -4,7 +4,7 @@ import { FiChrome } from 'react-icons/fi';
 import { IoLockClosedOutline, IoLogInOutline } from "react-icons/io5";
 import { MdOutlineEmail } from "react-icons/md";
 import { LuBuilding2 } from "react-icons/lu";
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
 import { FormSchemaUserData, FormSchemaUser } from "@/app/(public)/login/scheme/formUserSchema"
@@ -25,13 +25,16 @@ export default function Login() {
           resolver: zodResolver(FormSchemaUser),
       });
   const router = useRouter()
+    const {data: session,update} = useSession();
+    console.log(session?.user);
   const handleSubmitLogin = async (data: FormSchemaUserData) => {
+
     const result = await signIn("credentials", {
       ...data, 
       origin: "user",
       redirect: false
     });
-    
+      
     if (result?.error) {
      toast.error(result.error, { theme: "colored"});
     }

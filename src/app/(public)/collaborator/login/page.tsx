@@ -30,6 +30,7 @@ export default function Login() {
     const result = await signIn("credentials", {
       ...data,
       origin: "collaborator",
+      status: "Ativo",
       redirect: false
     });
     
