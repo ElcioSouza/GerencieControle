@@ -7,6 +7,7 @@ import { Cta } from "@/components/cta";
 import { Footer } from "@/components/Footer";
 import {useLayoutEffect,useState} from "react";
 import { Header } from "@/components/Header";
+import { Chatbot } from "@/components/Chatbot";
 export default function Home() {
   const { data, status} = useSession();
 
@@ -14,7 +15,7 @@ export default function Home() {
 
   useLayoutEffect(() => {
     status === "unauthenticated" && loading && setLoading(false);
-  }, [status]);
+  }, [status, loading]);
   return (
     <>
       <Header />
@@ -29,6 +30,7 @@ export default function Home() {
           <Footer status={status}  loading={loading} />
         </div>
       </main>
+      {status === "unauthenticated" ? <Chatbot /> : null }
     </>
 
   );
