@@ -93,9 +93,9 @@ export function Chatbot() {
       case "6":
         return "Para se cadastrar como colaborador, você precisa entrar em contato com o administrador do sistema ou usar o link de registro disponível na página de login.";
         default:
-        return (
-          <div dangerouslySetInnerHTML={{ __html: `Desculpe, não entendi sua pergunta<br />Posso te ajudar com informações sobre os seguintes tópicos: <br /> 1 - tickets<br />2 - login<br />3 - cadastro de colaboradores<br />4 - dashboard<br />5 - painel<br />6 - registro` }} />
-        );
+          return (
+            <div dangerouslySetInnerHTML={{ __html: `Ops! A opção informada anteriormente não é válida. Por favor, tente novamente.` }} />
+          );
     }
   };
 
